@@ -1,0 +1,36 @@
+{
+  "project_id": "boorabong-bijarim-forest-walk-20260811",
+  "submitted_at": "2026-08-11T00:00:00+09:00",
+  "source": "사용자 채팅 요청: 비자림 숲길 산책, 부라봉, 더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다, 즐거움·코믹, 30초, 9:16, Higgsfield",
+  "required": {
+    "topic": "비자림 숲길 산책",
+    "characters": ["부라봉"],
+    "core_situation": "더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다",
+    "emotion": "즐거움·코믹",
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "tools": ["Higgsfield (이미지·영상 생성)"]
+  },
+  "optional": {
+    "background": "미지정 — 비자림 숲길 산책로라는 것만 확인됨, 구체적 구역은 담당자 확인 필요",
+    "required_lines": "미지정 — 담당자가 대사·유행어를 제공하지 않음",
+    "excluded_expressions": "미지정 — character-guide §6 공통 제한(직접적 구매 유도, 가격·할인·판매 문구, 폭력·선정·혐오·정치·종교 표현, 타사 IP, 저작권 미확인 자산)을 기본 적용",
+    "direction": "미지정",
+    "scene_count": "미지정 — 담당자 입력 없음, 기획안 작성 시 30초 분량에 맞춰 5장면으로 자동 산정",
+    "bgm": "미지정 — 담당자 확인 필요",
+    "audio": "미지정 — 담당자 확인 필요",
+    "platform": "미지정 — 담당자 확인 필요"
+  },
+  "defaults_applied": {
+    "resolution": "1080x1920",
+    "language": "ko",
+    "storyboard_variants": 3,
+    "max_duration_seconds": 59
+  },
+  "notes": [
+    "선택 입력(배경 구체적 구역, 대사, 배경음악, 게시 플랫폼 등)은 담당자가 제공하지 않았으므로 임의로 지어내지 않고 '미지정'으로 기록했다. 다음 단계(시나리오·스토리보드) 진행 전 담당자 확인이 필요하다.",
+    "등장 캐릭터는 부라봉 1인으로 제한하며 다른 공식 캐릭터를 임의로 추가하지 않는다.",
+    "비자림은 공식 배경 목록(고르방의 집, 할머니의 귤밭)에 없는 확장 배경이므로 사용 허용 범위와 구체적 구역을 담당자에게 확인해야 한다.",
+    "부라봉 '명품' 스티커 등 character-guide.json의 requires_human_confirmation 항목은 이번 기획안에서 사용하지 않았다."
+  ]
+}
