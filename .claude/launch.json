@@ -5,7 +5,8 @@
       "name": "shortform-studio",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "unsorted/workflow-web", "run", "dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

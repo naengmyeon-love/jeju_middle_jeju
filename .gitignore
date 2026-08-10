@@ -29,3 +29,6 @@ build/
 
 # 중첩 git 레포 (자체 이력으로 관리)
 unsorted/workflow-web/
+
+# 사이드카 실행 로그
+/tmp/sidecar.log

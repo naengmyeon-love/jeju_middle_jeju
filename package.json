@@ -6,7 +6,9 @@
   "scripts": {
     "higgsfield:video": "node unsorted/scripts/higgsfield-generate-video.mjs",
     "sync:contract": "node unsorted/scripts/sync-prompt-contract.mjs",
-    "verify": "./verify.sh"
+    "verify": "./verify.sh",
+    "server": "node server/index.mjs",
+    "web": "npm --prefix unsorted/workflow-web run dev"
   },
   "engines": {
     "node": ">=20"
