@@ -4,7 +4,9 @@
   "private": true,
   "description": "Local tooling for the Aepongdang Family content pipeline",
   "scripts": {
-    "higgsfield:video": "node scripts/higgsfield-generate-video.mjs"
+    "higgsfield:video": "node unsorted/scripts/higgsfield-generate-video.mjs",
+    "sync:contract": "node unsorted/scripts/sync-prompt-contract.mjs",
+    "verify": "./verify.sh"
   },
   "engines": {
     "node": ">=20"

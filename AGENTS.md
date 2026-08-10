@@ -2,7 +2,7 @@
 
 캐릭터가 등장하거나 캐릭터를 변형·배치·애니메이션·영상·이미지·상품·인쇄물·UI에 사용하는 모든 작업은 시작 전에 반드시 아래 파일을 읽는다.
 
-- `pongdangpongdang/캐릭터_가이드라인_작업용/WORKFLOW_GUIDE.md`
+- `shared/references/WORKFLOW_GUIDE.md`
 
 해당 가이드와 원본 캐릭터 매뉴얼은 선택적 참고자료가 아니라 작업 제약조건이다. 관련 캐릭터의 소개, 턴어라운드, 사용 규칙 페이지를 실제로 확인하지 않은 상태에서 캐릭터 결과물을 만들지 않는다.
 
@@ -11,7 +11,8 @@
 ## 퐁당패밀리 숏폼 파이프라인
 
 퐁당패밀리 숏폼의 전체 제작·검수 요청에는 설치된 경우 `$pongdang-pipeline` skill을 사용한다.
-개별 단계 요청에는 `pongdangpongdang/pongdang-skills-v2/` 아래의 대응 skill을 사용한다.
+개별 단계 요청에는 `skills/` 아래의 대응 skill을 사용한다.
+스킬이 실제로 호출되려면 `./install.sh` 로 `.claude/` 에 연결되어 있어야 한다.
 
 - 전체 흐름: `pongdang-pipeline`
 - 기획: `plan-generator`

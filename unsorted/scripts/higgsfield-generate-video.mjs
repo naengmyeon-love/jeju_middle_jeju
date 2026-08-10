@@ -7,7 +7,7 @@ import { basename, extname, resolve } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
-const projectRoot = resolve(import.meta.dirname, "..");
+const projectRoot = resolve(import.meta.dirname, "../..");
 const configPath = resolve(projectRoot, "higgsfield.config.json");
 
 function fail(message) {

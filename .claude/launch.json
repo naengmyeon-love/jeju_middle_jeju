@@ -2,20 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "pongdang-workflow-web",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8777", "--directory", "pongdang-workflow-web"],
-      "port": 8777
-    },
-    {
-      "name": "stitch-app",
+      "name": "shortform-studio",
       "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "pongdang-workflow-web/퐁당패밀리-영상-워크플로우",
-        "run",
-        "dev"
-      ],
+      "runtimeArgs": ["--prefix", "unsorted/workflow-web", "run", "dev"],
       "port": 3000
     }
   ]

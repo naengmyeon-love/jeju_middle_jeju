@@ -27,7 +27,7 @@ fi
 
 if [ ! -f "$gate" ]; then
   echo "ERROR: 게이트 스크립트를 찾지 못했습니다: $gate" >&2
-  echo "  harness-example 을 심볼릭 링크째 복사하면 unsorted/scripts 가 깨집니다." >&2
+  echo "  unsorted/scripts/check-production-gate.mjs 가 있는지 확인하십시오." >&2
   echo "  zip 은 반드시 링크를 실체화해서(rsync -aL) 만드십시오." >&2
   exit 1
 fi

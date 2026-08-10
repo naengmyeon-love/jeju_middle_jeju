@@ -10,15 +10,12 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 
-const projectRoot = resolve(import.meta.dirname, "..");
-const sourcePath = resolve(
-  projectRoot,
-  "pongdangpongdang/guides/character-guide.json",
-);
+const projectRoot = resolve(import.meta.dirname, "../..");
+const sourcePath = resolve(projectRoot, "data/character-guide.json");
 const targets = [
   resolve(
     projectRoot,
-    "pongdangpongdang/pongdang-skills-v2/skills/higgsfield-prompt-builder/references/image-generation-contract.json",
+    "skills/higgsfield-prompt-builder/references/image-generation-contract.json",
   ),
 ];
 
@@ -31,8 +28,8 @@ if (!guide.image_generation) {
 }
 
 const payload = {
-  _generated_by: "scripts/sync-prompt-contract.mjs",
-  _source: "pongdangpongdang/guides/character-guide.json → image_generation",
+  _generated_by: "unsorted/scripts/sync-prompt-contract.mjs",
+  _source: "data/character-guide.json → image_generation",
   _warning:
     "이 파일을 직접 수정하지 않는다. character-guide.json 을 고치고 sync 스크립트를 다시 실행한다.",
   guide_version: guide.guide_version,
@@ -70,7 +67,7 @@ for (const target of targets) {
 if (checkOnly) {
   if (drifted) {
     console.error(
-      "계약이 원본과 어긋났습니다. node scripts/sync-prompt-contract.mjs 를 실행하십시오.",
+      "계약이 원본과 어긋났습니다. npm run sync:contract 를 실행하십시오.",
     );
     process.exit(1);
   }

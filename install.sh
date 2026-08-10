@@ -2,7 +2,7 @@
 # 하네스 설치 스크립트
 #
 # agents/ 와 skills/ 를 Claude Code 가 실제로 읽는 위치(<프로젝트루트>/.claude/)에 연결한다.
-# 정의 파일이 harness-example 안에만 있으면 문서로만 존재할 뿐 호출되지 않는다.
+# 정의 파일이 agents/ skills/ 에만 있으면 문서로만 존재할 뿐 호출되지 않는다.
 #
 # 사용법:
 #   ./install.sh            설치 (이미 있으면 갱신)
@@ -14,7 +14,7 @@
 set -uo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-root="$(cd "${here}/.." && pwd)"
+root="${here}"          # 하네스가 프로젝트 루트 자체다
 claude_dir="${root}/.claude"
 
 check_only=0
@@ -46,7 +46,7 @@ link_all() {
     fi
 
     # -n 은 기존 링크를 따라 들어가지 않고 링크 자체를 교체한다 (디렉터리 링크에 필수)
-    ln -sfn "../../harness-example/${kind}/${name}" "$dst"
+    ln -sfn "../../${kind}/${name}" "$dst"
     n=$((n + 1))
   done
 

@@ -1,1 +1,0 @@
-../../pongdangpongdang/guides/character-guide.md

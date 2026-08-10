@@ -6,15 +6,9 @@
 import { readFile, access } from "node:fs/promises";
 import { resolve, relative } from "node:path";
 
-const projectRoot = resolve(import.meta.dirname, "..");
-const guidePath = resolve(
-  projectRoot,
-  "pongdangpongdang/guides/character-guide.json",
-);
-const pagesDir = resolve(
-  projectRoot,
-  "pongdangpongdang/캐릭터_가이드라인_작업용/pages",
-);
+const projectRoot = resolve(import.meta.dirname, "../..");
+const guidePath = resolve(projectRoot, "data/character-guide.json");
+const pagesDir = resolve(projectRoot, "shared/references/pages");
 
 function fail(message) {
   console.error(`ERROR: ${message}`);
