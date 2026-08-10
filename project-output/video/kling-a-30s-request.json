@@ -1,0 +1,104 @@
+{
+  "status": "generated_review_failed_scene_04",
+  "approved_at": "2026-07-31T18:40:32+09:00",
+  "approval_source": "사용자 메시지: 진행시켜",
+  "created_at": "2026-07-31T18:37:47+09:00",
+  "storyboard": "A",
+  "total_duration_seconds": 30,
+  "clip_count": 4,
+  "model_display_name": "Kling 3.0 Standard",
+  "job_type": "kling3_0",
+  "generation_type": "image-to-video",
+  "common_params": {
+    "mode": "std",
+    "sound": "off",
+    "aspect_ratio": "9:16",
+    "count_per_clip": 1,
+    "professional_mode": false,
+    "requested_resolution": "720p",
+    "resolution_mapping": "Kling 3.0 mode=std; the model schema does not expose a separate resolution flag"
+  },
+  "clips": [
+    {
+      "scene": 1,
+      "duration": 5,
+      "start_image": "project-output/storyboard/images/a/scene-01.png",
+      "start_image_sha256": "00ac50cf6a528da9d4ae3ccd4a90834ed5bc390c6a310188a6974e9e1f4b79a5",
+      "estimated_credits": 7.5,
+      "prompt": "Use the provided start image exactly as the first frame. A single continuous 5-second vertical shot with a locked camera. GO LEBANG makes one small, slow friendly wave with the already raised hand while keeping his rounded hands and feet, backward-tilted hat, yellow canola flower, rounded eyebrows, large dimensional nose, original silhouette and proportions unchanged. NYANG NYANGI calmly looks toward the ocean, blinks once, and makes one subtle tail-tip sway while keeping the orange patch on the viewer-left eye and the orange marking only at the tail tip; never mirror either character. Add only gentle ocean-wave motion, slight cloud drift, and a soft sea breeze. Preserve the exact clean 2D character line art, colors, relative size with GO LEBANG taller than NYANG NYANGI, and the 제주 volcanic coast composition. No cuts, no zoom, no morphing, no face changes, no extra limbs, no costume changes, no new objects, no text, no logo, no watermark."
+    },
+    {
+      "scene": 2,
+      "duration": 8,
+      "start_image": "project-output/storyboard/images/a/scene-02.png",
+      "start_image_sha256": "4136b9f1504d89ddbf266e024003d24e1e244aa9bc5072cca4182ffc449441b3",
+      "estimated_credits": 12,
+      "prompt": "Use the provided start image exactly as the first frame. A single continuous 8-second vertical medium shot with a locked camera. GO LEBANG continues a warm, talkative explanation using two or three small, slow counting gestures with his rounded hands; keep his backward-tilted hat, yellow canola flower, rounded eyebrows, large dimensional nose, blunt hands and feet, silhouette and proportions unchanged. NYANG NYANGI stays turned toward the ocean with a calm, mildly unimpressed expression, blinks once, and makes only a tiny tail-tip movement; keep the orange eye patch on the correct left-eye side and the orange marking only at the tail tip, with no mirroring. Add gentle ocean waves, slight cloud drift, and soft flower movement. Preserve the exact clean 2D line art, colors, relative size with GO LEBANG taller, and 제주 coast composition. No cuts, no zoom, no morphing, no face changes, no extra limbs, no costume changes, no new objects, no text, no logo, no watermark."
+    },
+    {
+      "scene": 3,
+      "duration": 9,
+      "start_image": "project-output/storyboard/images/a/scene-03.png",
+      "start_image_sha256": "449a5cb5d411bc708bff514f70a619c029105f3c9ed0f1404d55f13611a1f0a6",
+      "estimated_credits": 13.5,
+      "prompt": "Use the provided start image exactly as the first frame. A single continuous 9-second vertical three-quarter medium shot with a locked camera. NYANG NYANGI makes one small clear gesture toward the waves, then relaxes, with one natural blink and a very subtle tail-tip sway; preserve the orange patch on the correct left-eye side and the orange tail marking limited to the tip, never mirror the character. GO LEBANG gently stops his hand movement and listens with a warm calm expression while keeping his backward-tilted hat, yellow canola flower, rounded eyebrows, large dimensional nose, blunt hands and feet, original silhouette and proportions unchanged. Add only gentle ocean-wave motion and slight cloud drift. Preserve the exact clean 2D line art, colors, relative size with GO LEBANG taller, and 제주 coast composition. No cuts, no zoom, no morphing, no face changes, no extra limbs, no costume changes, no new objects, no text, no logo, no watermark."
+    },
+    {
+      "scene": 4,
+      "duration": 8,
+      "start_image": "project-output/storyboard/images/a/scene-04.png",
+      "start_image_sha256": "312f18cac174961399bb930a097dacdc9e959ac7efa82fe847b18cc052df1dcb",
+      "estimated_credits": 12,
+      "prompt": "Use the provided start image exactly as the first frame. A single continuous 8-second vertical rear three-quarter wide shot with a locked camera. GO LEBANG and NYANG NYANGI remain seated side by side, quietly watching the ocean. Give both characters only subtle breathing motion; NYANG NYANGI may make one very small tail-tip sway while preserving the orange marking only at the tip and the correct non-mirrored character orientation. Keep GO LEBANG taller, his backward-tilted hat and yellow canola flower intact, and preserve both original silhouettes, facial proportions, clean 2D line art and colors. Animate gentle ocean waves, soft sunlight sparkle, slight cloud drift, and a mild sea breeze. No character turn, no cuts, no zoom, no morphing, no face changes, no extra limbs, no costume changes, no new objects, no text, no logo, no watermark."
+    }
+  ],
+  "assembly": {
+    "order": [1, 2, 3, 4],
+    "expected_duration_seconds": 30,
+    "audio": "none",
+    "draft_output": "project-output/video/draft.mp4"
+  },
+  "estimated_credits": 45,
+  "actual_credits": 45,
+  "regeneration_limit": 0,
+  "generation_results": [
+    {
+      "scene": 1,
+      "status": "completed_locked",
+      "job_id": "0fc40a02-6144-4831-bc06-65a9c9946124",
+      "local_output": "generated/videos/a-scene-01.mp4",
+      "review": "passed"
+    },
+    {
+      "scene": 2,
+      "status": "completed_locked",
+      "job_id": "08c5cc4d-3e84-4095-bc48-9a79ad3167ff",
+      "local_output": "generated/videos/a-scene-02.mp4",
+      "review": "passed"
+    },
+    {
+      "scene": 3,
+      "status": "completed_locked",
+      "job_id": "3dfbda4d-0796-4165-bc6b-50ca0fe06113",
+      "local_output": "generated/videos/a-scene-03.mp4",
+      "review": "passed"
+    },
+    {
+      "scene": 4,
+      "status": "completed_needs_regeneration",
+      "job_id": "04219bac-1806-42ad-a24d-caaf56e76351",
+      "local_output": "generated/videos/a-scene-04.mp4",
+      "review": "failed_character_marking"
+    }
+  ],
+  "assembled_output": {
+    "local_output": "generated/videos/a-30s-draft.mp4",
+    "pipeline_output": "project-output/video/draft.mp4",
+    "duration_seconds": 30,
+    "width": 720,
+    "height": 1280,
+    "fps": 24,
+    "audio": "none",
+    "sha256": "7d970fa35e71dc4bb2d628fce42b4b39b2626667458afcb617ab12e8b937af5c"
+  }
+}

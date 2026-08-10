@@ -1,0 +1,51 @@
+{
+  "project_id": "boorabong-golebang-hallasan-hike-20260801",
+  "created_at": "2026-08-01T00:00:00+09:00",
+  "updated_at": "2026-08-01T00:00:00+09:00",
+  "status": "storyboard_a_selected_production_on_hold",
+  "outputs": {
+    "request": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/input/request.json",
+    "plan": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/planning/plan.md",
+    "scenario": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/planning/scenario.md",
+    "storyboard_a": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/storyboard/storyboard-a.md",
+    "storyboard_b": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/storyboard/storyboard-b.md",
+    "storyboard_c": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/storyboard/storyboard-c.md",
+    "storyboard_images_a": ["storyboard/images/a/scene-01.png", "storyboard/images/a/scene-02.png", "storyboard/images/a/scene-03.png", "storyboard/images/a/scene-04.png", "storyboard/images/a/scene-05.png"],
+    "storyboard_images_b": ["storyboard/images/b/scene-01.png", "storyboard/images/b/scene-02.png", "storyboard/images/b/scene-03.png", "storyboard/images/b/scene-04.png", "storyboard/images/b/scene-05.png"],
+    "storyboard_images_c": ["storyboard/images/c/scene-01.png", "storyboard/images/c/scene-02.png", "storyboard/images/c/scene-03.png", "storyboard/images/c/scene-04.png", "storyboard/images/c/scene-05.png"],
+    "planning_review": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/review/planning-review.md"
+  },
+  "guide_applied": {
+    "version": "2.2",
+    "applied_at": "2026-08-01T00:00:00+09:00",
+    "source_pdf": "pongdangpongdang/캐릭터_가이드라인_작업용/원본_제주애퐁당_캐릭터_사용_매뉴얼.pdf",
+    "verified_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13],
+    "categories": ["characters", "relationships", "world", "visual", "brand_safety", "technical"],
+    "targets": ["plan"]
+  },
+  "creative_configuration": {
+    "video_tool": "Higgsfield",
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "resolution": "1080x1920",
+    "audio": false,
+    "sound_setting": "off",
+    "direction": "emotional_twist"
+  },
+  "reviews": {
+    "planning": {"status": "conditional_pass", "path": "project-output/projects/boorabong-golebang-hallasan-hike-20260801/review/planning-review.md", "reviewed_at": "2026-08-01T00:00:00+09:00", "notes": "B안 채택 시 부라봉 입모양·고르방 눈 재생성 권장. 신규 배경(한라산)·소품(배낭)은 담당자 확인 필요."}
+  },
+  "approvals": {
+    "planning": {"status": "not_requested"},
+    "storyboard_selection": {"status": "selected", "selected": "A", "selected_at": "2026-08-01T00:00:00+09:00", "notes": "자동 검수 통과(A안). B안은 재생성 필요 조건부 통과였음."},
+    "production": {"status": "on_hold", "explicit": true, "notes": "담당자가 '아직 진행하지 말고 보류'로 명시적으로 응답. Higgsfield 영상 생성(45 credits, Kling v3.0 std, 5클립) 미실행.", "estimated_credits": 45, "clip_count": 5, "regeneration_limit_proposed": 1},
+    "final_video": {"status": "not_requested"},
+    "external_distribution": {"status": "not_requested"}
+  },
+  "costs": {
+    "estimated_credits": null,
+    "actual_credits": 30,
+    "actual_credits_breakdown": "스토리보드 이미지 생성 15장 x 2 credits (Higgsfield Nano Banana 2) = 30 credits"
+  },
+  "errors": []
+}

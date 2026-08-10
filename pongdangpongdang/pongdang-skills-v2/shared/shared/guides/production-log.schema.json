@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.jeju-epongdang.invalid/production-log.schema.json",
+  "title": "퐁당패밀리 production-log",
+  "type": "object",
+  "required": ["project_id", "created_at", "input", "outputs", "guide_applied", "reviews", "approvals", "costs", "model_versions", "artifact_versions", "errors"],
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "input": {"type": "object"},
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "request": {"type": "string"},
+        "plan": {"type": "string"},
+        "scenario": {"type": "string"},
+        "storyboard_a": {"type": "string"},
+        "storyboard_b": {"type": "string"},
+        "storyboard_c": {"type": "string"},
+        "storyboard_images_a": {"type": "array", "items": {"type": "string"}},
+        "storyboard_images_b": {"type": "array", "items": {"type": "string"}},
+        "storyboard_images_c": {"type": "array", "items": {"type": "string"}},
+        "video_draft": {"type": ["string", "null"]},
+        "video_final": {"type": ["string", "null"]},
+        "publication_manifest": {"type": ["string", "null"]}
+      }
+    },
+    "guide_applied": {
+      "type": "object",
+      "required": ["version", "applied_at", "source_pdf", "verified_pages"],
+      "properties": {
+        "version": {"type": "string"},
+        "applied_at": {"type": "string", "format": "date-time"},
+        "source_pdf": {"type": "string"},
+        "verified_pages": {"type": "array", "items": {"type": "integer", "minimum": 1}},
+        "categories": {"type": "array", "items": {"type": "string"}},
+        "targets": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "reviews": {
+      "type": "object",
+      "required": ["planning", "video"],
+      "properties": {
+        "planning": {"$ref": "#/$defs/review"},
+        "video": {"$ref": "#/$defs/review"}
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["production", "final"],
+      "properties": {
+        "production": {
+          "allOf": [
+            {"$ref": "#/$defs/approval"},
+            {
+              "type": "object",
+              "properties": {
+                "selected_storyboard": {"enum": ["A", "B", "C", null]},
+                "estimated_credits": {"type": ["number", "null"], "minimum": 0},
+                "clip_count": {"type": ["integer", "null"], "minimum": 0},
+                "regeneration_limit": {"type": ["integer", "null"], "minimum": 0},
+                "cost_usage_approved": {"type": "boolean"}
+              },
+              "required": ["selected_storyboard", "estimated_credits", "clip_count", "regeneration_limit", "cost_usage_approved"]
+            }
+          ]
+        },
+        "final": {"$ref": "#/$defs/approval"},
+        "distribution": {
+          "allOf": [
+            {"$ref": "#/$defs/approval"},
+            {
+              "type": "object",
+              "properties": {
+                "platforms": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {"enum": ["youtube", "instagram", "tiktok"]}
+                },
+                "content_sha256": {
+                  "type": ["string", "null"],
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {"$ref": "#/$defs/distributionTarget"}
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "timings": {"type": "object"},
+    "costs": {
+      "type": "object",
+      "required": ["estimated_cost_krw", "actual_cost_krw"],
+      "properties": {
+        "ai_tool_usage": {"type": ["string", "null"]},
+        "estimated_cost_krw": {"type": "number", "minimum": 0},
+        "actual_cost_krw": {"type": "number", "minimum": 0}
+      }
+    },
+    "metrics": {"type": "object"},
+    "model_versions": {"type": "object"},
+    "artifact_versions": {"type": "object"},
+    "publications": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/publication"}
+    },
+    "errors": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "required": ["status", "path"],
+      "properties": {
+        "status": {"enum": ["not_started", "passed", "conditional", "failed", "needs_confirmation"]},
+        "path": {"type": "string"},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "approval": {
+      "type": "object",
+      "required": ["status", "explicit", "reviewer", "approved_at"],
+      "properties": {
+        "status": {"enum": ["not_requested", "pending", "approved", "partial_revision", "regenerate", "hold", "discarded"]},
+        "explicit": {"type": "boolean"},
+        "reviewer": {"type": ["string", "null"]},
+        "approved_at": {"type": ["string", "null"], "format": "date-time"},
+        "notes": {"type": ["string", "null"]}
+      }
+    },
+    "distributionTarget": {
+      "type": "object",
+      "required": ["platform", "account_id", "visibility", "caption"],
+      "properties": {
+        "platform": {"enum": ["youtube", "instagram", "tiktok"]},
+        "account_id": {"type": "string", "minLength": 1},
+        "visibility": {"type": "string", "minLength": 1},
+        "caption": {"type": "string", "minLength": 1},
+        "caption_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scheduled_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "publication": {
+      "type": "object",
+      "required": ["platform", "account_id", "status", "content_sha256", "caption_sha256", "idempotency_key"],
+      "properties": {
+        "platform": {"enum": ["youtube", "instagram", "tiktok"]},
+        "account_id": {"type": "string", "minLength": 1},
+        "remote_id": {"type": ["string", "null"]},
+        "url": {"type": ["string", "null"], "format": "uri"},
+        "status": {
+          "enum": ["pending", "submitted", "processing", "scheduled", "published", "failed", "connection_required"]
+        },
+        "requested_at": {"type": ["string", "null"], "format": "date-time"},
+        "published_at": {"type": ["string", "null"], "format": "date-time"},
+        "content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "caption_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "idempotency_key": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "error": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "project_id": "boorabong-golebang-summer-vacation-20260731",
+  "requested_at": "2026-07-31T20:24:03+09:00",
+  "topic": "부라봉과 고르방의 여름휴가",
+  "characters": [
+    "부라봉",
+    "고르방"
+  ],
+  "core_situation": "여름과 더위에 지친 부라봉을 위해 고르방이 제주 바닷가에 시원한 피서 자리를 준비하지만, 긴 설명을 하는 사이 얼음이 모두 녹아버린다.",
+  "emotion_and_humor": "부라봉의 더위 취약 설정과 고르방의 끝없는 수다에서 나오는 반전 코미디, 서로를 챙기는 따뜻함",
+  "duration_seconds": 30,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "language": "ko-KR",
+  "creative_tools": {
+    "video_generation": "Higgsfield",
+    "audio": "사용하지 않음",
+    "captions": "화면 자막 사용"
+  },
+  "optional_inputs": {
+    "background": "제주 바다의 검은 현무암 해안",
+    "direction": "코미디형",
+    "scene_count": 5,
+    "platform": "인스타그램 릴스·유튜브 쇼츠 공용",
+    "excluded_expressions": [
+      "음성",
+      "배경음악",
+      "효과음",
+      "직접적인 상품 판매·구매 유도",
+      "가격·할인·홍보 문구",
+      "타사 IP"
+    ]
+  },
+  "assumptions": [
+    "기본값에 따라 30초, 9:16, 1080x1920, 코미디형으로 구성한다.",
+    "대사 내용은 음성이 아니라 화면 자막으로만 전달한다.",
+    "공식 배경 소재인 제주 바다를 사용한다.",
+    "공식 배경·소품 설정집이 미확보이므로 파라솔·아이스박스·얼음물은 담당자 확인 대상으로 표시한다.",
+    "Higgsfield 유료 영상 생성은 별도의 명시적 제작·비용 승인 후 실행한다."
+  ],
+  "output_status": "planning_complete"
+}

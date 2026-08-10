@@ -1,0 +1,202 @@
+{
+  "project_id": "boorabong-golebang-summer-vacation-20260731",
+  "created_at": "2026-07-31T20:24:03+09:00",
+  "updated_at": "2026-08-01T07:15:06+09:00",
+  "status": "awaiting_storyboard_and_cost_approval",
+  "input": {
+    "topic": "부라봉과 고르방의 여름휴가",
+    "characters": [
+      "부라봉",
+      "고르방"
+    ],
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "resolution": "1080x1920",
+    "audio": false,
+    "video_tool": "Higgsfield"
+  },
+  "outputs": {
+    "request": "project-output/projects/boorabong-golebang-summer-vacation-20260731/input/request.json",
+    "plan": "project-output/projects/boorabong-golebang-summer-vacation-20260731/planning/plan.md",
+    "scenario": "project-output/projects/boorabong-golebang-summer-vacation-20260731/planning/scenario.md",
+    "storyboard_a": "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/storyboard-a.md",
+    "storyboard_b": "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/storyboard-b.md",
+    "storyboard_c": "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/storyboard-c.md",
+    "storyboard_images_a": [
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/a/scene-01.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/a/scene-02.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/a/scene-03.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/a/scene-04.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/a/scene-05.png"
+    ],
+    "storyboard_images_b": [
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-01.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-02.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-03.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-04.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-05.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/b/scene-06.png"
+    ],
+    "storyboard_images_c": [
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/c/scene-01.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/c/scene-02.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/c/scene-03.png",
+      "project-output/projects/boorabong-golebang-summer-vacation-20260731/storyboard/images/c/scene-04.png"
+    ],
+    "planning_review": "project-output/projects/boorabong-golebang-summer-vacation-20260731/review/planning-review.md",
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "2.2",
+    "applied_at": "2026-07-31T20:24:03+09:00",
+    "source_pdf": "pongdangpongdang/pongdang-skills-v2/shared/references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "verified_pages": [
+      3,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "categories": [
+      "characters",
+      "relationships",
+      "world",
+      "visual",
+      "brand_safety",
+      "technical"
+    ],
+    "targets": [
+      "plan",
+      "scenario",
+      "storyboard",
+      "planning_review"
+    ]
+  },
+  "reviews": {
+    "planning": {
+      "status": "needs_confirmation",
+      "path": "project-output/projects/boorabong-golebang-summer-vacation-20260731/review/planning-review.md",
+      "reviewed_at": "2026-08-01T07:15:06+09:00"
+    },
+    "video": {
+      "status": "not_started",
+      "path": "project-output/projects/boorabong-golebang-summer-vacation-20260731/review/video-review.md",
+      "reviewed_at": null
+    }
+  },
+  "approvals": {
+    "production": {
+      "status": "pending",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "스토리보드 선택, 신규 소품 허용, Seedance 2.0 최초 270크레딧과 실패 클립 1개 재생성 상한의 명시적 승인이 필요하다.",
+      "selected_storyboard": null,
+      "estimated_credits": 270,
+      "clip_count": null,
+      "regeneration_limit": 1,
+      "cost_usage_approved": false
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": null
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": null,
+      "platforms": [],
+      "content_sha256": null,
+      "targets": []
+    }
+  },
+  "timings": {
+    "planned_duration_seconds": 30
+  },
+  "costs": {
+    "ai_tool_usage": "OpenAI built-in image generation for 15 storyboard frames; proposed Higgsfield Seedance 2.0 for selected video",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0,
+    "credit_balance_before_video": 1044.5,
+    "estimated_initial_credits": 270,
+    "actual_credits": 0,
+    "estimates_by_storyboard": {
+      "A": {
+        "clip_durations_seconds": [
+          5,
+          6,
+          9,
+          5,
+          5
+        ],
+        "clip_count": 5,
+        "initial_credits": 270,
+        "regeneration_limit": 1,
+        "max_regeneration_credits": 81,
+        "maximum_approved_if_selected": 351
+      },
+      "B": {
+        "clip_durations_seconds": [
+          4,
+          4,
+          5,
+          7,
+          5,
+          5
+        ],
+        "clip_count": 6,
+        "initial_credits": 270,
+        "regeneration_limit": 1,
+        "max_regeneration_credits": 63,
+        "maximum_approved_if_selected": 333
+      },
+      "C": {
+        "clip_durations_seconds": [
+          7,
+          8,
+          8,
+          7
+        ],
+        "clip_count": 4,
+        "initial_credits": 270,
+        "regeneration_limit": 1,
+        "max_regeneration_credits": 72,
+        "maximum_approved_if_selected": 342
+      }
+    }
+  },
+  "model_versions": {
+    "storyboard_images": "OpenAI built-in image generation",
+    "video_proposed": "Higgsfield Seedance 2.0, mode=std, resolution=1080p, aspect_ratio=9:16, generate_audio=false, genre=comedy"
+  },
+  "artifact_versions": {
+    "request": 1,
+    "plan": 1,
+    "scenario": 2,
+    "storyboard_a": 1,
+    "storyboard_b": 1,
+    "storyboard_c": 1,
+    "planning_review": 1
+  },
+  "errors": [
+    {
+      "stage": "storyboard_image_generation",
+      "scene": "B-05",
+      "type": "temporary_network_error",
+      "message": "첫 이미지 생성 시 응답 본문 디코딩 네트워크 오류가 발생했으나 동일 조건 재시도에 성공했다.",
+      "resolved": true,
+      "recorded_at": "2026-08-01T07:15:06+09:00"
+    }
+  ]
+}

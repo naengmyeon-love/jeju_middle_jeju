@@ -1,0 +1,12 @@
+{
+  "name": "aepongdang-family-local",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local tooling for the Aepongdang Family content pipeline",
+  "scripts": {
+    "higgsfield:video": "node scripts/higgsfield-generate-video.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

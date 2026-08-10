@@ -1,0 +1,181 @@
+{
+  "project_id": "boorabong-golebang-bijarim-trip-20260801",
+  "created_at": "2026-08-01T00:00:00+09:00",
+  "updated_at": "2026-08-01T00:00:00+09:00",
+  "status": "planning_complete_awaiting_storyboard_selection_and_production_approval",
+  "input": {
+    "source": "사용자 채팅 요청",
+    "topic": "부라봉과 고르방의 비자림 숲 여행",
+    "characters": ["부라봉", "고르방"],
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "resolution": "1080x1920",
+    "audio": false,
+    "path": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/input/request.json"
+  },
+  "outputs": {
+    "request": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/input/request.json",
+    "plan": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/planning/plan.md",
+    "scenario": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/planning/scenario.md",
+    "storyboard_a": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/storyboard/storyboard-a.md",
+    "storyboard_b": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/storyboard/storyboard-b.md",
+    "storyboard_c": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/storyboard/storyboard-c.md",
+    "storyboard_images_a": [
+      "storyboard/images/a/scene-01.png",
+      "storyboard/images/a/scene-02.png",
+      "storyboard/images/a/scene-03.png",
+      "storyboard/images/a/scene-04.png",
+      "storyboard/images/a/scene-05.png"
+    ],
+    "storyboard_images_b": [
+      "storyboard/images/b/scene-01.png",
+      "storyboard/images/b/scene-02.png",
+      "storyboard/images/b/scene-03.png",
+      "storyboard/images/b/scene-04.png",
+      "storyboard/images/b/scene-05.png",
+      "storyboard/images/b/scene-06.png"
+    ],
+    "storyboard_images_c": [
+      "storyboard/images/c/scene-01.png",
+      "storyboard/images/c/scene-02.png",
+      "storyboard/images/c/scene-03.png",
+      "storyboard/images/c/scene-04.png"
+    ],
+    "planning_review": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/review/planning-review.md",
+    "approval_log": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/review/approval-log.md",
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "2.2",
+    "applied_at": "2026-08-01T00:00:00+09:00",
+    "source_pdf": "pongdangpongdang/캐릭터_가이드라인_작업용/원본_제주애퐁당_캐릭터_사용_매뉴얼.pdf",
+    "verified_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13],
+    "categories": ["characters", "relationships", "world", "visual", "brand_safety", "technical"],
+    "targets": ["plan", "scenario", "storyboard", "storyboard_images"]
+  },
+  "creative_configuration": {
+    "video_tool": "Higgsfield",
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16",
+    "resolution": "1080x1920",
+    "audio": false,
+    "sound_setting": "off",
+    "direction": "travel_slice_of_life_with_warm_twist",
+    "scene_counts": {"a": 5, "b": 6, "c": 4}
+  },
+  "reviews": {
+    "planning": {
+      "status": "conditional",
+      "path": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/review/planning-review.md",
+      "reviewed_at": "2026-08-01T00:00:00+09:00",
+      "notes": "문서 전 항목 통과. 장면 이미지 15장 중 8장 통과, 7장 재생성 필요(고르방 눈 누락, 부라봉 흰 하의 누락, 부라봉 눈 과대, 유채꽃 누락·중복). 비자림 배경 사용 허용 범위는 담당자 확인 필요."
+    },
+    "video": {
+      "status": "not_started",
+      "path": "project-output/projects/boorabong-golebang-bijarim-trip-20260801/review/video-review.md",
+      "reviewed_at": null
+    }
+  },
+  "approvals": {
+    "planning": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null
+    },
+    "storyboard_selection": {
+      "status": "pending",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "A/B/C 중 담당자 선택 대기"
+    },
+    "production": {
+      "status": "pending",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "selected_storyboard": null,
+      "estimated_credits": null,
+      "clip_count": null,
+      "regeneration_limit": 1,
+      "cost_usage_approved": false,
+      "notes": "선택안별 예상 크레딧 — Kling 3.0 기준 A 50 / B 60 / C 40, Seedance 2.0 기준 A 112.5 / B 135 / C 90. 승인 전이므로 유료 영상 호출 미실행."
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "platforms": [],
+      "content_sha256": null,
+      "targets": []
+    }
+  },
+  "costs": {
+    "ai_tool_usage": "Higgsfield Nano Banana 2 (nano_banana_flash) 이미지 생성 및 재생성 약 29회 × 1.5 credits ≈ 44 credits. 영상 생성 미실행.",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0,
+    "credits_before": 1010.5,
+    "credits_after": 966.5,
+    "actual_credits": 44
+  },
+  "model_versions": {
+    "image": {
+      "provider": "Higgsfield",
+      "job_type": "nano_banana_flash",
+      "display_name": "Nano Banana 2",
+      "aspect_ratio": "9:16",
+      "resolution": "2k",
+      "reference_images": [
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-08.png",
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-09.png",
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-10.png",
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-11.png",
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-12.png",
+        "pongdangpongdang/캐릭터_가이드라인_작업용/pages/page-13.png",
+        "page-07.png 기반 부라봉·고르방 캐릭터 크롭"
+      ]
+    },
+    "video": null
+  },
+  "artifact_versions": {
+    "plan": "v1",
+    "scenario": "v1",
+    "storyboard_a": "v1",
+    "storyboard_b": "v1",
+    "storyboard_c": "v1",
+    "storyboard_images": "v1 (a/scene-01 v3, a/scene-02 v3, 그 외 v1)"
+  },
+  "errors": [
+    {
+      "stage": "storyboard_images",
+      "type": "character_fidelity",
+      "detail": "와이드·미디엄 샷에서 고르방의 둥근 눈이 반복적으로 누락됨. 얼굴 클로즈업 레퍼런스 추가와 프롬프트 강화 모두 미해결. 클로즈업 샷에서는 정상 재현됨.",
+      "affected": ["a/scene-02", "a/scene-03", "a/scene-04", "a/scene-05"],
+      "retryable": true
+    },
+    {
+      "stage": "storyboard_images",
+      "type": "character_fidelity",
+      "detail": "부라봉의 흰색 하의 누락 및 눈 크기 과대 표현.",
+      "affected": ["a/scene-03", "b/scene-05", "b/scene-06"],
+      "retryable": true
+    },
+    {
+      "stage": "storyboard_images",
+      "type": "character_fidelity",
+      "detail": "고르방 모자의 노란 유채꽃 누락 또는 좌우 중복 생성.",
+      "affected": ["c/scene-02", "c/scene-04"],
+      "retryable": true
+    }
+  ]
+}

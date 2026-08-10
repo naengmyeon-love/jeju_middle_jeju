@@ -1,0 +1,26 @@
+{
+  "_comment": "harness-example 전용 훅 설정 예시. 실제로 적용하려면 이 hooks 블록을 프로젝트 루트의 .claude/settings.json 에 병합한다. 이 파일 자체는 Claude Code 가 읽지 않는다.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/harness-example/hooks/subagent_log.sh\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/harness-example/hooks/subagent_log.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

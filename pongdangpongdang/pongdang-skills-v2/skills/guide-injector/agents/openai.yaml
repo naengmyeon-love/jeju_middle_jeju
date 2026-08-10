@@ -1,0 +1,4 @@
+interface:
+  display_name: "공식 가이드 주입기"
+  short_description: "캐릭터·브랜드 규칙을 생성 단계에 안전하게 주입합니다"
+  default_prompt: "Use $guide-injector to apply the official 퐁당패밀리 guide to this content request."

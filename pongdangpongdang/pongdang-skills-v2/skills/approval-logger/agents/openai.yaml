@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 승인 기록기"
+  short_description: "제작비 승인과 최종 영상 승인을 분리해 기록합니다"
+  default_prompt: "Use $approval-logger to record this explicit production or final-video approval."

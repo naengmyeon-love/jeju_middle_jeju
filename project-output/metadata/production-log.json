@@ -1,0 +1,202 @@
+{
+  "project_id": "gorbang-nyangnyi-summer-holiday-20260731",
+  "created_at": "2026-07-31T17:31:12+09:00",
+  "updated_at": "2026-07-31T18:52:13+09:00",
+  "input": {
+    "topic": "고르방과 냥냥이의 여름 휴가",
+    "characters": [
+      "고르방",
+      "냥냥이"
+    ],
+    "duration_seconds": 30,
+    "aspect_ratio": "9:16"
+  },
+  "outputs": {
+    "request": "project-output/input/request.json",
+    "plan": "project-output/planning/plan.md",
+    "scenario": "project-output/planning/scenario.md",
+    "storyboard_a": "project-output/storyboard/storyboard-a.md",
+    "storyboard_b": "project-output/storyboard/storyboard-b.md",
+    "storyboard_c": "project-output/storyboard/storyboard-c.md",
+    "storyboard_images_a": [
+      "project-output/storyboard/images/a/scene-01.png",
+      "project-output/storyboard/images/a/scene-02.png",
+      "project-output/storyboard/images/a/scene-03.png",
+      "project-output/storyboard/images/a/scene-04.png"
+    ],
+    "storyboard_images_b": [
+      "project-output/storyboard/images/b/scene-01.png",
+      "project-output/storyboard/images/b/scene-02.png",
+      "project-output/storyboard/images/b/scene-03.png",
+      "project-output/storyboard/images/b/scene-04.png"
+    ],
+    "storyboard_images_c": [
+      "project-output/storyboard/images/c/scene-01.png",
+      "project-output/storyboard/images/c/scene-02.png",
+      "project-output/storyboard/images/c/scene-03.png",
+      "project-output/storyboard/images/c/scene-04.png"
+    ],
+    "video_draft": "project-output/video/draft.mp4",
+    "video_final": null,
+    "video_generation_request": "project-output/video/kling-a-30s-request.json",
+    "video_clips": [
+      "generated/videos/a-scene-01.mp4",
+      "generated/videos/a-scene-02.mp4",
+      "generated/videos/a-scene-03.mp4",
+      "generated/videos/a-scene-04.mp4"
+    ]
+  },
+  "guide_applied": {
+    "version": "2.2",
+    "applied_at": "2026-07-31T17:31:12+09:00",
+    "source_pdf": "pongdangpongdang/캐릭터_가이드라인_작업용/원본_제주애퐁당_캐릭터_사용_매뉴얼.pdf",
+    "verified_pages": [
+      3,
+      5,
+      7,
+      11,
+      12,
+      13,
+      17,
+      18,
+      19
+    ],
+    "categories": [
+      "characters",
+      "relationships",
+      "visual",
+      "brand_safety",
+      "technical"
+    ],
+    "targets": [
+      "plan",
+      "scenario",
+      "storyboard",
+      "video"
+    ],
+    "video_applied_at": "2026-07-31T18:34:18+09:00"
+  },
+  "reviews": {
+    "planning": {
+      "status": "passed",
+      "path": "project-output/review/planning-review.md",
+      "reviewed_at": "2026-07-31T17:31:12+09:00"
+    },
+    "video": {
+      "status": "failed",
+      "path": "project-output/review/video-review.md",
+      "reviewed_at": "2026-07-31T18:52:13+09:00"
+    }
+  },
+  "approvals": {
+    "production": {
+      "status": "approved",
+      "explicit": true,
+      "reviewer": "사용자(현재 Codex 작업 요청자)",
+      "approved_at": "2026-07-31T18:40:32+09:00",
+      "notes": "사용자가 모델·방식·길이·해상도·오디오·개수 조건과 총 예상 비용 45 credits를 확인한 뒤 '진행시켜'라고 명시하여 A안 전체 30초, 4개 Image-to-Video 클립 생성을 승인함.",
+      "selected_storyboard": "A",
+      "estimated_credits": 45,
+      "clip_count": 4,
+      "regeneration_limit": 0,
+      "cost_usage_approved": true
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "자동 검수에서 장면 4의 냥냥이 머리 뒤쪽 비공식 주황 무늬가 확인되어 최종 승인 요청을 보류함."
+    }
+  },
+  "timings": {
+    "planned_duration_seconds": 30,
+    "actual_duration_seconds": 30,
+    "video_generation_completed_at": "2026-07-31T18:50:00+09:00",
+    "video_review_completed_at": "2026-07-31T18:52:13+09:00"
+  },
+  "costs": {
+    "ai_tool_usage": "OpenAI built-in image generation for storyboard frames; Higgsfield Kling 3.0 Standard for 4 Image-to-Video clips",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0,
+    "estimated_credits": 45,
+    "actual_credits": 45,
+    "credits_before": 1089.5,
+    "credits_after": 1044.5,
+    "higgsfield_credits": 1.5
+  },
+  "model_versions": {
+    "storyboard_images": "OpenAI built-in image generation",
+    "video_requested": "Higgsfield Kling v3.0 (kling3_0), mode=std",
+    "video_generated": "Higgsfield Kling v3.0 (kling3_0), mode=std, sound=off, 720x1280, 24fps"
+  },
+  "artifact_versions": {
+    "plan": 1,
+    "scenario": 1,
+    "storyboard_a": 1,
+    "storyboard_b": 1,
+    "storyboard_c": 1,
+    "video_generation_request": 1
+  },
+  "errors": [
+    {
+      "stage": "video_review",
+      "scene": 4,
+      "type": "character_appearance_mismatch",
+      "message": "냥냥이 머리 뒤쪽에 공식 page-18 턴어라운드에 없는 주황 무늬가 보임.",
+      "action": "장면 1~3은 잠금. 장면 4만 수정 시작 이미지로 재생성 필요. 재생성 상한 0이므로 추가 비용 승인 전 중단.",
+      "recorded_at": "2026-07-31T18:52:13+09:00"
+    }
+  ],
+  "image_generations": [
+    {
+      "id": "boo-rabong-solo-01",
+      "created_at": "2026-08-03",
+      "character": [
+        "boo-rabong"
+      ],
+      "reference_pages": [
+        8,
+        9,
+        10
+      ],
+      "model": "nano_banana_flash",
+      "aspect_ratio": "9:16",
+      "cost_credits": 1.5,
+      "prompt_source": "scripts/build-pongdang-prompt.mjs (image_generation contract v2.3)",
+      "preflight_gate": "pass (레퍼런스 3/3, 네거티브 13항목)",
+      "approval": {
+        "production": "user explicit, 1 image only, no regeneration"
+      },
+      "output": "project-output/storyboard/images/test/boo-rabong-solo-01.png",
+      "sha256": "1cc018a78112e984091dbdc97055e4b806b6db72eeead0caf9fb25c012749f5d",
+      "postcheck": {
+        "verdict": "가이드 위반 2건 — 담당자 확인 필요",
+        "pass": [
+          "1.55등신 (1.5등신 규격 부합)",
+          "세로눈 없음",
+          "웃는 감은 눈 형태 O 예시 부합",
+          "눈-입 상하 간격 좁음",
+          "볼 홍조 좌우",
+          "흰 하의와 U자 무늬",
+          "이파리 좌측 배치는 좌우 허용이라 무방",
+          "이미지 내 문자·워터마크 없음"
+        ],
+        "fail": [
+          {
+            "rule": "page-10 윗입술 뒤집힌 갈매기(3자) 형태 유지",
+            "observed": "윗입술이 위로 볼록한 매끈한 이중 아치. 혀가 아래로 늘어지지 않고 입 가운데 원형으로 박힘"
+          },
+          {
+            "rule": "page-08 이파리 형태 (짧은 꼭지 + 길쭉한 물결 잎)",
+            "observed": "꼭지가 거의 없고 잎이 뭉툭한 물방울 형태로 과대"
+          }
+        ],
+        "unresolved": [
+          "'명품' 스티커 미표현 — 상시 요소 여부가 확인 필요 항목",
+          "기와집 배경 — 공식 배경 목록 미확보"
+        ]
+      }
+    }
+  ]
+}

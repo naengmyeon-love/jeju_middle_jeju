@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+
+# Local environment and authentication material
+.env
+.env.*
+!.env.example
+.higgsfield/
+.higgsfield.json
+.higgsfield-token
+*.token
+client_secret*.json
+oauth*.json
+credentials*.json
+
+# Generated Higgsfield videos
+generated/videos/*
+!generated/videos/.gitkeep
+
+# Temporary files
+tmp/
+*.log
+
+# Build artifacts (재생성 가능)
+node_modules/
+.next/
+dist/
+build/
+
+# 중첩 git 레포 (자체 이력으로 관리)
+pongdangpongdang/webapp/

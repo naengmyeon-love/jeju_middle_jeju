@@ -1,0 +1,402 @@
+{
+  "schema_version": "1.0",
+  "guide_version": "2.3",
+  "updated_at": "2026-08-03",
+  "authority": {
+    "official_pdf": "../references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "workflow_guide": "../references/WORKFLOW_GUIDE.md",
+    "priority": [
+      "official_pdf",
+      "page_png",
+      "structured_guides",
+      "user_input",
+      "generated_output"
+    ],
+    "unknown_value": "담당자 확인 필요"
+  },
+  "official_characters": [
+    {
+      "id": "boo-rabong",
+      "name_ko": "부라봉",
+      "name_en": "BOO RABONG",
+      "pages": {
+        "intro": 8,
+        "turnaround": 9,
+        "usage": 10
+      },
+      "identity": "한라봉 모티브의 기억상실 사고뭉치",
+      "speech_endings": [
+        "~다봉",
+        "~라봉",
+        "~냐봉",
+        "~다봉봉"
+      ],
+      "critical_rules": [
+        "기억상실 이전 과거를 확정하지 않는다",
+        "공식 이파리와 얼굴·신체 비율을 유지한다"
+      ]
+    },
+    {
+      "id": "go-lebang",
+      "name_ko": "고르방",
+      "name_en": "GO LEBANG",
+      "pages": {
+        "intro": 11,
+        "turnaround": 12,
+        "usage": 13
+      },
+      "identity": "제주 돌하르방, 가족이 사는 집의 주인",
+      "speech_style": "고정 어미 없이 말이 길고 수다스러우며 아재개그를 한다",
+      "critical_rules": [
+        "임의의 고정 어미를 만들지 않는다",
+        "모자와 뭉툭한 손발 등 공식 외형을 유지한다"
+      ],
+      "name_en_note": "표기 미확정: 소개 p11은 GO LEBANG, 사용 규칙 p13은 GO LE BANG. 담당자 확인 필요."
+    },
+    {
+      "id": "yang-pongdang",
+      "name_ko": "양퐁당",
+      "name_en": "YANG PONGDANG",
+      "pages": {
+        "intro": 14,
+        "turnaround": 15,
+        "usage": 16
+      },
+      "identity": "해녀복을 입은 토끼 취준생",
+      "speech_endings": [
+        "~양"
+      ],
+      "critical_rules": [
+        "해녀로 소개하지 않는다",
+        "물질·잠수·수영 장면을 만들지 않는다",
+        "우측 동백을 좌우 반전하지 않는다"
+      ]
+    },
+    {
+      "id": "nyang-nyangi",
+      "name_ko": "냥냥이",
+      "name_en": "NYANG NYANGI",
+      "pages": {
+        "intro": 17,
+        "turnaround": 18,
+        "usage": 19
+      },
+      "identity": "부라봉을 간택한 길고양이",
+      "speech_endings": [
+        "~냥",
+        "~다냥"
+      ],
+      "critical_rules": [
+        "좌측 눈 반점을 좌우 반전하지 않는다",
+        "공식 꼬리 무늬와 신체 비율을 유지한다"
+      ]
+    },
+    {
+      "id": "hokko",
+      "name_ko": "호꼬",
+      "name_en": "HOKKO",
+      "pages": {
+        "intro": 20,
+        "turnaround": 21,
+        "usage": 22
+      },
+      "identity": "부라봉이 길에서 발견한 상처 입은 아기 백록",
+      "speech_endings": [],
+      "critical_rules": [
+        "말을 못하므로 대사를 부여하지 않는다",
+        "앉거나 네발로 선 자세를 기본으로 한다",
+        "뿔은 그리지 않는다. 뿔이 나는 자리에 살짝 볼륨감만 표현한다 (p22)",
+        "입은 평상시 보이지 않고 먹을 때만 있는 것처럼 보인다 (p22)"
+      ]
+    },
+    {
+      "id": "gu-aegu",
+      "name_ko": "구애구",
+      "name_en": "GU AEGU",
+      "pages": {
+        "intro": 23,
+        "turnaround": 24,
+        "usage": 25
+      },
+      "identity": "할머니의 귤밭을 지키는 강아지",
+      "speech_endings": [
+        "~라구"
+      ],
+      "critical_rules": [
+        "머리에서 등까지 이어지는 무늬를 유지한다",
+        "얼굴·신체 비율을 바꾸지 않는다"
+      ],
+      "name_en_note": "정식 표기는 소개 p23의 구애구 / GU AEGU. p25의 애구 / GUAEGU는 약칭."
+    }
+  ],
+  "visual": {
+    "height_order": [
+      "고르방",
+      "양퐁당",
+      "부라봉",
+      "구애구",
+      "냥냥이",
+      "호꼬"
+    ],
+    "group_reference_pages": [
+      3,
+      5,
+      7
+    ],
+    "official_hex_available": false,
+    "logo_usage_rules_available": false
+  },
+  "locations": {
+    "primary": "고르방의 집",
+    "separate": "구애구가 지키는 할머니의 귤밭"
+  },
+  "negative_relations": [
+    {
+      "from": "호꼬",
+      "to": "양퐁당",
+      "label": "첫인상 폭망"
+    },
+    {
+      "from": "호꼬",
+      "to": "냥냥이",
+      "label": "부라봉을 뺏길까 봐 질투"
+    },
+    {
+      "from": "냥냥이",
+      "to": "호꼬",
+      "label": "무서운 존재"
+    },
+    {
+      "from": "구애구",
+      "to": "냥냥이",
+      "label": "무서운 존재"
+    }
+  ],
+  "content_restrictions": [
+    "직접적인 구매 유도",
+    "가격·할인·판매 문구",
+    "폭력적·선정적·혐오적·정치적·종교적 표현",
+    "타사 IP 무단 사용",
+    "저작권 미확인 음원·폰트·이미지·음성"
+  ],
+  "requires_human_confirmation": [
+    "공식 컬러 팔레트 HEX",
+    "로고 사용 규정",
+    "고르방 영문 표기",
+    "공식 배경·소품 목록",
+    "부라봉 '명품' 스티커가 상시 요소인지 여부 (p08 소개 일러스트에만 등장)",
+    "냥냥이 머리 위 귤 소품이 상시 요소인지 여부 (p07 일러스트에만 등장)"
+  ],
+  "image_generation": {
+    "contract_version": "1.0",
+    "authority_note": "여기의 lock 문자열은 원본 페이지에서 확인한 사실만 담는다. 프롬프트 작성 시 문장을 바꾸지 말고 그대로 붙여 넣는다.",
+    "mandatory": {
+      "reference_conditioning": true,
+      "rule": "캐릭터가 등장하는 모든 이미지·영상 생성은 해당 캐릭터의 공식 페이지 PNG를 레퍼런스 이미지로 반드시 첨부한다. 레퍼런스 없이 텍스트 프롬프트만으로 호출하지 않는다.",
+      "model_routing": {
+        "character_image": "nano_banana_flash (CLI job_type). 표시명은 Nano Banana 2. 어려운 컷은 nano_banana_pro",
+        "reason": "레퍼런스 구동 캐릭터·카툰 이미지 기본 모델",
+        "not_allowed": [
+          "soul-id (실사 인물 얼굴 전용, 2D 캐릭터에 사용 금지)"
+        ],
+        "note": "CLI job_type 은 표시명과 다르다. higgsfield model list --json 으로 확인한 값을 쓴다. nano_banana_2 라는 job_type 은 존재하지 않는다."
+      },
+      "aspect_ratio_default": "9:16",
+      "text_in_image": "금지. 대사·자막·말풍선은 이미지에 굽지 않고 Markdown에 표기한다."
+    },
+    "prompt_block_order": [
+      "STYLE",
+      "CAST",
+      "SCENE",
+      "COMPOSITION",
+      "NEGATIVE",
+      "OUTPUT"
+    ],
+    "style_lock_en": "flat 2D Korean kawaii mascot illustration, thick uniform dark-brown outline, flat fill colours with no gradient shading, simple rounded shapes, plain background, official character-sheet style",
+    "global_negative_en": [
+      "no text, no letters, no captions, no speech bubbles, no watermark, no logo",
+      "no additional or invented characters outside the official six",
+      "no realistic rendering, no 3D render, no photographic style",
+      "no anatomy or proportion changes, no restyling, no redesign",
+      "no mirrored/flipped character markings",
+      "no price, sale or promotional copy",
+      "no third-party IP or trademarks"
+    ],
+    "group_rules": {
+      "height_order_tall_to_short": [
+        "고르방",
+        "양퐁당",
+        "부라봉",
+        "구애구",
+        "냥냥이",
+        "호꼬"
+      ],
+      "reference_pages": [
+        3,
+        5,
+        7
+      ],
+      "rule": "단체 컷은 위 키 순서를 반드시 지키고 page-07 키비례표를 레퍼런스로 첨부한다."
+    },
+    "characters": {
+      "boo-rabong": {
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "lock_en": "BOO RABONG: orange Hallabong citrus character, round citrus head fused with the body, one green leaf sprig on top of the head, two large round orange blush cheeks, base eyes are perfect circles, upper lip is an upside-down seagull curve (three-stroke shape), small pale-yellow tongue, white diaper-like lower garment, short stubby limbs, about 1.5 head-to-body proportion, front view wider than side view, small gap between eyes and mouth",
+        "allowed_variation": [
+          "이파리 위치는 좌우 모두 허용 (p10)",
+          "반짝이는 눈은 평소보다 살짝 큼, 울먹이는 눈은 더 큼",
+          "겁먹은 눈은 평소 사이즈에 주름",
+          "완전히 감은 눈은 뜬 눈보다 가로길이가 조금 더 김",
+          "윗입술 갈매기(3자) 형태를 유지한 범위의 입 변형",
+          "옆모습에서 꼭지는 중심에서 살짝 뒤로 기욺"
+        ],
+        "forbidden": [
+          "세로눈 사용 불가",
+          "기본 눈을 정원보다 작거나 크게 그리기 (지정된 감정 변형 제외)",
+          "비어있는 눈을 평소 사이즈보다 크게 그리기",
+          "입 가운데가 뾰족해지는 형태",
+          "눈과 입 상하 간격이 크게 벌어지는 배치",
+          "1.5등신 비율 변경"
+        ],
+        "forbidden_en": [
+          "no vertical or slit eyes on BOO RABONG",
+          "BOO RABONG's base eyes must stay perfect circles, not smaller or larger",
+          "BOO RABONG's blank eyes must not be larger than the normal size",
+          "no pointed centre on BOO RABONG's upper lip",
+          "no wide vertical gap between BOO RABONG's eyes and mouth",
+          "no change to BOO RABONG's 1.5 head-to-body proportion"
+        ]
+      },
+      "go-lebang": {
+        "reference_pages": [
+          11,
+          12,
+          13
+        ],
+        "lock_en": "GO LEBANG: grey Jeju dolhareubang stone grandfather, wide round grey brim hat, small yellow rapeseed flower on the hat, thick straight eyebrows with rounded ends, bulbous rounded grey nose with slight volume, ears set slightly behind the head centre, blunt rounded hands and feet, stocky stone body",
+        "allowed_variation": [
+          "일할 때는 안경을 낀다 (p13)",
+          "긴 수다·아재개그에 맞는 표정"
+        ],
+        "forbidden": [
+          "옆모습에서 모자를 수평으로 그리기 (뒤쪽으로 기울어야 함)",
+          "손끝·발끝을 뾰족하게 그리기",
+          "눈썹 끝을 각지게 그리기",
+          "임의의 고정 어미 부여"
+        ],
+        "forbidden_en": [
+          "GO LEBANG's hat must not be level in side view, it tilts backwards",
+          "no pointed fingertips or toe tips on GO LEBANG, they stay blunt and rounded",
+          "no angular eyebrow ends on GO LEBANG, they stay rounded"
+        ]
+      },
+      "yang-pongdang": {
+        "reference_pages": [
+          14,
+          15,
+          16
+        ],
+        "lock_en": "YANG PONGDANG: white rabbit character wearing a black haenyeo diving suit, black round diving goggles worn on top of the head and tilted forward, red camellia flower with a yellow centre on the RIGHT side of the head, pink blush cheeks, small inverted-triangle mouth, orange-yellow hands and feet",
+        "allowed_variation": [
+          "공식 표정 5종: 기본, 가볍게 웃는, 크게 웃는, 멍한/무표정, 울거나 슬픈 (p16)",
+          "입모양은 역삼각형이 기본이며 응용 표현 가능"
+        ],
+        "forbidden": [
+          "좌우 반전 사용 불가",
+          "동백을 좌측에 배치",
+          "수경을 머리 가운데에 배치 (앞으로 기울어야 함)",
+          "해녀로 묘사",
+          "물질·잠수·수영·수중 장면",
+          "입을 너무 크게 그리기"
+        ],
+        "forbidden_en": [
+          "do not mirror or flip YANG PONGDANG",
+          "YANG PONGDANG's camellia must not be on the left side",
+          "YANG PONGDANG's goggles must not sit centred on the head, they tilt forward",
+          "do not depict YANG PONGDANG as a haenyeo diver",
+          "no diving, swimming or underwater scene for YANG PONGDANG",
+          "YANG PONGDANG's mouth must not be drawn too large"
+        ]
+      },
+      "nyang-nyangi": {
+        "reference_pages": [
+          17,
+          18,
+          19
+        ],
+        "lock_en": "NYANG NYANGI: white cat character with a single orange patch over its LEFT eye, small pointed cat ears, simple dot eyes, tail with an orange marking covering about one fifth of the tail length from the tip",
+        "allowed_variation": [],
+        "forbidden": [
+          "좌우 반전 사용 불가",
+          "눈 반점을 우측에 배치",
+          "꼬리 무늬 길이를 전체의 약 1/5에서 벗어나게 그리기"
+        ],
+        "forbidden_en": [
+          "do not mirror or flip NYANG NYANGI",
+          "NYANG NYANGI's eye patch must not be on the right eye",
+          "NYANG NYANGI's tail marking must stay about one fifth of the tail length"
+        ]
+      },
+      "hokko": {
+        "reference_pages": [
+          20,
+          21,
+          22
+        ],
+        "lock_en": "HOKKO: small white baby deer fawn, long soft drooping ears, round pink blush cheeks, small pink spots on the forehead, NO visible mouth in the normal state, a slight rounded bump where antlers would grow but antlers are not drawn, tiny short tail, the smallest character of the cast",
+        "allowed_variation": [
+          "입은 먹을 때만 보이는 것처럼 표현 (p22)",
+          "서있는 자세는 잠깐 동안만 가능",
+          "주로 앉아있거나 네발로 서있는 자세"
+        ],
+        "forbidden": [
+          "음성 대사 부여",
+          "뿔을 실제로 그리기",
+          "평상시에 입을 보이게 그리기",
+          "오래 직립보행하는 자세"
+        ],
+        "forbidden_en": [
+          "no antlers drawn on HOKKO",
+          "no visible mouth on HOKKO outside eating",
+          "no spoken dialogue or speech for HOKKO",
+          "no long bipedal standing pose for HOKKO"
+        ]
+      },
+      "gu-aegu": {
+        "reference_pages": [
+          23,
+          24,
+          25
+        ],
+        "lock_en": "GU AEGU: small white dog with a tan marking running from the head over the back, upright tan ears, the tan head marking also serving as the eyebrow line, red-orange chest bib marking, curled tail, short limbs, front view wider than side view",
+        "allowed_variation": [
+          "쫑긋한 귀는 감정에 따라 각도 변화 가능 (p25)",
+          "꼬리는 감정에 따라 모양이 조금씩 변할 수 있음",
+          "팔다리가 필요에 따라 조금씩 늘어날 수 있음",
+          "제품화를 위한 악세사리·코스튬 변경 가능"
+        ],
+        "forbidden": [
+          "머리에서 등까지 이어지는 무늬 누락",
+          "얼굴 비율 및 신체 비율 변경"
+        ],
+        "forbidden_en": [
+          "do not omit GU AEGU's tan marking running from head over the back",
+          "no change to GU AEGU's face or body proportions"
+        ]
+      }
+    },
+    "preflight_gate": [
+      "등장 캐릭터별 소개·턴어라운드·사용 규칙 페이지를 실제로 확인했는가",
+      "레퍼런스 이미지 경로가 모두 존재하는가",
+      "lock_en 문자열을 변형 없이 그대로 사용했는가",
+      "forbidden 항목이 NEGATIVE 블록에 모두 들어갔는가",
+      "단체 컷이면 키 순서와 page-07을 첨부했는가",
+      "미확보 항목(HEX·로고·배경 목록)을 임의로 채우지 않았는가"
+    ],
+    "postcheck": "생성 결과를 view_image로 다시 열고 각 캐릭터의 forbidden 항목을 1:1로 대조한다. 하나라도 위반이면 해당 이미지만 한 번에 한 가지 수정사항으로 재생성한다."
+  }
+}

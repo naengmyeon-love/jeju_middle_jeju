@@ -1,0 +1,23 @@
+{
+  "project_id": "gorbang-nyangnyi-summer-holiday-20260731",
+  "requested_at": "2026-07-31T00:00:00+09:00",
+  "topic": "고르방과 냥냥이의 여름 휴가",
+  "characters": ["고르방", "냥냥이"],
+  "core_situation": "제주 바다에 쉬러 온 고르방이 긴 휴가 계획을 설명하지만, 냥냥이는 조용히 쉬는 것이 최고의 휴가라고 알려준다.",
+  "emotion_and_humor": "고르방의 수다와 냥냥이의 무심한 한마디에서 나오는 잔잔한 코미디와 휴식의 따뜻함",
+  "duration_seconds": 30,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "language": "ko-KR",
+  "creative_tools": {
+    "storyboard_images": "OpenAI built-in image generation",
+    "video_generation": "미연결 — 제작·비용 승인 후 연결 필요",
+    "audio": "미연결 — 저작권 확인 자산 또는 승인된 TTS 필요"
+  },
+  "assumptions": [
+    "여름 휴가는 공식 배경 소재인 제주 바다에서의 휴식으로 해석한다.",
+    "공식 가이드에 없는 새 의상·로고·브랜드·상업 문구는 사용하지 않는다.",
+    "음악과 음성은 제작 승인 후 저작권 확인 자산으로 확정한다."
+  ],
+  "output_status": "planning_in_progress"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 시나리오 생성기"
+  short_description: "기획안을 장면별 시간대 시나리오로 구체화합니다"
+  default_prompt: "Use $scenario-generator to turn the approved plan into a timed scene-by-scene scenario."

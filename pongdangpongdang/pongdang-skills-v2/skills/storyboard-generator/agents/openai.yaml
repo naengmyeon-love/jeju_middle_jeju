@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 이미지 스토리보드 생성기"
+  short_description: "스토리와 장면 이미지를 함께 담은 연출안 3개를 만듭니다"
+  default_prompt: "Use $storyboard-generator to create three distinct 퐁당패밀리 storyboards with a generated image and story details for every scene."

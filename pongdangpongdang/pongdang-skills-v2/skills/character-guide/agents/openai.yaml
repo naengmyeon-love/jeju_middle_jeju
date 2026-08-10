@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 캐릭터 가이드"
+  short_description: "공식 원본 기준 캐릭터 설정과 금지 규칙을 확인합니다"
+  default_prompt: "Use $character-guide to verify this 퐁당패밀리 character depiction against the official guide."

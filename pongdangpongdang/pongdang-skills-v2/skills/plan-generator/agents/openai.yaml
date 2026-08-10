@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 기획안 생성기"
+  short_description: "입력을 검증하고 공식 형식의 숏폼 기획안을 만듭니다"
+  default_prompt: "Use $plan-generator to create a compliant 퐁당패밀리 short-form plan from my brief."

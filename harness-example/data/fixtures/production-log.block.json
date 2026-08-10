@@ -1,0 +1,62 @@
+{
+  "_fixture": "검증용 합성 데이터다. 실제 제작 이력이 아니다. check-production-gate.mjs 의 차단 경로(exit 1)를 재현하기 위한 픽스처다. bijarim-trip A안에서 실제로 있었던 드리프트(부라봉 흰 하의 누락, 고르방 눈 누락)가 스토리보드에 적힌 채 영상 생성까지 진행된 사고를 재현한다.",
+  "project_id": "fixture-gate-block",
+  "created_at": "2026-08-06T00:00:00+09:00",
+  "updated_at": "2026-08-06T00:00:00+09:00",
+  "status": "fixture",
+  "guide_applied": {
+    "version": "2.2",
+    "applied_at": "2026-08-06T00:00:00+09:00",
+    "categories": ["characters", "visual"],
+    "targets": ["storyboard"]
+  },
+  "anchors": {
+    "boo-rabong": {
+      "path": "fixture/anchors/boo-rabong.png",
+      "approved": true,
+      "approved_by": "담당자(픽스처)"
+    },
+    "gorbang": {
+      "path": "fixture/anchors/gorbang.png",
+      "approved": false,
+      "approved_by": null
+    }
+  },
+  "scene_images": [
+    {
+      "id": "a/scene-01",
+      "path": "fixture/storyboard/images/a/scene-01.png",
+      "model": "fixture-image-model-v1",
+      "prompt": "픽스처 장면 1 프롬프트",
+      "references": ["fixture/anchors/boo-rabong.png"],
+      "first": true,
+      "postcheck": {
+        "status": "violations_open",
+        "violations": ["부라봉 흰 하의 누락"]
+      }
+    },
+    {
+      "id": "a/scene-02",
+      "path": "fixture/storyboard/images/a/scene-02.png",
+      "model": "fixture-image-model-v1",
+      "prompt": "픽스처 장면 2 프롬프트",
+      "references": ["fixture/storyboard/images/a/scene-01.png"],
+      "prev": "a/scene-01",
+      "postcheck": {
+        "status": "passed",
+        "violations": ["고르방 눈 누락"]
+      }
+    },
+    {
+      "id": "a/scene-03",
+      "path": "fixture/storyboard/images/a/scene-03.png",
+      "model": "",
+      "prompt": "픽스처 장면 3 프롬프트",
+      "references": ["fixture/anchors/gorbang.png"],
+      "prev": "a/scene-02"
+    }
+  ],
+  "reviews": {},
+  "approvals": {},
+  "errors": []
+}

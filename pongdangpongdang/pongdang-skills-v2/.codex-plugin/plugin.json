@@ -1,0 +1,26 @@
+{
+  "name": "pongdang-skills-v2",
+  "version": "2.5.1",
+  "description": "퐁당패밀리 공식 IP 숏폼의 기획, 시나리오, 스토리보드, 검수, 영상 생성·배포 승인과 이력 관리를 위한 로컬 Codex plugin",
+  "author": {
+    "name": "제주애퐁당"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "퐁당패밀리 숏폼 파이프라인",
+    "shortDescription": "공식 IP 숏폼 기획·검수·승인·배포 워크플로",
+    "longDescription": "공식 캐릭터 가이드와 사람의 명시적 승인을 기준으로 60초 미만 숏폼의 기획부터 최종 영상 및 다중 플랫폼 배포 기록까지 관리합니다.",
+    "developerName": "제주애퐁당",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "퐁당패밀리 숏폼 기획부터 검수까지 진행해줘.",
+      "이 기획으로 스토리와 장면 이미지가 함께 있는 스토리보드 3안을 만들어줘.",
+      "이 장면을 힉스필드로 생성할 프롬프트를 가이드 지켜서 짜줘.",
+      "승인된 스토리보드의 영상 제작 게이트를 확인해줘.",
+      "최종 승인된 영상을 쇼츠, 릴스와 틱톡에 배포할 준비를 해줘."
+    ]
+  }
+}

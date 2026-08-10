@@ -1,0 +1,4 @@
+interface:
+  display_name: "퐁당패밀리 자동 검수기"
+  short_description: "문서와 영상을 캐릭터·브랜드·기술 기준으로 검수합니다"
+  default_prompt: "Use $auto-reviewer to review these 퐁당패밀리 artifacts and report evidence-backed pass or fail results."
