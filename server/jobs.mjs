@@ -17,13 +17,59 @@ import { PROJECT_ROOT } from "./gate.mjs";
 // 실제 문장은 서버가 고른다. 원격 사용자가 파일 쓰기 권한을 가진 에이전트를 조종하는
 // 구조라서, 자유 입력은 그 자체가 실행 경로가 된다.
 
+// webapp-spec/02-workflow.md 1단계가 요구하는 필수 입력:
+//   주제 · 캐릭터 · 상황 · 감정 · 길이 · 비율
+// 전부 열거형으로 받는다. 상황은 본래 자유 서술이지만, 주제별 프리셋으로 고정해야
+// 자유 입력이 프롬프트에 섞이지 않는다. 03-screen-structure.md §4.2 의 단계형 폼과
+// 같은 구조이고, 초보 사용자에게도 빈 텍스트박스보다 드롭다운이 쉽다.
+
 export const THEMES = {
-  bijarim: "비자림 숲길 산책",
-  hallasan: "한라산 등반과 구름바다",
-  beach: "제주 해변 물놀이",
-  village: "제주 마을 골목 나들이",
-  rain: "비 오는 날의 작은 소동",
+  bijarim: {
+    label: "비자림 숲길 산책",
+    situations: [
+      "더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다",
+      "숲길에서 길을 잃었다가 이정표를 발견한다",
+    ],
+  },
+  hallasan: {
+    label: "한라산 등반과 구름바다",
+    situations: [
+      "정상에 올랐지만 안개로 아무것도 보이지 않는다",
+      "구름바다가 걷히며 풍경이 드러난다",
+    ],
+  },
+  beach: {
+    label: "제주 해변 물놀이",
+    situations: [
+      "파도에 튜브를 놓쳐 쫓아간다",
+      "모래성을 쌓다가 파도에 무너진다",
+    ],
+  },
+  village: {
+    label: "제주 마을 골목 나들이",
+    situations: [
+      "골목에서 만난 돌담 고양이와 눈이 마주친다",
+      "감귤 상자를 옮기다 하나를 굴린다",
+    ],
+  },
+  rain: {
+    label: "비 오는 날의 작은 소동",
+    situations: [
+      "우산을 두고 나와 처마 밑에서 비를 피한다",
+      "빗물 웅덩이를 피하려다 첨벙 밟는다",
+    ],
+  },
 };
+
+export const EMOTIONS = {
+  comic: "즐거움 · 코믹",
+  surprise: "놀람 · 반전",
+  letdown: "실망 · 허탈",
+  warm: "따뜻함 · 잔잔함",
+};
+
+/** 60초 미만이 가이드 제약이므로 그 이상은 아예 고를 수 없게 둔다. */
+export const DURATIONS = ["15초", "30초", "45초"];
 
 const GUIDE_PATH = resolve(PROJECT_ROOT, "data/character-guide.json");
 
@@ -115,7 +161,7 @@ function normalize(line) {
   return null;
 }
 
-function buildPrompt({ theme, cast }) {
+function buildPrompt({ theme, cast, situation, emotion, duration }) {
   // 에이전트에게는 id 가 아니라 공식 한글 이름을 준다. 가이드·스킬이 한글 이름으로
   // 쓰여 있어서 id 를 그대로 넣으면 캐릭터를 못 찾는다.
   // validateRequest 가 먼저 실행되므로 이 시점에 목록은 채워져 있다.
@@ -125,14 +171,22 @@ function buildPrompt({ theme, cast }) {
   return [
     "pongdang-pipeline 스킬로 퐁당패밀리 숏폼을 제작한다.",
     "",
-    `주제: ${theme}`,
-    `등장 캐릭터: ${names.join(", ")}`,
+    "필수 입력은 모두 아래에 있다. 추가 질문 없이 1단계부터 진행한다.",
+    "",
+    `- 주제: ${theme}`,
+    `- 등장 캐릭터: ${names.join(", ")}`,
+    `- 핵심 상황: ${situation}`,
+    `- 감정: ${emotion}`,
+    `- 길이: ${duration}`,
+    "- 비율: 9:16",
+    "- 사용 도구: Higgsfield",
     "",
     "지켜야 할 것:",
     "- 산출물은 unsorted/outputs/ 아래에만 쓴다.",
-    "- 제작·비용 승인 전에는 유료 영상 생성을 실행하지 않는다.",
+    "- 제작·비용 승인 전에는 유료 영상 생성을 실행하지 않는다. 승인 대기 상태로 멈춘다.",
     "- 캐릭터 이미지·영상은 공식 페이지 PNG를 레퍼런스로 첨부해서만 만든다.",
     "- 각 단계를 마칠 때마다 무엇을 만들었는지 한 문장으로 보고한다.",
+    "- 위 입력으로 판단할 수 없는 항목이 있으면 임의로 지어내지 말고 그 사실을 보고하고 멈춘다.",
   ].join("\n");
 }
 
@@ -145,6 +199,14 @@ function drain() {
   job.startedAt = new Date().toISOString();
   publish(job, { kind: "status", text: "실행 시작" });
 
+  // 파이프라인이 실제로 필요한 것만 연다. 이 목록이 곧 원격 사용자의 권한 상한이다.
+  //
+  // higgsfield 는 기본적으로 닫는다. AGENTS.md 가 "유료 영상 생성은 제작 승인 전
+  // 실행하지 않는다"고 못박고 있으므로, 지출 능력은 켜는 쪽이 명시적 행동이어야 한다.
+  // 승인 후 생성 단계에서 PONGDANG_ALLOW_PAID=1 로 띄운다.
+  const tools = ["Read", "Write", "Glob", "Grep", "Bash(node unsorted/scripts/*)"];
+  if (process.env.PONGDANG_ALLOW_PAID === "1") tools.push("Bash(higgsfield *)");
+
   const args = [
     "-p",
     buildPrompt(job),
@@ -152,8 +214,7 @@ function drain() {
     "stream-json",
     "--verbose", // --print + stream-json 조합에 필수
     "--allowedTools",
-    // 파이프라인이 실제로 필요한 것만 연다. 이 목록이 곧 원격 사용자의 권한 상한이다.
-    "Read,Write,Glob,Grep,Bash(node unsorted/scripts/*),Bash(higgsfield *)",
+    tools.join(","),
     "--permission-mode",
     process.env.PONGDANG_PERMISSION_MODE ?? "acceptEdits",
   ];
@@ -230,12 +291,16 @@ function finish(job) {
  * 16GB 맥에서 claude 프로세스가 여러 개 뜨면 버티지 못한다. 시연 중 심사위원 몇 명이
  * 동시에 눌러도 순서대로 처리되도록 큐를 둔다.
  */
-export function enqueue({ themeId, cast }) {
+export function enqueue({ themeId, cast, situation, emotionId, duration }) {
   const job = {
     id: randomUUID(),
     themeId,
-    theme: THEMES[themeId],
+    theme: THEMES[themeId].label,
     cast,
+    situation,
+    emotionId,
+    emotion: EMOTIONS[emotionId],
+    duration,
     status: "queued",
     events: [],
     subscribers: new Set(),
@@ -266,6 +331,9 @@ export function summarize(job) {
     themeId: job.themeId,
     theme: job.theme,
     cast: job.cast,
+    situation: job.situation,
+    emotion: job.emotion,
+    duration: job.duration,
     status: job.status,
     error: job.error,
     eventCount: job.events.length,

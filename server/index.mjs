@@ -13,6 +13,8 @@ import { createServer } from "node:http";
 
 import { checkGate, STAGES } from "./gate.mjs";
 import {
+  DURATIONS,
+  EMOTIONS,
   THEMES,
   cancelJob,
   enqueue,
@@ -54,7 +56,8 @@ async function readJsonBody(req, limit = 64 * 1024) {
  */
 async function validateRequest(body) {
   const themeId = String(body.themeId ?? "");
-  if (!THEMES[themeId]) {
+  const theme = THEMES[themeId];
+  if (!theme) {
     return { error: `themeId 가 올바르지 않습니다. 가능한 값: ${Object.keys(THEMES).join(", ")}` };
   }
 
@@ -68,7 +71,26 @@ async function validateRequest(body) {
   if (cast.length > 3) {
     return { error: "한 번에 3인까지만 선택할 수 있습니다." };
   }
-  return { themeId, cast };
+
+  // 상황은 자유 서술이 아니라 주제별 프리셋의 인덱스로 받는다.
+  // 문자열을 그대로 받으면 화이트리스트가 뚫린다.
+  const situationIndex = Number(body.situationIndex ?? 0);
+  const situation = theme.situations[situationIndex];
+  if (!situation) {
+    return { error: `situationIndex 는 0~${theme.situations.length - 1} 이어야 합니다.` };
+  }
+
+  const emotionId = String(body.emotionId ?? "comic");
+  if (!EMOTIONS[emotionId]) {
+    return { error: `emotionId 가 올바르지 않습니다. 가능한 값: ${Object.keys(EMOTIONS).join(", ")}` };
+  }
+
+  const duration = String(body.duration ?? "30초");
+  if (!DURATIONS.includes(duration)) {
+    return { error: `duration 은 ${DURATIONS.join(", ")} 중 하나여야 합니다.` };
+  }
+
+  return { themeId, cast, situation, emotionId, duration };
 }
 
 const routes = [
@@ -84,9 +106,17 @@ const routes = [
     pattern: /^\/api\/options$/,
     handler: async (_req, res) => {
       // 화면의 드롭다운을 채우는 유일한 출처. 화이트리스트와 같은 데이터를 쓴다.
+      // 화면이 여기 없는 값을 보내면 반드시 400 이 나므로 두 목록이 갈라질 수 없다.
       json(res, 200, {
-        themes: Object.entries(THEMES).map(([id, label]) => ({ id, label })),
+        themes: Object.entries(THEMES).map(([id, t]) => ({
+          id,
+          label: t.label,
+          situations: t.situations,
+        })),
         characters: await getOfficialCharacters(),
+        emotions: Object.entries(EMOTIONS).map(([id, label]) => ({ id, label })),
+        durations: DURATIONS,
+        aspectRatio: "9:16",
       });
     },
   },
