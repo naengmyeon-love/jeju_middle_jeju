@@ -1,6 +1,6 @@
 {
-  "_generated_by": "scripts/sync-prompt-contract.mjs",
-  "_source": "pongdangpongdang/guides/character-guide.json → image_generation",
+  "_generated_by": "unsorted/scripts/sync-prompt-contract.mjs",
+  "_source": "data/character-guide.json → image_generation",
   "_warning": "이 파일을 직접 수정하지 않는다. character-guide.json 을 고치고 sync 스크립트를 다시 실행한다.",
   "guide_version": "2.3",
   "updated_at": "2026-08-03",

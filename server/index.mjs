@@ -13,6 +13,7 @@ import { createServer } from "node:http";
 
 import { checkGate, STAGES } from "./gate.mjs";
 import {
+  enqueueResume,
   DURATIONS,
   EMOTIONS,
   THEMES,
@@ -136,6 +137,27 @@ const routes = [
       if (validated.error) return json(res, 400, { error: validated.error });
       const job = enqueue(validated);
       json(res, 202, summarize(job));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/api\/jobs\/resume$/,
+    handler: async (req, res) => {
+      const body = await readJsonBody(req);
+      const projectSlug = String(body.projectSlug ?? "");
+      // 경로 조작을 막는다. 산출물 디렉터리 이름은 슬러그 형태만 허용한다.
+      if (!/^[a-z0-9-]+$/.test(projectSlug)) {
+        return json(res, 400, { error: "projectSlug 형식이 올바르지 않습니다." });
+      }
+      const sceneLimit = Number(body.sceneLimit ?? 1);
+      if (!Number.isInteger(sceneLimit) || sceneLimit < 1 || sceneLimit > 5) {
+        return json(res, 400, { error: "sceneLimit 은 1~5 사이 정수여야 합니다." });
+      }
+      const variant = String(body.variant ?? "A").toUpperCase();
+      if (!["A", "B", "C"].includes(variant)) {
+        return json(res, 400, { error: "variant 는 A, B, C 중 하나여야 합니다." });
+      }
+      json(res, 202, summarize(enqueueResume({ projectSlug, sceneLimit, variant })));
     },
   },
   {

@@ -190,6 +190,30 @@ function buildPrompt({ theme, cast, situation, emotion, duration }) {
   ].join("\n");
 }
 
+/**
+ * 4단계(스토리보드)만 이어서 돌리는 프롬프트.
+ *
+ * 1~3단계 산출물이 이미 있는데 처음부터 다시 돌리면 토큰과 시간이 그만큼 낭비된다.
+ * 범위를 문장으로 못박아 안(案) 수와 장면 수를 제한한다. 이미지 한 장이 곧 비용이라
+ * "알아서 적당히"에 맡기지 않는다.
+ */
+function buildResumePrompt({ projectSlug, sceneLimit, variant }) {
+  return [
+    `unsorted/outputs/projects/${projectSlug}/ 의 4단계(스토리보드)만 진행한다.`,
+    "",
+    "1~3단계(기획안·가이드 주입·시나리오)는 이미 완료됐다. 다시 만들지 말고 기존 파일을 읽어 이어간다.",
+    "",
+    "범위 (비용이 발생하므로 초과하지 않는다):",
+    `- ${variant}안만 만든다. 다른 안은 만들지 않는다.`,
+    `- 장면 이미지는 정확히 ${sceneLimit}장만 생성한다.`,
+    "- 이미지 생성 전 프롬프트는 반드시 unsorted/scripts/build-pongdang-prompt.mjs 로 조립하고",
+    "  출력된 higgsfield 명령을 그대로 실행한다. 손으로 프롬프트를 쓰지 않는다.",
+    "- 생성 후 결과를 부라봉 사용 규칙 페이지와 대조하고 production-log.json 에 기록한다.",
+    "",
+    "보고는 단계마다 한 줄로 짧게. 중간 설명을 길게 쓰지 않는다.",
+  ].join("\n");
+}
+
 function drain() {
   if (running || queue.length === 0) return;
 
@@ -209,7 +233,7 @@ function drain() {
 
   const args = [
     "-p",
-    buildPrompt(job),
+    job.kind === "resume" ? buildResumePrompt(job) : buildPrompt(job),
     "--output-format",
     "stream-json",
     "--verbose", // --print + stream-json 조합에 필수
@@ -313,6 +337,35 @@ export function enqueue({ themeId, cast, situation, emotionId, duration }) {
   jobs.set(job.id, job);
   queue.push(job);
   publish(job, { kind: "status", text: `대기열 ${queue.length}번째` });
+  drain();
+  return job;
+}
+
+/**
+ * 4단계를 이어서 돌린다. 유료 호출이 포함되므로 범위를 인자로 강제한다.
+ * PONGDANG_ALLOW_PAID=1 로 띄운 서버에서만 실제 생성이 일어난다.
+ */
+export function enqueueResume({ projectSlug, sceneLimit, variant }) {
+  const job = {
+    id: randomUUID(),
+    kind: "resume",
+    projectSlug,
+    sceneLimit,
+    variant,
+    theme: `${projectSlug} · 4단계 ${variant}안 ${sceneLimit}장`,
+    cast: [],
+    status: "queued",
+    events: [],
+    subscribers: new Set(),
+    proc: null,
+    error: null,
+    createdAt: new Date().toISOString(),
+    startedAt: null,
+    finishedAt: null,
+  };
+  jobs.set(job.id, job);
+  queue.push(job);
+  publish(job, { kind: "status", text: `대기열 ${queue.length}번째 · 유료 생성 ${sceneLimit}장` });
   drain();
   return job;
 }

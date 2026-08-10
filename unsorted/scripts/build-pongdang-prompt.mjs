@@ -39,7 +39,7 @@ function usage() {
     --scene "BOO RABONG holds out a tangerine toward HOKKO. HOKKO sits and looks up." \\
     --background "the yard of a Jeju stone house in daytime" \\
     --camera "front-facing medium shot" \\
-    [--model nano_banana_2] [--aspect 9:16] [--command]
+    [--model nano_banana_flash] [--aspect 9:16] [--command]
 
 캐릭터 id: boo-rabong, go-lebang, yang-pongdang, nyang-nyangi, hokko, gu-aegu
 --command 를 주면 그대로 실행 가능한 higgsfield CLI 명령을 함께 출력한다.
@@ -167,7 +167,11 @@ const prompt = [
 console.log(prompt);
 
 if (args.command) {
-  const model = args.model ?? "nano_banana_2";
+  // 표시명(Nano Banana 2)과 CLI job_type(nano_banana_flash)이 다르다.
+  // 가이드의 model_routing 이 진실 공급원이므로 거기서 뽑고, 상수를 박지 않는다.
+  // 예전 기본값 "nano_banana_2" 는 존재하지 않는 job_type 이라 호출 즉시 실패했다.
+  const routed = contract.mandatory?.model_routing?.character_image ?? "";
+  const model = args.model ?? routed.match(/^([a-z0-9_]+)/)?.[1] ?? "nano_banana_flash";
   const imageFlags = referencePaths
     .map((path) => `  --image ${JSON.stringify(relative(projectRoot, path))} \\`)
     .join("\n");
