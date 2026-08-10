@@ -63,6 +63,58 @@ echo "── 인자 처리 ─────────────────�
 expect 2 "잘못된 --stage 값은 거부"     "${fixtures}/production-log.pass.json"  --stage nonsense
 expect 2 "없는 파일은 오류로 종료"       "${fixtures}/does-not-exist.json"
 
+# 정지 이미지 입력 게이트.
+#
+# 왜 회귀 테스트가 필요한가: 이 게이트가 조용히 느슨해지면 아무도 모른다. 프롬프트는
+# 정상적으로 조립되고, 명령도 성공하고, 청구도 되고, 결과만 가이드에서 벗어난다.
+# 실패가 눈에 띄지 않는 종류라서 실행으로 고정해 둔다.
+#
+# 아래 입력은 전부 실제 사례다. 2026-08-11 nano_banana_flash 6회 생성분에서
+# 분할 컷·캐릭터 중복을 만든 입력을 그대로 가져왔다.
+echo
+echo "── 정지 이미지 입력 게이트 ───────────────────────────────────"
+builder="${here}/unsorted/scripts/build-pongdang-prompt.mjs"
+builder_expect() {
+  local want="$1" label="$2" scene="$3" camera="$4"
+  local out got
+  out="$(node "$builder" --characters boo-rabong --scene "$scene" --camera "$camera" 2>&1)"
+  got=$?
+  if [ "$got" -eq "$want" ]; then
+    printf '  PASS  %-46s (exit %s)\n' "$label" "$got"
+    pass_count=$((pass_count + 1))
+  else
+    printf '  FAIL  %-46s (기대 exit %s, 실제 %s)\n' "$label" "$want" "$got"
+    printf '%s\n' "$out" | sed 's/^/        /'
+    fail_count=$((fail_count + 1))
+  fi
+}
+
+if [ -f "$builder" ]; then
+  builder_expect 2 "샷 전환은 거부 (실제 2패널 사례)" \
+    "BOO RABONG walks into the forest trail entrance." \
+    "front-facing full shot tracking the character, transitioning to a face close-up"
+  builder_expect 2 "카메라 이동 3연발은 거부 (3패널 사례)" \
+    "BOO RABONG freezes and stares at a huge tree far ahead." \
+    "shot starting from behind then panning toward the tree, cutting back to a close-up"
+  builder_expect 2 "장면의 시간 흐름은 거부 (중복 사례)" \
+    "BOO RABONG hops along, peeking into one patch of shade after another." \
+    "side-facing medium shot"
+  builder_expect 2 "샷 크기 2개는 거부" \
+    "BOO RABONG sits under a tree." \
+    "low-angle full shot and a close-up"
+  builder_expect 2 "샷 크기 누락은 거부" \
+    "BOO RABONG sits under a tree." \
+    "low-angle"
+  builder_expect 2 "분할 레이아웃 요청은 거부" \
+    "BOO RABONG sits under a tree." \
+    "medium shot, comic panels side by side"
+  builder_expect 0 "단일 샷은 통과 (유일한 정상 생성 사례)" \
+    "BOO RABONG lies flat on the ground in deep tree shade with a drowsy smile." \
+    "low-angle full shot"
+else
+  echo "  SKIP  build-pongdang-prompt.mjs 를 찾지 못했습니다"
+fi
+
 # 훅은 관측만 한다. 어떤 입력에도 파이프라인을 막으면 안 된다.
 echo
 echo "── 훅 (관측 전용) ────────────────────────────────────────────"

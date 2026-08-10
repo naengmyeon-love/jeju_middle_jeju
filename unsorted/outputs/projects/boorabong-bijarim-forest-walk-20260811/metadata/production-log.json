@@ -99,10 +99,29 @@
     "actual_cost_krw": 0
   },
   "model_versions": {
-    "note": "가이드 주입 단계에서는 생성 모델을 호출하지 않았다. 스토리보드 이미지 생성 시 character-guide.json image_generation.mandatory.model_routing에 따라 nano_banana_flash(표시명 Nano Banana 2)를 사용할 예정이다."
+    "note": "스토리보드 A안 장면 이미지 생성에 nano_banana_flash(표시명 Nano Banana 2)를 사용. character-guide.json image_generation.contract_version 1.1 적용 후 재시도."
   },
   "artifact_versions": {
     "plan": "v1"
   },
+  "storyboard_a_scene_generations": [
+    {
+      "scene": 1,
+      "attempt": 2,
+      "contract_version": "1.1",
+      "job_id": "e997815b-8572-4e38-991d-e100488b299b",
+      "job_type": "nano_banana_flash",
+      "generated_at": "2026-08-10T23:28:22.130Z",
+      "prompt_source": "unsorted/scripts/build-pongdang-prompt.mjs",
+      "reviewed_against": "shared/references/pages/page-10.png",
+      "result": "rejected",
+      "rejection_reasons": [
+        "상하 2분할 컷(split frame) — v1.1 신규 금지 항목 위반",
+        "하단 패널 눈이 흰자+검은 동공 분리 구조 — v1.1 신규 금지 항목 위반, 공식 눈 변형 9종은 모두 단색 채워진 형태(page-10)"
+      ],
+      "saved_path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811/storyboard/images/a/_rejected-v1.1/scene-01-a.png",
+      "note": "이번 요청 범위(정확히 1장 생성)를 소진했으므로 재생성은 다음 승인 후 진행."
+    }
+  ],
   "errors": []
 }

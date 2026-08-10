@@ -42,6 +42,23 @@ description: "퐁당패밀리 캐릭터를 Higgsfield로 이미지·영상 생�
 계약이 없으면 만들 수 없는 것이 맞다. "그래도 조립은 가능하다"고 판단하지 않는다.
 중단 사유와 없는 파일 경로를 그대로 보고하고 멈춘다.
 
+## 0단계: 조립은 손이 아니라 스크립트로 한다
+
+이 문서가 설명하는 조립 규칙을 **실행하는 주체는 스크립트다.**
+
+```bash
+node unsorted/scripts/build-pongdang-prompt.mjs \
+  --characters boo-rabong \
+  --scene "..." --background "..." --camera "low-angle full shot" --command
+```
+
+이 스크립트가 계약을 읽고, 레퍼런스 존재를 확인하고, `lock_en`과 `forbidden_en`을 붙이고,
+실행 명령까지 출력한다. 아래 1~4단계는 **스크립트가 무엇을 하는지에 대한 설명**이지
+사람이나 에이전트가 손으로 따라 할 절차가 아니다.
+
+손으로 조립한 프롬프트로 캐릭터를 생성하지 않는다. 스크립트가 거부하면 그것이 결론이다.
+거부를 우회해 `higgsfield generate create`를 직접 부르는 것은 계약 위반이다.
+
 ## 1단계: 입력 수집
 
 장면 하나당 다음을 확정한다. 비어 있으면 담당자에게 묻고, 추측으로 채우지 않는다.
@@ -52,8 +69,34 @@ description: "퐁당패밀리 캐릭터를 Higgsfield로 이미지·영상 생�
 | 행동 | 부라봉이 호꼬에게 귤을 내민다 |
 | 표정 | 부라봉 웃는 눈, 호꼬 기본 |
 | 배경 | 고르방의 집 마당 |
-| 카메라 | 정면 중간 샷 |
+| 카메라 | `front-facing medium shot` — 앵글 하나 + 샷 하나 |
 | 안 | A / B / C |
+
+### 카메라와 장면은 "한 순간"만 받는다 (스크립트가 강제)
+
+스토리보드의 카메라 칸은 **영상 연출 지시**다. 그대로 옮기면 안 된다.
+정지 이미지 모델은 지시 하나당 컷 하나를 그리기 때문이다.
+
+2026-08-11 `nano_banana_flash` 6회 실측에서 상관이 4/4로 정확했다.
+
+| 넘긴 카메라 지시 | 나온 결과 |
+|---|---|
+| `full shot tracking` → `transitioning to a face close-up` | **2패널** |
+| `starting from behind` → `panning` → `cutting back to a close-up` | **3패널** |
+| `tracking shot following` + 장면에 "one patch after another" | **부라봉 2마리** |
+| `low-angle full shot` | 정상 |
+
+NEGATIVE 블록으로는 막을 수 없다. 이미지 모델에서 **긍정 지시가 부정 지시를 이긴다.**
+`no comic panels, no split frames`를 넣고 생성한 결과도 그대로 2패널이 나왔다.
+그래서 통제 지점을 네거티브가 아니라 **입력**에 둔다.
+
+- `--camera`는 샷 크기를 **정확히 하나** 포함해야 한다.
+  `extreme close-up, establishing shot, medium close-up, close-up, bust shot, medium shot, full shot, wide shot`
+- 이동·전환 표현은 거부된다: 트래킹, 패닝, 틸트, 줌, 돌리, 크레인, 핸드헬드, 전환, 컷백, `then`
+- `--scene`은 한 순간만 받는다. `then`, `after another`, `moments later` 같은 시간 흐름은 거부된다.
+- 두 순간이 모두 필요하면 **장면을 둘로 나눠** 각각 생성한다.
+
+거부 메시지는 걸린 표현을 전부 나열한다. 한 번에 고쳐서 재시도한다.
 
 ## 2단계: 레퍼런스 이미지 확정 (필수 게이트)
 

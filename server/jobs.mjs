@@ -161,6 +161,22 @@ function normalize(line) {
   return null;
 }
 
+/**
+ * 이미지 조립기의 입력 게이트를 에이전트에게 미리 알려주는 문장.
+ *
+ * 게이트 자체는 build-pongdang-prompt.mjs 가 강제한다. 여기 문장은 강제 수단이 아니라
+ * 낭비 방지책이다. 규칙을 모르면 에이전트는 시나리오의 영상용 카메라 지시를 그대로
+ * 넘겼다가 매번 거부당하고, 그 왕복이 전부 토큰이다.
+ */
+const STILL_IMAGE_RULES = [
+  "- 스토리보드 이미지는 정지 이미지다. 시나리오의 카메라 지시는 영상용이므로 그대로 옮기지 않는다.",
+  "  --camera 에는 앵글 하나 + 샷 크기 하나만 쓴다. 예: \"low-angle full shot\", \"front-facing close-up\"",
+  "  트래킹·패닝·틸트·줌·전환·컷백·핸드헬드 같은 이동 표현과 샷 2개는 조립기가 거부한다.",
+  "- --scene 에는 한 순간만 쓴다. \"then\", \"~한 뒤\", \"연달아\" 같은 시간 흐름 표현은 거부된다.",
+  "  두 순간이 모두 필요하면 장면을 둘로 나눈다.",
+  "- 거부당하면 우회하지 말고 입력을 다시 쓴다. 조립기를 건너뛰고 직접 프롬프트를 쓰는 것은 금지다.",
+];
+
 function buildPrompt({ theme, cast, situation, emotion, duration }) {
   // 에이전트에게는 id 가 아니라 공식 한글 이름을 준다. 가이드·스킬이 한글 이름으로
   // 쓰여 있어서 id 를 그대로 넣으면 캐릭터를 못 찾는다.
@@ -185,6 +201,7 @@ function buildPrompt({ theme, cast, situation, emotion, duration }) {
     "- 산출물은 unsorted/outputs/ 아래에만 쓴다.",
     "- 제작·비용 승인 전에는 유료 영상 생성을 실행하지 않는다. 승인 대기 상태로 멈춘다.",
     "- 캐릭터 이미지·영상은 공식 페이지 PNG를 레퍼런스로 첨부해서만 만든다.",
+    ...STILL_IMAGE_RULES,
     "- 각 단계를 마칠 때마다 무엇을 만들었는지 한 문장으로 보고한다.",
     "- 위 입력으로 판단할 수 없는 항목이 있으면 임의로 지어내지 말고 그 사실을 보고하고 멈춘다.",
   ].join("\n");
@@ -210,6 +227,7 @@ function buildResumePrompt({ projectSlug, sceneLimit, variant }) {
     "  이미 만든 것을 다시 만들면 그대로 이중 과금이다.",
     "- 이미지 생성 전 프롬프트는 반드시 unsorted/scripts/build-pongdang-prompt.mjs 로 조립하고",
     "  출력된 higgsfield 명령을 그대로 실행한다. 손으로 프롬프트를 쓰지 않는다.",
+    ...STILL_IMAGE_RULES,
     "- 생성 결과 다운로드는 curl 을 쓰지 말고 아래 스크립트를 쓴다. curl 은 허용되지 않는다.",
     "    node unsorted/scripts/fetch-generated.mjs --latest --out <프로젝트 내 경로>",
     "  저장 경로는 storyboard/images/a/scene-NN-a.png 형식으로 한다.",
