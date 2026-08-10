@@ -1,0 +1,30 @@
+[STYLE]
+flat 2D Korean kawaii mascot illustration, thick uniform dark-brown outline, flat fill colours with no gradient shading, simple rounded shapes, plain background, official character-sheet style
+
+[CAST]
+BOO RABONG: orange Hallabong citrus character, round citrus head fused with the body, one green leaf sprig on top of the head, two large round orange blush cheeks, base eyes are perfect circles, upper lip is an upside-down seagull curve (three-stroke shape), small pale-yellow tongue, white diaper-like lower garment, short stubby limbs, about 1.5 head-to-body proportion, front view wider than side view, small gap between eyes and mouth
+
+[SCENE]
+BOO RABONG lies spread-eagle flat on the ground in deep tree shade, arms and legs stretched wide, head tilted back, eyes drooping half-closed with a blissful drowsy smile, looking completely relaxed and cool.
+Background is a forest walking path in Bijarim, Jeju, beside the massive trunk of a centuries-old tree, dappled sunlight filtering through dense green canopy onto the forest floor.
+
+[COMPOSITION]
+low-angle full shot, vertical 9:16 framing, characters inside the safe area, plain uncluttered background
+
+[NEGATIVE]
+no text, no letters, no captions, no speech bubbles, no watermark, no logo
+no additional or invented characters outside the official six
+no realistic rendering, no 3D render, no photographic style
+no anatomy or proportion changes, no restyling, no redesign
+no mirrored/flipped character markings
+no price, sale or promotional copy
+no third-party IP or trademarks
+no vertical or slit eyes on BOO RABONG
+BOO RABONG's base eyes must stay perfect circles, not smaller or larger
+BOO RABONG's blank eyes must not be larger than the normal size
+no pointed centre on BOO RABONG's upper lip
+no wide vertical gap between BOO RABONG's eyes and mouth
+no change to BOO RABONG's 1.5 head-to-body proportion
+
+[OUTPUT]
+single still image, no text anywhere in the image

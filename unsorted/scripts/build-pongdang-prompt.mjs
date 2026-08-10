@@ -172,15 +172,21 @@ if (args.command) {
   // 예전 기본값 "nano_banana_2" 는 존재하지 않는 job_type 이라 호출 즉시 실패했다.
   const routed = contract.mandatory?.model_routing?.character_image ?? "";
   const model = args.model ?? routed.match(/^([a-z0-9_]+)/)?.[1] ?? "nano_banana_flash";
+  // 프롬프트를 인라인으로 넣는다. 예전에는 --prompt "$(cat prompt.txt)" 였는데,
+  // 명령 치환이 섞이면 에이전트 권한 검사가 이것을 cat 이 포함된 복합 명령으로 보고
+  // Bash(higgsfield *) 허용 목록에 걸리지 않아 실행이 거부된다.
+  // 작은따옴표는 POSIX 셸에서 줄바꿈·$·백틱을 전부 리터럴로 보존한다.
+  const shellQuote = (value) => `'${String(value).replaceAll("'", `'\\''`)}'`;
+
   const imageFlags = referencePaths
-    .map((path) => `  --image ${JSON.stringify(relative(projectRoot, path))} \\`)
+    .map((path) => `  --image ${shellQuote(relative(projectRoot, path))} \\`)
     .join("\n");
   console.log(
     [
       "",
       "# ---- 실행 명령 (제작·비용 승인 이후에만) ----",
       `higgsfield generate create ${model} \\`,
-      "  --prompt \"$(cat prompt.txt)\" \\",
+      `  --prompt ${shellQuote(prompt)} \\`,
       imageFlags,
       `  --aspect_ratio ${aspect} \\`,
       "  --wait",
