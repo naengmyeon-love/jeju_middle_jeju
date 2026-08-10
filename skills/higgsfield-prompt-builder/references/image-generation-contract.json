@@ -3,7 +3,7 @@
   "_source": "data/character-guide.json → image_generation",
   "_warning": "이 파일을 직접 수정하지 않는다. character-guide.json 을 고치고 sync 스크립트를 다시 실행한다.",
   "guide_version": "2.3",
-  "updated_at": "2026-08-03",
+  "updated_at": "2026-08-11",
   "official_characters": [
     {
       "id": "boo-rabong",
@@ -37,7 +37,7 @@
     }
   ],
   "image_generation": {
-    "contract_version": "1.0",
+    "contract_version": "1.1",
     "authority_note": "여기의 lock 문자열은 원본 페이지에서 확인한 사실만 담는다. 프롬프트 작성 시 문장을 바꾸지 말고 그대로 붙여 넣는다.",
     "mandatory": {
       "reference_conditioning": true,
@@ -69,7 +69,9 @@
       "no anatomy or proportion changes, no restyling, no redesign",
       "no mirrored/flipped character markings",
       "no price, sale or promotional copy",
-      "no third-party IP or trademarks"
+      "no third-party IP or trademarks",
+      "exactly one instance of each requested character, never duplicated or repeated in the same image",
+      "no comic panels, no split frames, no multi-panel layout, no borders or gutters"
     ],
     "group_rules": {
       "height_order_tall_to_short": [
@@ -109,7 +111,8 @@
           "비어있는 눈을 평소 사이즈보다 크게 그리기",
           "입 가운데가 뾰족해지는 형태",
           "눈과 입 상하 간격이 크게 벌어지는 배치",
-          "1.5등신 비율 변경"
+          "1.5등신 비율 변경",
+          "흰자와 동공이 분리된 눈 구조 (공식 변형 9종에 없음, p10)"
         ],
         "forbidden_en": [
           "no vertical or slit eyes on BOO RABONG",
@@ -117,7 +120,8 @@
           "BOO RABONG's blank eyes must not be larger than the normal size",
           "no pointed centre on BOO RABONG's upper lip",
           "no wide vertical gap between BOO RABONG's eyes and mouth",
-          "no change to BOO RABONG's 1.5 head-to-body proportion"
+          "no change to BOO RABONG's 1.5 head-to-body proportion",
+          "no white sclera or separate pupils on BOO RABONG's eyes; eyes stay solid filled shapes"
         ]
       },
       "go-lebang": {
@@ -246,6 +250,22 @@
       "단체 컷이면 키 순서와 page-07을 첨부했는가",
       "미확보 항목(HEX·로고·배경 목록)을 임의로 채우지 않았는가"
     ],
-    "postcheck": "생성 결과를 view_image로 다시 열고 각 캐릭터의 forbidden 항목을 1:1로 대조한다. 하나라도 위반이면 해당 이미지만 한 번에 한 가지 수정사항으로 재생성한다."
+    "postcheck": "생성 결과를 view_image로 다시 열고 각 캐릭터의 forbidden 항목을 1:1로 대조한다. 하나라도 위반이면 해당 이미지만 한 번에 한 가지 수정사항으로 재생성한다.",
+    "amendments": [
+      {
+        "version": "1.1",
+        "date": "2026-08-11",
+        "items": [
+          {
+            "change": "global_negative_en 에 구성 제약 2건 추가",
+            "basis": "원본 매뉴얼 외 추가. nano_banana_flash 5회 생성 중 3회가 분할 컷, 2회가 캐릭터 중복으로 나왔다. 캐릭터 규격이 아니라 생성 도구 통제용 제약이다."
+          },
+          {
+            "change": "boo-rabong forbidden 에 눈 구조 1건 추가",
+            "basis": "page-10 의 공식 눈 변형 9종은 모두 채워진 원 또는 선 형태이며 흰자·동공 분리 구조가 없다. 원본에 근거한 명문화다."
+          }
+        ]
+      }
+    ]
   }
 }

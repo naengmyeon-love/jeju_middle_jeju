@@ -1,0 +1,30 @@
+[STYLE]
+flat 2D Korean kawaii mascot illustration, thick uniform dark-brown outline, flat fill colours with no gradient shading, simple rounded shapes, plain background, official character-sheet style
+
+[CAST]
+BOO RABONG: orange Hallabong citrus character, round citrus head fused with the body, one green leaf sprig on top of the head, two large round orange blush cheeks, base eyes are perfect circles, upper lip is an upside-down seagull curve (three-stroke shape), small pale-yellow tongue, white diaper-like lower garment, short stubby limbs, about 1.5 head-to-body proportion, front view wider than side view, small gap between eyes and mouth
+
+[SCENE]
+BOO RABONG, seen from behind while hopping along the trail, suddenly freezes mid-step and stares off into the distance at a huge, thick tree far ahead, eyes wide and mouth slightly open in surprise and curiosity.
+Background is a forest walking trail in Bijarim, Jeju, daytime, an unusually massive thick tree visible far in the distance down the path.
+
+[COMPOSITION]
+shot starting from behind BOO RABONG then panning toward the distant huge tree following its gaze, cutting back to a face close-up, vertical 9:16 framing, characters inside the safe area, plain uncluttered background
+
+[NEGATIVE]
+no text, no letters, no captions, no speech bubbles, no watermark, no logo
+no additional or invented characters outside the official six
+no realistic rendering, no 3D render, no photographic style
+no anatomy or proportion changes, no restyling, no redesign
+no mirrored/flipped character markings
+no price, sale or promotional copy
+no third-party IP or trademarks
+no vertical or slit eyes on BOO RABONG
+BOO RABONG's base eyes must stay perfect circles, not smaller or larger
+BOO RABONG's blank eyes must not be larger than the normal size
+no pointed centre on BOO RABONG's upper lip
+no wide vertical gap between BOO RABONG's eyes and mouth
+no change to BOO RABONG's 1.5 head-to-body proportion
+
+[OUTPUT]
+single still image, no text anywhere in the image
