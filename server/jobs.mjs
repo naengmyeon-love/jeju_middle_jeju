@@ -10,21 +10,27 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { PROJECT_ROOT } from "./gate.mjs";
+import { makeProjectSlug, renderFreeTextBlock } from "./freetext.mjs";
 
-// ── 입력 화이트리스트 ────────────────────────────────────────────────
+// ── 입력 프리셋 ──────────────────────────────────────────────────────
 //
-// 사용자가 입력한 문자열을 그대로 프롬프트에 넣지 않는다. 웹앱에서 온 값은 키로만 받고
-// 실제 문장은 서버가 고른다. 원격 사용자가 파일 쓰기 권한을 가진 에이전트를 조종하는
-// 구조라서, 자유 입력은 그 자체가 실행 경로가 된다.
-
 // webapp-spec/02-workflow.md 1단계가 요구하는 필수 입력:
 //   주제 · 캐릭터 · 상황 · 감정 · 길이 · 비율
-// 전부 열거형으로 받는다. 상황은 본래 자유 서술이지만, 주제별 프리셋으로 고정해야
-// 자유 입력이 프롬프트에 섞이지 않는다. 03-screen-structure.md §4.2 의 단계형 폼과
-// 같은 구조이고, 초보 사용자에게도 빈 텍스트박스보다 드롭다운이 쉽다.
+//
+// 감정·길이·비율·캐릭터는 열거형으로만 받는다. 주제와 핵심 상황은 프리셋을 기본으로
+// 두되 담당자가 직접 쓸 수도 있다(freetext.mjs).
+//
+// 처음에는 주제·상황도 열거형으로 막아 두었다. 근거는 "원격 사용자가 조종하는
+// 에이전트"였는데, 이 서버는 127.0.0.1 전용이고 쓰는 사람은 담당자 본인이다.
+// 없는 위협에 맞춰 기능을 깎은 것이라 프리셋을 유지한 채 직접 입력을 열었다.
+// 자유 입력의 위험과 그에 대한 방어는 freetext.mjs 머리말에 적어 두었다.
+//
+// 프리셋을 남겨 두는 이유는 안전 때문만이 아니다. 03-screen-structure.md §4.2 의
+// 단계형 폼과 같은 구조이고, 처음 쓰는 사람에게는 빈 텍스트박스보다 드롭다운이 쉽다.
 
 export const THEMES = {
   bijarim: {
+    slug: "bijarim-forest-walk",
     label: "비자림 숲길 산책",
     situations: [
       "더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다",
@@ -32,6 +38,7 @@ export const THEMES = {
     ],
   },
   hallasan: {
+    slug: "hallasan-hike",
     label: "한라산 등반과 구름바다",
     situations: [
       "정상에 올랐지만 안개로 아무것도 보이지 않는다",
@@ -39,6 +46,7 @@ export const THEMES = {
     ],
   },
   beach: {
+    slug: "jeju-beach",
     label: "제주 해변 물놀이",
     situations: [
       "파도에 튜브를 놓쳐 쫓아간다",
@@ -46,6 +54,7 @@ export const THEMES = {
     ],
   },
   village: {
+    slug: "village-alley",
     label: "제주 마을 골목 나들이",
     situations: [
       "골목에서 만난 돌담 고양이와 눈이 마주친다",
@@ -53,6 +62,7 @@ export const THEMES = {
     ],
   },
   rain: {
+    slug: "rainy-day",
     label: "비 오는 날의 작은 소동",
     situations: [
       "우산을 두고 나와 처마 밑에서 비를 피한다",
@@ -185,27 +195,46 @@ const STILL_IMAGE_RULES = [
   "- 거부당하면 우회하지 말고 입력을 다시 쓴다. 조립기를 건너뛰고 직접 프롬프트를 쓰는 것은 금지다.",
 ];
 
-function buildPrompt({ theme, cast, situation, emotion, duration }) {
+function buildPrompt({ theme, cast, situation, emotion, duration, custom, projectSlug }) {
   // 에이전트에게는 id 가 아니라 공식 한글 이름을 준다. 가이드·스킬이 한글 이름으로
   // 쓰여 있어서 id 를 그대로 넣으면 캐릭터를 못 찾는다.
   // validateRequest 가 먼저 실행되므로 이 시점에 목록은 채워져 있다.
   const byId = new Map((officialCharacters ?? []).map((c) => [c.id, c.name]));
   const names = cast.map((id) => byId.get(id) ?? id);
 
+  // 자유 입력은 프리셋과 섞지 않는다. 데이터라는 표시가 붙은 블록에 따로 넣고,
+  // 프리셋 항목(감정·길이·비율)만 평문으로 둔다. 둘을 같은 목록에 섞으면
+  // 어디까지가 서버가 고른 값인지 에이전트가 구분할 수 없다.
+  const head = custom
+    ? [
+        "pongdang-pipeline 스킬로 퐁당패밀리 숏폼을 제작한다.",
+        "",
+        renderFreeTextBlock({ topic: theme, situation }),
+        "",
+        "위 블록의 주제·상황과 아래 항목으로 1단계부터 진행한다. 추가 질문은 하지 않는다.",
+        "",
+      ]
+    : [
+        "pongdang-pipeline 스킬로 퐁당패밀리 숏폼을 제작한다.",
+        "",
+        "필수 입력은 모두 아래에 있다. 추가 질문 없이 1단계부터 진행한다.",
+        "",
+        `- 주제: ${theme}`,
+        `- 핵심 상황: ${situation}`,
+      ];
+
   return [
-    "pongdang-pipeline 스킬로 퐁당패밀리 숏폼을 제작한다.",
-    "",
-    "필수 입력은 모두 아래에 있다. 추가 질문 없이 1단계부터 진행한다.",
-    "",
-    `- 주제: ${theme}`,
+    ...head,
     `- 등장 캐릭터: ${names.join(", ")}`,
-    `- 핵심 상황: ${situation}`,
     `- 감정: ${emotion}`,
     `- 길이: ${duration}`,
     "- 비율: 9:16",
     "- 사용 도구: Higgsfield",
     "",
     "지켜야 할 것:",
+    // 폴더 이름은 곧 경로다. 예전에는 에이전트가 주제를 보고 지었는데, 자유 입력이
+    // 들어오면 무엇이 나올지 통제할 수 없다. 서버가 정해서 내려준다.
+    `- 프로젝트 폴더는 정확히 unsorted/outputs/projects/${projectSlug}/ 를 쓴다. 다른 이름을 짓지 않는다.`,
     "- 산출물은 unsorted/outputs/ 아래에만 쓴다.",
     "- 제작·비용 승인 전에는 유료 영상 생성을 실행하지 않는다. 승인 대기 상태로 멈춘다.",
     "- 캐릭터 이미지·영상은 공식 페이지 PNG를 레퍼런스로 첨부해서만 만든다.",
@@ -346,11 +375,21 @@ function finish(job) {
  * 16GB 맥에서 claude 프로세스가 여러 개 뜨면 버티지 못한다. 시연 중 심사위원 몇 명이
  * 동시에 눌러도 순서대로 처리되도록 큐를 둔다.
  */
-export function enqueue({ themeId, cast, situation, emotionId, duration }) {
+export function enqueue({ themeId, theme, cast, situation, emotionId, duration, custom }) {
+  // 폴더 이름을 여기서 확정한다. 프리셋이면 읽기 좋은 슬러그, 자유 입력이면
+  // 캐릭터+날짜+주제해시. 어느 쪽이든 에이전트가 아니라 서버가 정한다.
+  const projectSlug = makeProjectSlug({
+    cast,
+    themeSlug: custom ? null : THEMES[themeId].slug,
+    topic: theme,
+  });
+
   const job = {
     id: randomUUID(),
     themeId,
-    theme: THEMES[themeId].label,
+    theme,
+    custom,
+    projectSlug,
     cast,
     situation,
     emotionId,
@@ -414,6 +453,8 @@ export function summarize(job) {
     id: job.id,
     themeId: job.themeId,
     theme: job.theme,
+    custom: Boolean(job.custom),
+    projectSlug: job.projectSlug ?? null,
     cast: job.cast,
     situation: job.situation,
     emotion: job.emotion,

@@ -12,6 +12,7 @@
 import { createServer } from "node:http";
 
 import { checkGate, STAGES } from "./gate.mjs";
+import { LIMITS, sanitizeFreeText } from "./freetext.mjs";
 import { listProjects, logPathForSlug } from "./projects.mjs";
 import {
   enqueueResume,
@@ -30,6 +31,9 @@ import {
 
 const PORT = Number(process.env.PORT ?? 8787);
 const HOST = process.env.HOST ?? "127.0.0.1";
+
+/** 프리셋 대신 담당자가 직접 쓰겠다는 표시. 프리셋 id 와 겹치지 않는 값이어야 한다. */
+const CUSTOM_ID = "custom";
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -53,14 +57,21 @@ async function readJsonBody(req, limit = 64 * 1024) {
 }
 
 /**
- * 웹앱에서 온 값은 키로만 받고 실제 문장은 서버가 고른다.
- * 자유 입력을 그대로 프롬프트에 넣으면 그것이 곧 원격 실행 경로가 된다.
+ * 감정·길이·캐릭터는 키로만 받는다. 주제와 핵심 상황은 프리셋이 기본이고,
+ * themeId 가 "custom" 이면 담당자가 직접 쓴 문장을 받는다.
+ *
+ * 직접 입력은 정제해서 프롬프트의 별도 데이터 블록에 들어간다(freetext.mjs).
+ * 프리셋 경로는 기존 동작 그대로다.
  */
 async function validateRequest(body) {
   const themeId = String(body.themeId ?? "");
+  const custom = themeId === CUSTOM_ID;
   const theme = THEMES[themeId];
-  if (!theme) {
-    return { error: `themeId 가 올바르지 않습니다. 가능한 값: ${Object.keys(THEMES).join(", ")}` };
+
+  if (!custom && !theme) {
+    return {
+      error: `themeId 가 올바르지 않습니다. 가능한 값: ${[...Object.keys(THEMES), CUSTOM_ID].join(", ")}`,
+    };
   }
 
   const official = await getOfficialCharacters();
@@ -74,12 +85,31 @@ async function validateRequest(body) {
     return { error: "한 번에 3인까지만 선택할 수 있습니다." };
   }
 
-  // 상황은 자유 서술이 아니라 주제별 프리셋의 인덱스로 받는다.
-  // 문자열을 그대로 받으면 화이트리스트가 뚫린다.
-  const situationIndex = Number(body.situationIndex ?? 0);
-  const situation = theme.situations[situationIndex];
-  if (!situation) {
-    return { error: `situationIndex 는 0~${theme.situations.length - 1} 이어야 합니다.` };
+  // 주제와 상황. 프리셋이면 인덱스로, 직접 입력이면 정제한 문장으로 받는다.
+  // 상황만 직접 쓰는 경우도 있으므로 둘을 따로 판정한다.
+  let themeText;
+  let situation;
+
+  if (custom) {
+    const topic = sanitizeFreeText(body.customTheme, { label: "콘텐츠 주제", max: LIMITS.theme });
+    if (topic.error) return { error: topic.error };
+    themeText = topic.value;
+  } else {
+    themeText = theme.label;
+  }
+
+  const wantsCustomSituation = custom || body.situationIndex === CUSTOM_ID;
+
+  if (wantsCustomSituation) {
+    const text = sanitizeFreeText(body.customSituation, { label: "핵심 상황", max: LIMITS.situation });
+    if (text.error) return { error: text.error };
+    situation = text.value;
+  } else {
+    const situationIndex = Number(body.situationIndex ?? 0);
+    situation = theme.situations[situationIndex];
+    if (!situation) {
+      return { error: `situationIndex 는 0~${theme.situations.length - 1} 또는 "${CUSTOM_ID}" 이어야 합니다.` };
+    }
   }
 
   const emotionId = String(body.emotionId ?? "comic");
@@ -92,7 +122,8 @@ async function validateRequest(body) {
     return { error: `duration 은 ${DURATIONS.join(", ")} 중 하나여야 합니다.` };
   }
 
-  return { themeId, cast, situation, emotionId, duration };
+  // theme 은 프롬프트에 들어갈 문장, themeId 는 기록용 키다. custom 이면 둘이 다르다.
+  return { themeId, theme: themeText, custom, cast, situation, emotionId, duration };
 }
 
 const routes = [
@@ -119,6 +150,10 @@ const routes = [
         emotions: Object.entries(EMOTIONS).map(([id, label]) => ({ id, label })),
         durations: DURATIONS,
         aspectRatio: "9:16",
+        // 화면이 직접 입력 칸의 글자 수 제한을 서버와 맞추도록 함께 내려준다.
+        // 두 값이 갈라지면 사용자는 다 쓴 뒤에야 400 을 본다.
+        customId: CUSTOM_ID,
+        limits: LIMITS,
       });
     },
   },
