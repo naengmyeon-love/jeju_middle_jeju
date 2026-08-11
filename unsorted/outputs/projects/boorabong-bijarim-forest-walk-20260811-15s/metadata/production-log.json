@@ -1,8 +1,8 @@
 {
   "project_id": "boorabong-bijarim-forest-walk-20260811-15s",
   "created_at": "2026-08-11T00:00:00+09:00",
-  "updated_at": "2026-08-11T00:00:00+09:00",
-  "status": "guide_applied_awaiting_scenario",
+  "updated_at": "2026-08-11T12:00:00+09:00",
+  "status": "storyboard_prompts_ready_generation_blocked",
   "input": {
     "source": "사용자 채팅 요청: 비자림 숲길 산책, 부라봉, 더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다, 즐거움·코믹, 15초, 9:16, Higgsfield. 동일 주제의 기존 30초 프로젝트(boorabong-bijarim-forest-walk-20260811)와 별도로, 길이가 달라 신규 프로젝트로 생성함.",
     "topic": "비자림 숲길 산책",
@@ -17,6 +17,11 @@
   "outputs": {
     "request": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/input/request.json",
     "plan": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/planning/plan.md",
+    "scenario": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/planning/scenario.md",
+    "storyboard_a": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-a.md",
+    "storyboard_b": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-b.md",
+    "storyboard_c": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-c.md",
+    "storyboard_images": "없음 — 상세는 storyboard 블록의 blocked_reason 참고",
     "video_draft": null,
     "video_final": null,
     "publication_manifest": null
@@ -58,9 +63,27 @@
   },
   "reviews": {
     "planning": {
-      "status": "not_started",
+      "status": "conditional_pass",
       "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/review/planning-review.md",
-      "reviewed_at": null
+      "reviewed_at": "2026-08-11T13:30:00+09:00",
+      "reviewed_by": "auto-reviewer 서브에이전트",
+      "guide_version": "character-guide v2.3, image-generation-contract v1.1",
+      "verdict": "조건부 통과",
+      "image_review_scope": "미실시 — 스토리보드 장면 PNG가 아직 생성되지 않음(제작·비용 승인 미기록 + 이번 세션 higgsfield CLI 호출 권한 차단). 캐릭터·스토리·브랜드 안전성·기술(문서)·조립된 프롬프트 규칙 준수는 텍스트 기준으로 검수 완료, 이미지 시각 대조는 이미지 생성 후 재검수 필요",
+      "auto_fail_triggers_hit": [],
+      "higgsfield_preflight_gate": {
+        "result": "생성 중단",
+        "unmet_items": [
+          "담당자가 스토리보드를 명시적으로 선택하지 않음 (approvals.production.selected_storyboard = null)",
+          "예상 크레딧·생성 클립 수·재생성 상한 미기록",
+          "담당자의 비용 사용 명시적 승인 없음 (cost_usage_approved = false)"
+        ]
+      },
+      "minor_fixes_suggested": [
+        "B/C안 스토리보드에도 전체 조립 프롬프트(STYLE~OUTPUT)를 최소 1개 장면 노출해 CAST/NEGATIVE 완전 일치를 직접 대조 가능하게 할 것",
+        "C안 카메라 표기에 명시적 앵글 용어 추가",
+        "production-log.json의 approvals.production에 예상 크레딧·클립 수·재생성 상한 기록"
+      ]
     },
     "video": {
       "status": "not_started",
@@ -107,9 +130,44 @@
     "estimated_cost_krw": 0,
     "actual_cost_krw": 0
   },
-  "model_versions": {},
-  "artifact_versions": {
-    "plan": "v1"
+  "model_versions": {
+    "note": "스토리보드 A/B/C안 장면 프롬프트는 nano_banana_flash(표시명 Nano Banana 2) 라우팅으로 조립됨. 실제 이미지 생성 호출은 이번 세션에서 수행되지 못함(아래 storyboard.blocked_reason 참고)."
   },
-  "errors": []
+  "artifact_versions": {
+    "plan": "v1",
+    "storyboard": "v1-prompts_only"
+  },
+  "storyboard": {
+    "generated_at": "2026-08-11T00:00:00+09:00",
+    "variants": ["a", "b", "c"],
+    "status": "prompts_assembled_generation_blocked",
+    "contract_version": "1.1",
+    "scene_count": { "a": 3, "b": 4, "c": 3 },
+    "reference_pages_verified": [8, 9, 10],
+    "reference_verification_method": "Read 도구로 shared/references/pages/page-08.png, page-09.png, page-10.png 실제 열람 확인",
+    "prompt_assembly_tool": "unsorted/scripts/build-pongdang-prompt.mjs (higgsfield-prompt-builder 스킬 조립 스크립트, 손 작성 프롬프트 미사용)",
+    "still_image_input_gate": "전체 10개 장면(A 3 + B 4 + C 3) 모두 통과 — 샷 크기 1개, 시간 흐름·카메라 이동 표현 없음",
+    "blocked_reason": [
+      "approvals.production.status 가 not_requested 로 제작·비용 승인이 기록되지 않음 (higgsfield-prompt-builder 사전 게이트 항목 미충족)",
+      "이번 세션에서 'higgsfield' CLI 직접 호출이 권한 정책상 차단됨 (Bash 도구가 'This command requires approval' 반환, 서브에이전트 컨텍스트에서 상호작용 승인 불가). 이미지 생성 전용 node 래퍼 스크립트가 저장소에 없어 우회 경로도 없음(video 전용 래퍼만 존재)"
+    ],
+    "content_based_rejections": 0,
+    "retries": 0,
+    "note": "생성 호출 자체가 디스패치되지 못했으므로 콘텐츠 기준 거부/재시도는 발생하지 않았다. 실행 가능한 higgsfield CLI 명령은 각 storyboard-*.md의 '이미지 생성 기록'에 그대로 기록해 두었다. 제작·비용 승인 기록 및 CLI 실행 권한이 확보되면 해당 명령을 그대로 실행해 9~10개 PNG를 생성할 수 있다.",
+    "outputs": {
+      "storyboard_a": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-a.md",
+      "storyboard_b": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-b.md",
+      "storyboard_c": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/storyboard/storyboard-c.md",
+      "images": "없음 — 아래 blocked_reason 으로 인해 실제 PNG 생성 미실행"
+    }
+  },
+  "errors": [
+    {
+      "at": "2026-08-11T00:00:00+09:00",
+      "stage": "storyboard_image_generation",
+      "message": "higgsfield generate create 호출이 세션 권한 정책에 의해 차단됨(This command requires approval). production-log.approvals.production.status 도 not_requested 상태라 higgsfield-prompt-builder 사전 게이트를 애초에 통과하지 못함.",
+      "impact": "스토리보드 A/B/C안 총 10개 장면 이미지 중 0개 생성됨. 프롬프트 조립·게이트 통과까지는 완료.",
+      "resolution_path": "approval-logger 서브에이전트로 제작·비용 승인을 기록한 뒤, 승인된 세션에서 각 storyboard-*.md에 기록된 higgsfield 실행 명령을 그대로 재실행."
+    }
+  ]
 }
