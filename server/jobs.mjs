@@ -125,6 +125,9 @@ function publish(job, event) {
  *   {type:"assistant", message:{content:[{type:"text",text}|{type:"tool_use",name}]}}
  *   {type:"result",    subtype:"success"|..., result:"..."}
  */
+/** 진행 로그에 남길 가치가 있는 system 이벤트. 나머지는 계측값이라 버린다. */
+const MEANINGFUL_SYSTEM_EVENTS = new Set(["init", "compact_boundary"]);
+
 function normalize(line) {
   let raw;
   try {
@@ -134,7 +137,12 @@ function normalize(line) {
   }
 
   if (raw.type === "system") {
-    return { kind: "system", subtype: raw.subtype ?? "", text: raw.subtype ?? "" };
+    // system 이벤트는 대부분 계측값이다. thinking_tokens 는 초당 여러 번 나와서
+    // 진행 로그를 덮어버린다. 실제 진행은 assistant·result 에만 있으므로
+    // 여기서는 의미 있는 것만 통과시킨다. 오류는 stderr·result 로 따로 들어온다.
+    const subtype = raw.subtype ?? "";
+    if (!MEANINGFUL_SYSTEM_EVENTS.has(subtype) && !subtype.includes("error")) return null;
+    return { kind: "system", subtype, text: subtype };
   }
 
   if (raw.type === "assistant") {
