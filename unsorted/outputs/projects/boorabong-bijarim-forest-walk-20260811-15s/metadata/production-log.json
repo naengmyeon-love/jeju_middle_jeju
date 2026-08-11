@@ -1,0 +1,115 @@
+{
+  "project_id": "boorabong-bijarim-forest-walk-20260811-15s",
+  "created_at": "2026-08-11T00:00:00+09:00",
+  "updated_at": "2026-08-11T00:00:00+09:00",
+  "status": "guide_applied_awaiting_scenario",
+  "input": {
+    "source": "사용자 채팅 요청: 비자림 숲길 산책, 부라봉, 더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다, 즐거움·코믹, 15초, 9:16, Higgsfield. 동일 주제의 기존 30초 프로젝트(boorabong-bijarim-forest-walk-20260811)와 별도로, 길이가 달라 신규 프로젝트로 생성함.",
+    "topic": "비자림 숲길 산책",
+    "characters": ["부라봉"],
+    "duration_seconds": 15,
+    "aspect_ratio": "9:16",
+    "resolution": "1080x1920",
+    "audio": null,
+    "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/input/request.json",
+    "related_project_id": "boorabong-bijarim-forest-walk-20260811"
+  },
+  "outputs": {
+    "request": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/input/request.json",
+    "plan": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/planning/plan.md",
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "2.3",
+    "applied_at": "2026-08-11T00:00:00+09:00",
+    "source_pdf": "shared/references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "verified_pages": [3, 8, 9, 10],
+    "categories": ["characters", "world", "visual", "brand_safety", "technical"],
+    "targets": ["plan", "scenario", "storyboard"],
+    "structured_guide_sources": {
+      "workflow_guide": "shared/references/WORKFLOW_GUIDE.md",
+      "character_guide_md": "shared/guides/character-guide.md",
+      "character_guide_json": "shared/guides/character-guide.json"
+    },
+    "applied_character": "boo-rabong (부라봉 / BOO RABONG) — 공식 6인 중 1인 단독 등장, 다른 캐릭터 미등장이므로 §5 관계표는 적용 대상 없음",
+    "verified_pages_detail": [
+      { "page": 8, "content": "부라봉 소개 — 정체성, MBTI, 좋아함/싫어함, 장점/단점, 취미/특기, 특징(화나면 과즙 폭발, 말 끝 '봉')" },
+      { "page": 9, "content": "부라봉 턴어라운드 — 정면/측면/후면 및 감정별(반짝임/멍함/피곤/두려움) 형태" },
+      { "page": 10, "content": "부라봉 사용 규칙 — 눈 형태 O/X, 입(윗입술 갈매기형) 변형 범위, 1.5등신 비율, 눈-입 간격 규칙" },
+      { "page": 3, "content": "기본 세계관 — 고르방의 집에 모여 사는 설정, 부라봉의 기억상실 사고뭉치 도입부. 배경 확장(비자림 등)에 대한 명시적 허용/금지 규정은 없음" }
+    ],
+    "world_conflict_note": "비자림 숲길은 character-guide.json의 locations(primary: 고르방의 집, separate: 구애구가 지키는 할머니의 귤밭) 공식 목록에 없는 확장 배경이다. character-guide.md의 확인 필요 항목에도 '공식 배경·소품 목록'이 미확보로 명시되어 있다. page-03(기본 세계관) 원문에는 배경 확장을 명시적으로 허용하거나 금지하는 규정이 없어, 이 자료만으로는 세계관 저촉 여부를 단정할 근거가 없다. 따라서 비자림 배경 사용 가능 여부는 이번 가이드 주입 단계에서 자체적으로 확정하지 않고 담당자 확인 필요 항목으로 유지한다.",
+    "requires_human_confirmation": [
+      "비자림 배경 사용 허용 범위 및 구체적 촬영 구역 (공식 배경·소품 목록 미포함)",
+      "공식 컬러 팔레트 HEX (character-guide.json requires_human_confirmation)",
+      "로고 사용 규정 (character-guide.json requires_human_confirmation)",
+      "부라봉 '명품' 스티커가 상시 요소인지 여부 (p08 소개 일러스트에만 등장, character-guide.json requires_human_confirmation)"
+    ],
+    "reverification": {
+      "reverified_at": "2026-08-11T00:00:00+09:00",
+      "reverified_by": "guide-injector 서브에이전트 (본 프로젝트 전용 독립 확인)",
+      "method": "동일 주제·캐릭터의 기존 30초 프로젝트(boorabong-bijarim-forest-walk-20260811)가 동일 페이지(p3/p8/p9/p10)를 이미 검증한 이력이 있으나, 이를 그대로 복사·신뢰하지 않고 본 프로젝트에서 page-03.png, page-08.png, page-09.png, page-10.png를 다시 직접 열어 내용을 재확인했다.",
+      "result": "재확인 결과 기존 기록과 동일함을 확인. p3(기본 세계관: 고르방의 집에 모여드는 도입 서사, 배경 확장에 대한 명시적 규정 없음), p8(부라봉 소개: ENFP-A, 더위를 많이 탐/추위를 타지 않음 등 프로필, '명품' 스티커는 소개 일러스트에만 표기), p9(턴어라운드: 정면·측면·후면 및 감정별 형태), p10(사용 규칙: 정원 눈·세로눈 불가, 갈매기형 윗입술, 1.5등신, 눈-입 간격 규칙) 모두 원문과 일치.",
+      "version_cross_check": "shared/guides/character-guide.md·character-guide.json은 guide_version 2.3(기준일 2026-08-03)으로 일치. 다만 skills/character-guide/SKILL.md는 여전히 v2.2 표기로 남아 있어 구조화 문서 간 버전 표기가 어긋나 있음을 확인했다. 이번 주입은 guide-injector 우선순위 규칙에 따라 더 상위 출처인 shared/guides의 v2.3 내용을 기준으로 적용했으며, SKILL.md와의 버전 불일치 자체는 이 프로젝트의 결함이 아니라 별도로 담당자 확인이 필요한 문서 관리 이슈로 기록한다.",
+      "bijarim_background_status": "미승인 상태 유지. 사전 유사 프로젝트(boorabong-golebang-bijarim-trip-20260801, 2026-08-01)와 형제 프로젝트(boorabong-bijarim-forest-walk-20260811, 30초)를 확인했으나 두 프로젝트 모두 비자림 배경 사용에 대한 담당자의 명시적 승인 기록이 없다(승인 이력에 '스토리보드 선택 미요청', '제작·비용 승인 미요청' 상태만 존재). 따라서 이번 15초 프로젝트에서도 비자림 배경은 '담당자 확인 필요' 상태를 그대로 유지한다."
+    }
+  },
+  "reviews": {
+    "planning": {
+      "status": "not_started",
+      "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/review/planning-review.md",
+      "reviewed_at": null
+    },
+    "video": {
+      "status": "not_started",
+      "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260811-15s/review/video-review.md",
+      "reviewed_at": null
+    }
+  },
+  "approvals": {
+    "planning": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null
+    },
+    "production": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "selected_storyboard": null,
+      "estimated_credits": null,
+      "clip_count": null,
+      "regeneration_limit": null,
+      "cost_usage_approved": false
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "platforms": [],
+      "content_sha256": null,
+      "targets": []
+    }
+  },
+  "costs": {
+    "ai_tool_usage": "가이드 주입 단계 — 이미지·영상 생성 모델 호출 없음",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0
+  },
+  "model_versions": {},
+  "artifact_versions": {
+    "plan": "v1"
+  },
+  "errors": []
+}
