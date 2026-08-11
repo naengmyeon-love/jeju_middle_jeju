@@ -115,6 +115,42 @@ else
   echo "  SKIP  build-pongdang-prompt.mjs 를 찾지 못했습니다"
 fi
 
+# 승인 경로의 슬러그 검증.
+#
+# 화면에서 온 값이 파일 경로가 되는 유일한 지점이다. 여기가 뚫리면 승인 API 가
+# 프로젝트 밖 임의 파일을 가리킬 수 있다. 서버를 띄우지 않고 함수만 직접 부른다.
+echo
+echo "── 승인 슬러그 검증 ──────────────────────────────────────────"
+slug_expect() {
+  local want="$1" label="$2" slug="$3"
+  local got
+  # 슬러그를 argv 로 넘기면 "-leading" 같은 값을 node 가 자기 옵션으로 읽는다.
+  # 검사 대상이 곧 하이픈으로 시작하는 문자열이므로 환경 변수로 넘긴다.
+  got="$(SLUG="$slug" node --input-type=module -e "
+    import { logPathForSlug } from '${here}/server/projects.mjs';
+    console.log(logPathForSlug(process.env.SLUG) === null ? 'null' : 'path');
+  " 2>&1 | tail -1)"
+  if [ "$got" = "$want" ]; then
+    printf '  PASS  %-46s (%s)\n' "$label" "$got"
+    pass_count=$((pass_count + 1))
+  else
+    printf '  FAIL  %-46s (기대 %s, 실제 %s)\n' "$label" "$want" "$got"
+    fail_count=$((fail_count + 1))
+  fi
+}
+
+if [ -f "${here}/server/projects.mjs" ]; then
+  slug_expect null "상위 경로 탈출은 거부"        "../../../../etc/passwd"
+  slug_expect null "점 두 개는 거부"              ".."
+  slug_expect null "경로 구분자 포함은 거부"       "a/../../b"
+  slug_expect null "대문자는 거부"                "UPPER"
+  slug_expect null "빈 값은 거부"                 ""
+  slug_expect null "하이픈으로 시작하면 거부"      "-leading"
+  slug_expect path "정상 슬러그는 경로를 반환"     "boorabong-bijarim-forest-walk-20260811"
+else
+  echo "  SKIP  server/projects.mjs 를 찾지 못했습니다"
+fi
+
 # 훅은 관측만 한다. 어떤 입력에도 파이프라인을 막으면 안 된다.
 echo
 echo "── 훅 (관측 전용) ────────────────────────────────────────────"

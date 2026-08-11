@@ -12,6 +12,7 @@
 import { createServer } from "node:http";
 
 import { checkGate, STAGES } from "./gate.mjs";
+import { listProjects, logPathForSlug } from "./projects.mjs";
 import {
   enqueueResume,
   DURATIONS,
@@ -126,6 +127,27 @@ const routes = [
     pattern: /^\/api\/jobs$/,
     handler: (_req, res) => json(res, 200, { jobs: listJobs(), ...queueDepth() }),
   },
+  {
+    method: "GET",
+    pattern: /^\/api\/projects$/,
+    handler: async (_req, res) => json(res, 200, { projects: await listProjects() }),
+  },
+  {
+    // 승인 화면이 세 단계 상태를 한 번에 보여줄 수 있도록 판정만 한다.
+    // 조회이므로 승인 기록을 남기지 않는다. 승인은 POST /api/approve 뿐이다.
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/gate$/,
+    handler: async (_req, res, [slug]) => {
+      const logPath = logPathForSlug(slug);
+      if (!logPath) return json(res, 400, { error: "projectSlug 형식이 올바르지 않습니다." });
+      const stages = {};
+      for (const stage of STAGES) {
+        const gate = await checkGate(logPath, stage);
+        stages[stage] = { ok: gate.ok, reason: gate.reason, detail: gate.output };
+      }
+      json(res, 200, { slug, logPath, stages });
+    },
+  },
 
   // ── 실행 ───────────────────────────────────────────────────────────
   {
@@ -213,13 +235,16 @@ const routes = [
     handler: async (req, res) => {
       const body = await readJsonBody(req);
       const stage = String(body.stage ?? "video");
-      const logPath = String(body.logPath ?? "");
 
       if (!STAGES.includes(stage)) {
         return json(res, 400, { error: `stage 는 ${STAGES.join(", ")} 중 하나여야 합니다.` });
       }
+
+      // 경로가 아니라 슬러그만 받는다. 화면이 경로를 만들어 보낼 수 있으면
+      // 그것이 곧 임의 파일 지정 경로가 된다. 경로는 서버만 만든다.
+      const logPath = logPathForSlug(String(body.projectSlug ?? ""));
       if (!logPath) {
-        return json(res, 400, { error: "logPath 가 필요합니다." });
+        return json(res, 400, { error: "projectSlug 형식이 올바르지 않습니다." });
       }
 
       // 프론트엔드가 승인 버튼을 눌렀다는 사실만으로는 통과시키지 않는다.
@@ -272,5 +297,7 @@ server.listen(PORT, HOST, () => {
   console.log(`  GET  /api/options          주제·캐릭터 화이트리스트`);
   console.log(`  POST /api/jobs             {themeId, cast[]} → 파이프라인 실행`);
   console.log(`  GET  /api/jobs/:id/events  SSE 진행 상황`);
-  console.log(`  POST /api/approve          {stage, logPath} → 게이트 재검증`);
+  console.log(`  GET  /api/projects         프로젝트 목록`);
+  console.log(`  GET  /api/projects/:slug/gate  3단계 게이트 판정 (조회)`);
+  console.log(`  POST /api/approve          {stage, projectSlug} → 게이트 재검증`);
 });
