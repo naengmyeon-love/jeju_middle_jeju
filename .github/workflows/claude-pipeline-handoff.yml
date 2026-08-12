@@ -71,7 +71,7 @@ jobs:
             Stop at explicit production/cost approval and comment the required storyboard choice, references, estimated credits, clip count, and regeneration cap on the issue.
           claude_args: |
             --model ${{ vars.CLAUDE_MODEL }}
-            --max-turns 30
+            --max-turns 60
             --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Read,Write,Edit,Glob,Grep"
       - name: Commit Claude handoff results to the Timely branch
         shell: bash
