@@ -37,14 +37,14 @@
     }
   ],
   "image_generation": {
-    "contract_version": "1.1",
+    "contract_version": "1.2",
     "authority_note": "여기의 lock 문자열은 원본 페이지에서 확인한 사실만 담는다. 프롬프트 작성 시 문장을 바꾸지 말고 그대로 붙여 넣는다.",
     "mandatory": {
       "reference_conditioning": true,
       "rule": "캐릭터가 등장하는 모든 이미지·영상 생성은 해당 캐릭터의 공식 페이지 PNG를 레퍼런스 이미지로 반드시 첨부한다. 레퍼런스 없이 텍스트 프롬프트만으로 호출하지 않는다.",
       "model_routing": {
-        "character_image": "nano_banana_flash (CLI job_type). 표시명은 Nano Banana 2. 어려운 컷은 nano_banana_pro",
-        "reason": "레퍼런스 구동 캐릭터·카툰 이미지 기본 모델",
+        "character_image": "nano_banana_pro (CLI job_type). 표시명은 Nano Banana Pro. 저비용이 필요한 컷은 nano_banana_flash",
+        "reason": "레퍼런스 구동 캐릭터·카툰 이미지 기본 모델을 고품질 등급으로 상향",
         "not_allowed": [
           "soul-id (실사 인물 얼굴 전용, 2D 캐릭터에 사용 금지)"
         ],
