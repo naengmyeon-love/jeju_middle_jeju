@@ -1,0 +1,44 @@
+{
+  "schema": "pongdang-pipeline-execution:v1",
+  "run_by": "pongdang-pipeline-agent",
+  "model": "Solar Pro 4",
+  "execution_id": "pongdang-pipeline-agent/2026-08-13T01:11:00+09:00",
+  "executed_at_local": "2026-08-13T01:11:00+09:00",
+  "source": {
+    "owner": "naengmyeon-love",
+    "repo": "jeju_middle_jeju",
+    "issue_number": 2,
+    "issue_url": "https://github.com/naengmyeon-love/jeju_middle_jeju/issues/2"
+  },
+  "selection": {
+    "state": "open",
+    "labels": ["pipeline-request"],
+    "author_association": "OWNER",
+    "reason": "pipeline-request 라벨이 있고 timely-processing/timely-complete가 없는 가장 오래된 열린 이슈"
+  },
+  "result_files": [
+    "planning/plan-a.md",
+    "planning/plan-b.md",
+    "planning/plan-c.md",
+    "planning/scenario.md",
+    "storyboard/storyboard-a.md",
+    "storyboard/storyboard-b.md",
+    "storyboard/storyboard-c.md",
+    "metadata/production-log.json"
+  ],
+  "branch": "pipeline/issue-2",
+  "pull_request": null,
+  "adoption": {
+    "status": "not_adopted",
+    "note": "캐릭터 가이드는 Claude Code가 공식 가이드와 원본 페이지를 확인해 수정·채택하기 전까지 제작용 결과가 아님"
+  },
+  "scope": {
+    "allowed": ["planning copy generation"],
+    "forbidden": ["image generation", "video generation", "higgsfield", "claude code handoff", "external distribution"]
+  },
+  "notes": [
+    "무료 기획 문안까지만 실행",
+    "이미지·영상·외부 배포 금지(smoke test)",
+    "캐릭터 가이드 적용/준수 판정하지 않음"
+  ]
+}
