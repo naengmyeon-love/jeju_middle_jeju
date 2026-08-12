@@ -5,6 +5,13 @@ on:
   workflow_run:
     workflows: ["Approved final video"]
     types: [completed]
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - "unsorted/outputs/projects/**"
+      - "config/model-policy.json"
+      - ".github/workflows/deploy-pages.yml"
 
 permissions:
   contents: read
@@ -17,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
