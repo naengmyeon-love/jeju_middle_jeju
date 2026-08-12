@@ -27,7 +27,10 @@
     "metadata/production-log.json"
   ],
   "branch": "pipeline/issue-2",
-  "pull_request": null,
+  "pull_request": {
+    "number": 3,
+    "url": "https://github.com/naengmyeon-love/jeju_middle_jeju/pull/3"
+  },
   "adoption": {
     "status": "not_adopted",
     "note": "캐릭터 가이드는 Claude Code가 공식 가이드와 원본 페이지를 확인해 수정·채택하기 전까지 제작용 결과가 아님"
