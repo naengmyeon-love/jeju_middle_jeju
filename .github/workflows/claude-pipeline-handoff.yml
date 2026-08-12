@@ -58,6 +58,8 @@ jobs:
       - run: ./install.sh --check
       - name: Apply guide, review, and stop at production approval
         uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ github.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
@@ -72,7 +74,7 @@ jobs:
           claude_args: |
             --model ${{ vars.CLAUDE_MODEL }}
             --max-turns 60
-            --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Read,Write,Edit,Glob,Grep"
+            --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Bash(gh issue comment *),Read,Write,Edit,Glob,Grep"
       - name: Commit Claude handoff results to the Timely branch
         if: always()
         env:
