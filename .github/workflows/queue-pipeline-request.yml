@@ -30,8 +30,12 @@ jobs:
               exit 1
               ;;
           esac
-          if [[ "$ISSUE_BODY" != *"pongdang-pipeline-request:v1"* ]]; then
-            echo "Issue form marker is missing." >&2
+          # GitHub Issue Forms drop `type: markdown` blocks from the submitted body,
+          # so the literal "pongdang-pipeline-request:v1" marker never survives submission.
+          # Check the actual required-field headers instead.
+          if [[ "$ISSUE_BODY" != *"### 콘텐츠 주제"* ]] || [[ "$ISSUE_BODY" != *"### 핵심 상황"* ]] || \
+             [[ "$ISSUE_BODY" != *"무료 기획 문안까지만 자동 실행되며 유료 생성·외부 배포는 별도 승인임을 확인했습니다"* ]]; then
+            echo "Issue body does not match the pipeline-request.yml form schema." >&2
             exit 1
           fi
       - name: Create queue labels
