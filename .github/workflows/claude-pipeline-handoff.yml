@@ -60,6 +60,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
           prompt: |
             Continue authenticated pipeline issue #${{ github.event.issue.number || inputs.issue_number }} after Timely Agent completed its text-only drafts.
             The Timely PR branch is already checked out. Work only on that branch.
