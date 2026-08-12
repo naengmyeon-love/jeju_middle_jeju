@@ -1,0 +1,460 @@
+{
+  "project_id": "boorabong-leaf-mistake-20260812",
+  "created_at": "2026-08-13T01:11:00+09:00",
+  "updated_at": "2026-08-12T23:33:46.732Z",
+  "input": {
+    "topic": "부라봉이 바람에 날아간 잎사귀를 자기 잎사귀로 착각하는 소동",
+    "characters": [
+      "부라봉"
+    ],
+    "core_situation": "마당에서 쉬던 부라봉이 바람에 날아간 잎사귀를 자기 잎사귀로 착각하고 소동을 벌이다가 손거울로 확인한 뒤 머쓱하게 웃는다",
+    "emotion": "즐거움 · 코믹",
+    "duration_seconds": 15,
+    "aspect_ratio": "9:16",
+    "tools": [
+      "Higgsfield"
+    ],
+    "request_path": "input/request.json",
+    "source": "Timely Agent (Solar Pro 4) GitHub 커넥터 — issue #2 pipeline-request"
+  },
+  "outputs": {
+    "request": "input/request.json",
+    "plan_a": "planning/plan-a.md",
+    "plan_b": "planning/plan-b.md",
+    "plan_c": "planning/plan-c.md",
+    "scenario": "planning/scenario.md",
+    "storyboard_a": "storyboard/storyboard-a.md",
+    "storyboard_b": "storyboard/storyboard-b.md",
+    "storyboard_c": "storyboard/storyboard-c.md",
+    "storyboard_images_a": [],
+    "storyboard_images_b": [],
+    "storyboard_images_c": [],
+    "storyboard_prompts": [
+      "storyboard/prompts/a1.txt",
+      "storyboard/prompts/a2.txt",
+      "storyboard/prompts/a3.txt",
+      "storyboard/prompts/a4.txt",
+      "storyboard/prompts/a5.txt",
+      "storyboard/prompts/b1.txt",
+      "storyboard/prompts/b2.txt",
+      "storyboard/prompts/b3.txt",
+      "storyboard/prompts/b4.txt",
+      "storyboard/prompts/b5.txt",
+      "storyboard/prompts/c1.txt",
+      "storyboard/prompts/c2.txt",
+      "storyboard/prompts/c3.txt",
+      "storyboard/prompts/c4.txt",
+      "storyboard/prompts/c5.txt"
+    ],
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "1.1",
+    "applied_at": "2026-08-13T01:35:00+09:00",
+    "source_pdf": "shared/references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "verified_pages": [
+      3,
+      8,
+      9,
+      10
+    ],
+    "verified_pages_detail": [
+      {
+        "page": 3,
+        "name": "기본 세계관",
+        "confirmed": "고르방의 집에 부라봉을 시작으로 여러 캐릭터가 모여든다. 부라봉은 한라봉 박스에 같이 온 기억상실 사고뭉치. 무대는 고르방의 집."
+      },
+      {
+        "page": 8,
+        "name": "부라봉 소개",
+        "confirmed": "정신연령 1살, ENFP-A, 대책없는 호기심·사고뭉치. 말 끝에 '봉'을 붙임(고향 사투리). '명품' 스티커는 이 소개 일러스트에서만 확인됨."
+      },
+      {
+        "page": 9,
+        "name": "부라봉 턴어라운드",
+        "confirmed": "정면·측면·후면 형태, 꼭지 이파리 방향, 흰색 기저귀형 하의, 짧고 뭉툭한 팔다리를 눈으로 확인."
+      },
+      {
+        "page": 10,
+        "name": "부라봉 사용 규칙",
+        "confirmed": "기본 눈은 정원(작거나 크게 X), 세로눈 불가, 윗입술은 뒤집힌 갈매기(3자) 형태 유지, 눈·입 상하 간격 벌어짐 주의, 1.5등신, 앞모습이 옆모습보다 넓적, 이파리 위치 좌우 모두 허용, 감정 변형은 채워진 형태만(흰자·동공 분리 없음)."
+      }
+    ],
+    "workflow_guide_read": "shared/references/WORKFLOW_GUIDE.md",
+    "structured_guides_read": [
+      "shared/guides/character-guide.md",
+      "data/character-guide.json",
+      "skills/higgsfield-prompt-builder/references/image-generation-contract.json"
+    ],
+    "categories": [
+      "캐릭터",
+      "브랜드·디자인",
+      "콘텐츠 제한",
+      "기술"
+    ],
+    "targets": [
+      "기획안",
+      "시나리오",
+      "스토리보드",
+      "프롬프트"
+    ],
+    "absolute_rules_injected": [
+      "부라봉의 기억상실 이전 과거를 확정하지 않는다",
+      "무대는 고르방의 집(마당 포함)이며 구애구가 지키는 할머니의 귤밭과 구분한다",
+      "공식 6인 외 캐릭터를 생성하지 않는다 (이번 편은 부라봉 단독)",
+      "부라봉 어미는 ~다봉 / ~라봉 / ~냐봉 / ~다봉봉 만 사용한다",
+      "이미지 안에 글자·자막·말풍선·로고·워터마크를 굽지 않는다",
+      "제작·비용 승인 전에는 Higgsfield를 호출하지 않는다 (텍스트·프롬프트 조립까지만)"
+    ],
+    "needs_human_confirmation": [
+      "공식 컬러 팔레트 HEX (미확보 — 서술형 색상만 사용)",
+      "로고 사용 규정 (미확보 — 로고 미사용)",
+      "손거울(반사면) 소품의 형태·크기 (공식 소품 목록 미확보 — 신규 소품)",
+      "마당의 조경·소품 세부 (공식 배경 목록 미확보)",
+      "부라봉 '명품' 스티커 상시 요소 여부 (미확정 — 이번 편 미사용)",
+      "배경음악·효과음 사용 여부와 저작권"
+    ]
+  },
+  "reviews": {
+    "planning": {
+      "status": "conditional",
+      "path": "review/planning-review.md",
+      "reviewed_at": "2026-08-13T02:15:00+09:00"
+    },
+    "video": {
+      "status": "not_started",
+      "path": "review/video-review.md",
+      "reviewed_at": null
+    }
+  },
+  "approvals": {
+    "production": {
+      "status": "pending",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "이슈 #2 코멘트로 스토리보드 선택·레퍼런스·예상 크레딧·클립 수·재생성 상한을 요청함. Claude Code는 담당자를 대신해 승인하지 않는다.",
+      "selected_storyboard": null,
+      "estimated_credits": null,
+      "clip_count": null,
+      "regeneration_limit": null,
+      "cost_usage_approved": false
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "영상 미생성"
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "담당자가 배포를 요청하지 않았다.",
+      "platforms": [],
+      "content_sha256": null,
+      "targets": []
+    }
+  },
+  "timings": {},
+  "costs": {
+    "ai_tool_usage": "Higgsfield (미실행)",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0
+  },
+  "metrics": {},
+  "model_versions": {
+    "planned_image_model": "nano_banana_flash (표시명 Nano Banana 2)",
+    "planned_image_resolution": "2k",
+    "planned_aspect_ratio": "9:16",
+    "planned_video_model": "미정 — 제작·비용 승인 시 확정 (Kling 3.0 또는 Seedance 2.0 후보)",
+    "prompt_builder": "unsorted/scripts/build-pongdang-prompt.mjs",
+    "prompt_contract_version": "1.1"
+  },
+  "image_generation": {
+    "preflight_gate": {
+      "reference_pages_verified": true,
+      "reference_paths_exist": true,
+      "lock_en_verbatim": true,
+      "forbidden_in_negative": true,
+      "group_shot_height_order": "해당 없음 (부라봉 단독)",
+      "unavailable_values_not_invented": true,
+      "paid_call_approval_recorded": false,
+      "result": "프롬프트 조립 게이트 15/15 통과 (정지 이미지 입력 게이트 포함). 유료 호출 승인은 아직 없음"
+    },
+    "scenes": [
+      {
+        "id": "a1",
+        "variant": "A",
+        "scene": 1,
+        "camera": "front-facing medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "a2",
+        "variant": "A",
+        "scene": 2,
+        "camera": "front-facing medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "a3",
+        "variant": "A",
+        "scene": 3,
+        "camera": "front-facing close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "a4",
+        "variant": "A",
+        "scene": 4,
+        "camera": "front-facing medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "a5",
+        "variant": "A",
+        "scene": 5,
+        "camera": "front-facing close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "b1",
+        "variant": "B",
+        "scene": 1,
+        "camera": "front-facing medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "b2",
+        "variant": "B",
+        "scene": 2,
+        "camera": "wide shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "b3",
+        "variant": "B",
+        "scene": 3,
+        "camera": "close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "b4",
+        "variant": "B",
+        "scene": 4,
+        "camera": "front-facing medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "b5",
+        "variant": "B",
+        "scene": 5,
+        "camera": "close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "c1",
+        "variant": "C",
+        "scene": 1,
+        "camera": "medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "c2",
+        "variant": "C",
+        "scene": 2,
+        "camera": "wide shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "c3",
+        "variant": "C",
+        "scene": 3,
+        "camera": "close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "c4",
+        "variant": "C",
+        "scene": 4,
+        "camera": "medium shot",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      },
+      {
+        "id": "c5",
+        "variant": "C",
+        "scene": 5,
+        "camera": "close-up",
+        "reference_pages": [
+          8,
+          9,
+          10
+        ],
+        "negative_items": 16,
+        "gate": "passed",
+        "generated": false
+      }
+    ],
+    "postcheck": "미수행 — 생성된 이미지가 없다. Higgsfield를 호출하지 않았다 (담당자 지시에 따른 의도적 중단)."
+  },
+  "artifact_versions": {
+    "character_guide": "1.1",
+    "production_log_schema": "1.0",
+    "plan": "1.1",
+    "scenario": "1.1",
+    "storyboard": "1.1"
+  },
+  "publications": [],
+  "errors": [],
+  "execution_history": [
+    {
+      "id": "timely-plan-001",
+      "agent": "Timely Agent",
+      "model": "Solar Pro 4",
+      "stage": "plan",
+      "started_at": "2026-08-13T01:11:00+09:00",
+      "finished_at": "2026-08-13T01:12:00+09:00",
+      "status": "succeeded",
+      "output_files": [
+        "planning/plan-a.md",
+        "planning/plan-b.md",
+        "planning/plan-c.md"
+      ],
+      "adopted": false,
+      "recorded_at": "2026-08-12T23:33:37.806Z"
+    },
+    {
+      "id": "timely-scenario-001",
+      "agent": "Timely Agent",
+      "model": "Solar Pro 4",
+      "stage": "scenario",
+      "started_at": "2026-08-13T01:12:00+09:00",
+      "finished_at": "2026-08-13T01:13:00+09:00",
+      "status": "succeeded",
+      "output_files": [
+        "planning/scenario.md"
+      ],
+      "adopted": false,
+      "recorded_at": "2026-08-12T23:33:45.772Z"
+    },
+    {
+      "id": "timely-storyboard-001",
+      "agent": "Timely Agent",
+      "model": "Solar Pro 4",
+      "stage": "storyboard_copy",
+      "started_at": "2026-08-13T01:13:00+09:00",
+      "finished_at": "2026-08-13T01:14:00+09:00",
+      "status": "succeeded",
+      "output_files": [
+        "storyboard/storyboard-a.md",
+        "storyboard/storyboard-b.md",
+        "storyboard/storyboard-c.md"
+      ],
+      "adopted": false,
+      "recorded_at": "2026-08-12T23:33:46.732Z"
+    }
+  ]
+}
