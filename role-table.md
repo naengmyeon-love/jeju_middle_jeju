@@ -47,5 +47,6 @@
 | `reviews` | auto-reviewer |
 | `approvals.*` | approval-logger |
 | `costs`, `model_versions`, `timings` | video-generator |
+| `execution_history` | 실행한 Timely Agent 또는 Claude Code — `scripts/record-model-run.mjs` 정책 검증 후 기록 |
 | `artifact_versions` | 각 산출 단계 |
 | `errors` | 전체 |

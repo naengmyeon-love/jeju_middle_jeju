@@ -6,7 +6,10 @@
   "status": "fixture",
   "input": {
     "topic": "픽스처: 게이트 통과 경로 검증",
-    "characters": ["boo-rabong", "gorbang"],
+    "characters": [
+      "boo-rabong",
+      "gorbang"
+    ],
     "duration_sec": 30,
     "aspect_ratio": "9:16"
   },
@@ -14,9 +17,23 @@
     "version": "2.2",
     "applied_at": "2026-08-06T00:00:00+09:00",
     "source_pdf": "fixture://character-manual.pdf",
-    "verified_pages": [3, 7, 8],
-    "categories": ["characters", "visual", "brand_safety", "technical"],
-    "targets": ["plan", "scenario", "storyboard", "video"]
+    "verified_pages": [
+      3,
+      7,
+      8
+    ],
+    "categories": [
+      "characters",
+      "visual",
+      "brand_safety",
+      "technical"
+    ],
+    "targets": [
+      "plan",
+      "scenario",
+      "storyboard",
+      "video"
+    ]
   },
   "anchors": {
     "boo-rabong": {
@@ -24,14 +41,20 @@
       "approved": true,
       "approved_by": "담당자(픽스처)",
       "approved_at": "2026-08-06T00:00:00+09:00",
-      "checked_pages": [7, 8]
+      "checked_pages": [
+        7,
+        8
+      ]
     },
     "gorbang": {
       "path": "fixture/anchors/gorbang.png",
       "approved": true,
       "approved_by": "담당자(픽스처)",
       "approved_at": "2026-08-06T00:00:00+09:00",
-      "checked_pages": [9, 10]
+      "checked_pages": [
+        9,
+        10
+      ]
     }
   },
   "scene_images": [
@@ -124,7 +147,9 @@
       "explicit": true,
       "reviewer": "담당자(픽스처)",
       "approved_at": "2026-08-06T00:00:00+09:00",
-      "platforms": ["youtube_shorts"],
+      "platforms": [
+        "youtube_shorts"
+      ],
       "account": "fixture-account",
       "visibility": "private",
       "scheduled_at": "2026-08-07T09:00:00+09:00",
@@ -157,5 +182,59 @@
     "video_draft": "fixture/video/draft.mp4",
     "video_final": "fixture/video/final.mp4"
   },
-  "errors": []
+  "errors": [],
+  "video_clips": [
+    {
+      "id": "scene-01",
+      "path": "fixture/video/clips/scene-01.mp4",
+      "model": "fixture-video-model-v1",
+      "prompt": "픽스처 영상 컷 1 프롬프트 (higgsfield-prompt-builder 조립본)",
+      "link": "start-frame",
+      "start_image": "fixture/anchors/boo-rabong.png",
+      "last_frame": "fixture/video/frames/scene-01-last.png",
+      "first": true,
+      "duration_seconds": 4,
+      "postcheck": {
+        "status": "passed",
+        "violations": [],
+        "checked_at": "2026-08-06T00:00:00+09:00",
+        "checked_by": "auto-reviewer"
+      }
+    },
+    {
+      "id": "scene-02",
+      "path": "fixture/video/clips/scene-02.mp4",
+      "model": "fixture-video-model-v1",
+      "prompt": "픽스처 영상 컷 2 프롬프트 (higgsfield-prompt-builder 조립본)",
+      "link": "start-frame",
+      "start_image": "fixture/video/frames/scene-01-last.png",
+      "last_frame": "fixture/video/frames/scene-02-last.png",
+      "prev": "scene-01",
+      "duration_seconds": 4,
+      "postcheck": {
+        "status": "passed",
+        "violations": [],
+        "checked_at": "2026-08-06T00:00:00+09:00",
+        "checked_by": "auto-reviewer"
+      }
+    },
+    {
+      "id": "scene-03",
+      "path": "fixture/video/clips/scene-03.mp4",
+      "model": "fixture-video-model-v1",
+      "prompt": "픽스처 영상 컷 3 프롬프트 (higgsfield-prompt-builder 조립본)",
+      "link": "extender",
+      "extender_reason": "컷 2 의 뛰어오르는 동작이 컷 경계를 가로지른다 (스토리보드 A안 연결 칸 표시)",
+      "start_image": "fixture/video/frames/scene-02-last.png",
+      "last_frame": "fixture/video/frames/scene-03-last.png",
+      "prev": "scene-02",
+      "duration_seconds": 3,
+      "postcheck": {
+        "status": "passed",
+        "violations": [],
+        "checked_at": "2026-08-06T00:00:00+09:00",
+        "checked_by": "auto-reviewer"
+      }
+    }
+  ]
 }

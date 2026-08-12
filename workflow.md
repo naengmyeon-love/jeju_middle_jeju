@@ -22,6 +22,8 @@
    ├─ 8  ▣ 제작·비용 승인 ────────── approvals.production
    ├─ 9  ◆ 게이트 --stage video ──── exit 1 이면 되돌아간다
    ├─ 10 video-generator ────────── video/draft.mp4     ← 첫 유료 호출
+   │     └─ 컷 체인: 직전 컷 마지막 프레임 → 다음 컷 start image
+   │        (Extender 는 스토리보드에 표시된 예외 구간만)
    ├─ 11 auto-reviewer ──────────── review/video-review.md
    ├─ 12 ◆ 게이트 --stage final
    │
@@ -56,6 +58,9 @@
 4. 모델에 보내는 레퍼런스는 `unsorted/character-references/refs/`의 캐릭터 크롭이다.
    매뉴얼 페이지 전체는 사람 검수용이며 모델에 보내지 않는다.
 5. 기준 우선순위: 공식 PDF/페이지 PNG → `data/character-guide.*` → 사용자 입력 → 생성 결과
+6. 영상 컷의 시작 이미지는 직전 컷의 **실제 마지막 프레임**이다
+   (`unsorted/scripts/extract-last-frame.mjs`로 뽑는다). 프레임이 없거나 열리지 않으면
+   그 컷을 생성하지 않는다. 공식 원본과 충돌하면 공식 원본을 따른다.
 
 ## 중단 시 처리
 

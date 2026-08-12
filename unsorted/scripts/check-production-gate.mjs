@@ -41,14 +41,15 @@ function usage() {
 
 단계별로 막는 것:
   video    장면 컷에 미해결 위반이 남아 있으면 영상 생성 차단 (기본값)
-  final    위 + 영상 검수가 통과 상태여야 최종 승인 가능
+  final    위 + 영상 검수가 통과 상태여야 하고, 컷 체인 기록이 온전해야 최종 승인 가능
   publish  위 + 최종 승인이 명시적으로 기록되어야 외부 배포 가능
 
 검사 항목:
   - 앵커 컷이 캐릭터마다 있고 사람이 승인했는가
   - 장면 컷마다 path·model·prompt·references 기록이 있는가
   - 장면 컷마다 postcheck.status 가 passed 인가
-  - 장면 컷이 앵커·직전 컷 체이닝을 실제로 썼는가`);
+  - 장면 컷이 앵커·직전 컷 체이닝을 실제로 썼는가
+  - (final 부터) 영상 컷마다 link·start_image 가 있고, 컷 N 이 직전 컷의 마지막 프레임에서 시작하는가`);
 }
 
 const args = parseArgs(process.argv.slice(2));
@@ -166,6 +167,74 @@ for (const scene of scenes) {
   }
 }
 
+// ── 영상 컷 체인 ──────────────────────────────────────────────────────────
+//
+// 컷 N 의 start image 는 컷 N-1 의 실제 마지막 프레임이어야 한다. 기록이 없으면
+// 공식 레퍼런스로 아무 컷이나 시작해 놓고 "연결했다"고 적을 수 있다.
+// video 단계에서는 아직 클립이 없으므로 검사하지 않고, final 부터 막는다.
+const clips = log.video_clips ?? [];
+
+if (stage === "final" || stage === "publish") {
+  if (clips.length === 0) {
+    blockers.push(
+      "video_clips 기록이 없습니다. 컷마다 경로·연결 방식·start image 출처를 남겨야 합니다.",
+    );
+  }
+
+  const CLIP_REQUIRED_FIELDS = ["path", "model", "prompt", "link", "start_image"];
+  const LINK_MODES = ["start-frame", "extender"];
+
+  for (const clip of clips) {
+    const label = clip.id ?? clip.path ?? "(이름 없는 컷)";
+
+    for (const field of CLIP_REQUIRED_FIELDS) {
+      const value = clip[field];
+      if (value === undefined || value === null || value === "") {
+        blockers.push(`${label}: ${field} 기록이 없습니다.`);
+      }
+    }
+
+    if (clip.link !== undefined && !LINK_MODES.includes(clip.link)) {
+      blockers.push(
+        `${label}: 알 수 없는 link "${clip.link}". ${LINK_MODES.join(" / ")} 중 하나여야 합니다.`,
+      );
+      continue;
+    }
+
+    if (clip.link === "extender") {
+      // Extender 는 예외 경로다. 사유 없이 쓰면 드리프트가 누적되는 쪽으로 조용히 되돌아간다.
+      if (!clip.extender_reason) {
+        blockers.push(
+          `${label}: link=extender 인데 extender_reason 이 없습니다. ` +
+            "스토리보드에 표시된 예외 구간만 Extender 를 쓸 수 있습니다.",
+        );
+      }
+      continue;
+    }
+
+    // 여기부터는 link=start-frame 인 컷이다.
+    if (clip.first === true) {
+      if (typeof clip.start_image === "string" && clip.start_image.includes("/frames/")) {
+        blockers.push(
+          `${label}: 첫 컷인데 start_image 가 직전 컷 프레임입니다 (${clip.start_image}). ` +
+            "첫 컷은 승인된 공식 레퍼런스로 시작해야 합니다.",
+        );
+      }
+      continue;
+    }
+
+    if (!clip.prev) {
+      blockers.push(`${label}: prev 기록이 없습니다. 시리즈 첫 컷이면 first: true 를 명시하십시오.`);
+    }
+    if (typeof clip.start_image === "string" && !/-last\.png$/.test(clip.start_image)) {
+      blockers.push(
+        `${label}: start_image 가 직전 컷의 마지막 프레임이 아닙니다 (${clip.start_image}). ` +
+          "extract-last-frame.mjs 로 뽑은 frames/scene-NN-last.png 여야 합니다.",
+      );
+    }
+  }
+}
+
 // ── 단계별 추가 조건 ──────────────────────────────────────────────────────
 if (stage === "final" || stage === "publish") {
   const videoReview = log.reviews?.video;
@@ -202,5 +271,6 @@ if (blockers.length > 0) {
 
 console.log(
   `게이트 통과 — ${projectId} / stage=${stage} / 장면 ${scenes.length}컷, 앵커 ${anchorIds.length}개` +
+    (clips.length > 0 ? `, 영상 ${clips.length}컷` : "") +
     (warnings.length > 0 ? ` (경고 ${warnings.length}건)` : ""),
 );

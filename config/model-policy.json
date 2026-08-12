@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "timely_connector": {
+    "provider": "Timely Agent",
+    "workspace_url": "https://timelyai.io/upstage-jnu/timely-agent",
+    "model": "Solar Pro 4",
+    "execution_mode": "external_github_connector",
+    "secret_environment_variable": "TIMELY_AGENT_API_KEY"
+  },
+  "agents": [
+    {
+      "agent": "Timely Agent",
+      "model": "Solar Pro 4",
+      "allowed_stages": ["plan", "scenario", "storyboard_copy"]
+    },
+    {
+      "agent": "Claude Code",
+      "model": "record the exact configured Claude model",
+      "allowed_stages": [
+        "harness",
+        "character_guide",
+        "prompt_builder",
+        "image_generation",
+        "video_generation",
+        "scene_review",
+        "copy",
+        "production_approval",
+        "final_approval",
+        "distribution_plan",
+        "distribution_approval",
+        "distribution"
+      ]
+    }
+  ],
+  "stages": {
+    "plan": "기획안 3종",
+    "scenario": "시나리오",
+    "storyboard_copy": "스토리보드 문안",
+    "harness": "Harness 관리",
+    "character_guide": "캐릭터 가이드 적용",
+    "prompt_builder": "Higgsfield 프롬프트 조립",
+    "image_generation": "Higgsfield 이미지 생성",
+    "video_generation": "Higgsfield 영상 생성",
+    "scene_review": "장면별 검수",
+    "copy": "카피",
+    "production_approval": "제작·비용 승인 기록",
+    "final_approval": "최종 영상 승인 기록",
+    "distribution_plan": "배포안 작성",
+    "distribution_approval": "배포 승인 기록",
+    "distribution": "외부 배포"
+  }
+}

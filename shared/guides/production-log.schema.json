@@ -102,6 +102,22 @@
         "actual_cost_krw": {"type": "number", "minimum": 0}
       }
     },
+    "anchors": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/anchor"}
+    },
+    "scene_images": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/sceneImage"}
+    },
+    "video_clips": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/videoClip"}
+    },
+    "execution_history": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/executionRun"}
+    },
     "metrics": {"type": "object"},
     "model_versions": {"type": "object"},
     "artifact_versions": {"type": "object"},
@@ -130,6 +146,86 @@
         "reviewer": {"type": ["string", "null"]},
         "approved_at": {"type": ["string", "null"], "format": "date-time"},
         "notes": {"type": ["string", "null"]}
+      }
+    },
+    "anchor": {
+      "type": "object",
+      "required": ["path", "approved"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "approved": {"type": "boolean"},
+        "approved_by": {"type": ["string", "null"]},
+        "approved_at": {"type": ["string", "null"], "format": "date-time"},
+        "reference_pages": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "postcheck": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["passed", "violations_open", "blocked"]},
+        "violations": {"type": "array", "items": {"type": "string"}},
+        "checked_at": {"type": ["string", "null"], "format": "date-time"},
+        "checked_by": {"type": ["string", "null"]},
+        "regeneration_count": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "sceneImage": {
+      "type": "object",
+      "required": ["path", "model", "prompt", "references", "postcheck"],
+      "properties": {
+        "id": {"type": "string"},
+        "path": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "prompt": {"type": "string", "minLength": 1},
+        "references": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "first": {"type": "boolean"},
+        "prev": {"type": ["string", "null"]},
+        "postcheck": {"$ref": "#/$defs/postcheck"}
+      }
+    },
+    "videoClip": {
+      "type": "object",
+      "description": "영상 컷 하나. 컷 N 의 start_image 는 컷 N-1 의 실제 마지막 프레임이다.",
+      "required": ["path", "model", "prompt", "link", "start_image"],
+      "properties": {
+        "id": {"type": "string"},
+        "path": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "prompt": {"type": "string", "minLength": 1},
+        "link": {
+          "enum": ["start-frame", "extender"],
+          "description": "기본은 start-frame. extender 는 스토리보드에 표시된 예외 구간만."
+        },
+        "start_image": {
+          "type": "string",
+          "minLength": 1,
+          "description": "첫 컷은 승인된 공식 레퍼런스, 그 외에는 frames/scene-NN-last.png"
+        },
+        "last_frame": {"type": ["string", "null"]},
+        "extender_reason": {"type": ["string", "null"]},
+        "first": {"type": "boolean"},
+        "prev": {"type": ["string", "null"]},
+        "duration_seconds": {"type": ["number", "null"], "minimum": 0},
+        "regenerated_from": {"type": ["string", "null"]},
+        "postcheck": {"$ref": "#/$defs/postcheck"}
+      }
+    },
+    "executionRun": {
+      "description": "모델별 실제 실행 이력. model_versions 설정 메모와 구분한다.",
+      "type": "object",
+      "required": ["id", "agent", "model", "stage", "started_at", "finished_at", "status", "output_files", "adopted", "recorded_at"],
+      "properties": {
+        "id": {"type": "string", "minLength": 6},
+        "agent": {"enum": ["Timely Agent", "Claude Code"]},
+        "model": {"type": "string", "minLength": 1},
+        "stage": {"type": "string", "minLength": 1},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": ["string", "null"], "format": "date-time"},
+        "status": {"enum": ["queued", "running", "succeeded", "failed", "blocked", "cancelled"]},
+        "output_files": {"type": "array", "items": {"type": "string"}},
+        "adopted": {"type": "boolean"},
+        "recorded_at": {"type": "string", "format": "date-time"}
       }
     },
     "distributionTarget": {

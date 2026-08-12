@@ -78,6 +78,10 @@
         "actual_cost_krw": {"type": "number", "minimum": 0}
       }
     },
+    "execution_history": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/executionRun"}
+    },
     "metrics": {"type": "object"},
     "model_versions": {"type": "object"},
     "artifact_versions": {"type": "object"},
@@ -102,6 +106,23 @@
         "reviewer": {"type": ["string", "null"]},
         "approved_at": {"type": ["string", "null"], "format": "date-time"},
         "notes": {"type": ["string", "null"]}
+      }
+    },
+    "executionRun": {
+      "description": "모델별 실제 실행 이력. model_versions 설정 메모와 구분한다.",
+      "type": "object",
+      "required": ["id", "agent", "model", "stage", "started_at", "finished_at", "status", "output_files", "adopted", "recorded_at"],
+      "properties": {
+        "id": {"type": "string", "minLength": 6},
+        "agent": {"enum": ["Timely Agent", "Claude Code"]},
+        "model": {"type": "string", "minLength": 1},
+        "stage": {"type": "string", "minLength": 1},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": ["string", "null"], "format": "date-time"},
+        "status": {"enum": ["queued", "running", "succeeded", "failed", "blocked", "cancelled"]},
+        "output_files": {"type": "array", "items": {"type": "string"}},
+        "adopted": {"type": "boolean"},
+        "recorded_at": {"type": "string", "format": "date-time"}
       }
     }
   }

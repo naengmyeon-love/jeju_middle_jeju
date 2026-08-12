@@ -14,6 +14,7 @@ import { createServer } from "node:http";
 import { checkGate, STAGES } from "./gate.mjs";
 import { LIMITS, sanitizeFreeText } from "./freetext.mjs";
 import { listProjects, logPathForSlug } from "./projects.mjs";
+import { CONTENT_LIMITS, readStoryboard, saveStoryboard } from "./storyboard.mjs";
 import {
   enqueueResume,
   DURATIONS,
@@ -154,6 +155,8 @@ const routes = [
         // 두 값이 갈라지면 사용자는 다 쓴 뒤에야 400 을 본다.
         customId: CUSTOM_ID,
         limits: LIMITS,
+        // 스토리보드 본문 수정의 글자 수 상한도 같은 이유로 함께 내려준다.
+        storyboardLimits: CONTENT_LIMITS,
       });
     },
   },
@@ -181,6 +184,33 @@ const routes = [
         stages[stage] = { ok: gate.ok, reason: gate.reason, detail: gate.output };
       }
       json(res, 200, { slug, logPath, stages });
+    },
+  },
+
+  // ── 스토리보드 본문 수정 ────────────────────────────────────────────
+  // 담당자가 화면에서 고친 대사·상황을 저장한다. storyboard-*.md 와
+  // production-log.json 은 건드리지 않는다(이유는 storyboard.mjs 주석).
+  {
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/storyboard$/,
+    handler: async (_req, res, [slug]) => {
+      const result = await readStoryboard(slug);
+      if (result.error) return json(res, result.status ?? 400, { error: result.error });
+      json(res, 200, { slug, ...result.doc });
+    },
+  },
+  {
+    method: "PUT",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/storyboard$/,
+    handler: async (req, res, [slug]) => {
+      const body = await readJsonBody(req);
+      const result = await saveStoryboard(slug, body);
+      if (result.error) {
+        // 충돌이면 서버가 아는 최신본을 함께 준다. 화면이 다시 물어보지 않아도
+        // 무엇과 부딪혔는지 그 자리에서 보여줄 수 있다.
+        return json(res, result.status ?? 400, { error: result.error, ...(result.doc ? { current: result.doc } : {}) });
+      }
+      json(res, 200, { slug, ...result.doc });
     },
   },
 
@@ -302,7 +332,7 @@ const server = createServer(async (req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "access-control-allow-origin": "*",
-      "access-control-allow-methods": "GET,POST,OPTIONS",
+      "access-control-allow-methods": "GET,POST,PUT,OPTIONS",
       "access-control-allow-headers": "content-type",
     });
     return res.end();
@@ -334,5 +364,7 @@ server.listen(PORT, HOST, () => {
   console.log(`  GET  /api/jobs/:id/events  SSE 진행 상황`);
   console.log(`  GET  /api/projects         프로젝트 목록`);
   console.log(`  GET  /api/projects/:slug/gate  3단계 게이트 판정 (조회)`);
+  console.log(`  GET  /api/projects/:slug/storyboard  저장된 본문 수정본`);
+  console.log(`  PUT  /api/projects/:slug/storyboard  {revision, content, edit} → 수정 저장`);
   console.log(`  POST /api/approve          {stage, projectSlug} → 게이트 재검증`);
 });

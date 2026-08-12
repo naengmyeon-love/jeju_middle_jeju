@@ -8,7 +8,8 @@
     "sync:contract": "node unsorted/scripts/sync-prompt-contract.mjs",
     "verify": "./verify.sh",
     "server": "node server/index.mjs",
-    "web": "npm --prefix unsorted/workflow-web run dev"
+    "web": "npm --prefix unsorted/workflow-web run dev",
+    "pages:web": "npm --prefix web run dev"
   },
   "engines": {
     "node": ">=20"

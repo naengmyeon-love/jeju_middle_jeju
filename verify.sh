@@ -58,6 +58,21 @@ expect 1 "차단 픽스처 / stage=video"   "${fixtures}/production-log.block.js
 expect 1 "차단 픽스처 / stage=final"   "${fixtures}/production-log.block.json" --stage final
 expect 1 "차단 픽스처 / stage=publish" "${fixtures}/production-log.block.json" --stage publish
 
+# 컷 체인.
+#
+# 왜 회귀 테스트가 필요한가: 연결 기록은 틀려도 영상이 정상 재생된다. 컷 경계가 튀는 것은
+# 사람이 나란히 놓고 봐야 보이고, 그때는 이미 유료 생성이 끝난 뒤다.
+# 그래서 "기록이 규칙과 맞는지"를 실행으로 고정한다.
+#
+# video 단계에서는 아직 클립이 없으므로 막지 않는다. 이 단계 분리가 무너지면
+# 첫 영상 생성 자체가 불가능해지므로 통과 쪽도 함께 고정한다.
+echo
+echo "── 컷 체인 ───────────────────────────────────────────────────"
+expect 1 "Extender 사유 없으면 차단"           "${fixtures}/production-log.chain-extender.json"   --stage final
+expect 1 "start_image 가 마지막 프레임 아니면 차단" "${fixtures}/production-log.chain-startimage.json" --stage final
+expect 0 "video 단계에서는 컷 체인 미검사"      "${fixtures}/production-log.chain-extender.json"   --stage video
+expect 0 "정상 컷 체인은 통과"                  "${fixtures}/production-log.pass.json"             --stage final
+
 echo
 echo "── 인자 처리 ─────────────────────────────────────────────────"
 expect 2 "잘못된 --stage 값은 거부"     "${fixtures}/production-log.pass.json"  --stage nonsense

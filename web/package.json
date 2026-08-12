@@ -1,0 +1,17 @@
+{
+  "name": "pongdang-pages-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build && node scripts/serve-static.mjs",
+    "data": "node scripts/build-pages-data.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "build": "npm run data && node scripts/assemble-static.mjs && tsc -p tsconfig.build.json && node scripts/check-public-build.mjs",
+    "verify": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

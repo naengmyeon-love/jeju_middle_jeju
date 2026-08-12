@@ -1,0 +1,209 @@
+{
+  "project_id": "boorabong-golebang-custom-20260812-lrvqs",
+  "created_at": "2026-08-12T13:36:17+09:00",
+  "updated_at": "2026-08-12T13:36:17+09:00",
+  "input": {
+    "topic": "부라봉이 새벽에 냉장고 여는 이야기",
+    "characters": ["부라봉", "고르방"],
+    "core_situation": "부라봉이 냉장고 문을 열자 안에 쌓여 있던 귤이 쏟아진다",
+    "emotion": "즐거움 · 코믹",
+    "duration_seconds": 15,
+    "aspect_ratio": "9:16",
+    "tools": ["Higgsfield"],
+    "request_path": "input/request.json"
+  },
+  "outputs": {
+    "request": "input/request.json",
+    "plan": "planning/plan.md",
+    "scenario": "planning/scenario.md",
+    "storyboard_a": "storyboard/storyboard-a.md",
+    "storyboard_b": "storyboard/storyboard-b.md",
+    "storyboard_c": "storyboard/storyboard-c.md",
+    "storyboard_images_a": [],
+    "storyboard_images_b": [],
+    "storyboard_images_c": [],
+    "storyboard_prompts": [
+      "storyboard/prompts/a1.txt",
+      "storyboard/prompts/a2.txt",
+      "storyboard/prompts/a3.txt",
+      "storyboard/prompts/a4.txt",
+      "storyboard/prompts/b1.txt",
+      "storyboard/prompts/b2.txt",
+      "storyboard/prompts/b3.txt",
+      "storyboard/prompts/b4.txt",
+      "storyboard/prompts/b5.txt",
+      "storyboard/prompts/c1.txt",
+      "storyboard/prompts/c2.txt",
+      "storyboard/prompts/c3.txt"
+    ],
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "2.3",
+    "applied_at": "2026-08-12T13:36:17+09:00",
+    "source_pdf": "shared/references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "verified_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13],
+    "verified_pages_detail": [
+      {"page": 3, "name": "기본 세계관", "confirmed": "제주 돌하르방 '고르방'의 집이 주 무대이고, 부라봉은 주문한 한라봉 박스에 같이 들어온 기억상실 사고뭉치다. 고르방이 갈 곳 없는 부라봉을 거두어 함께 살게 됐다. 귤밭은 구애구가 지키는 할머니의 별도 장소다."},
+      {"page": 5, "name": "인물 관계도", "confirmed": "고르방 → 부라봉 '아주아주 귀여워함'(긍정), 부라봉 → 고르방 '든든한 조력자'(긍정). 두 방향 모두 붉은 화살표(긍정 극성)다."},
+      {"page": 7, "name": "주요 등장인물·키 비례표", "confirmed": "키 순서 고르방 > 양퐁당 > 부라봉 > 구애구 > 냥냥이 > 호꼬. 이번 2인 컷에서는 고르방이 부라봉보다 확연히 크다."},
+      {"page": 8, "name": "부라봉 소개", "confirmed": "정신연령 1살, ENFP-A. 좋아하는 것에 귤·달달한 음식·겨울, 단점에 대책없는 호기심·사고뭉치가 명시. 말 끝에 '봉'을 붙인다(고향 사투리). '명품' 스티커는 이 소개 일러스트에서만 확인됨."},
+      {"page": 9, "name": "부라봉 턴어라운드", "confirmed": "정면·측면·후면 형태, 머리 위 초록 이파리, 흰색 기저귀형 하의, 짧고 뭉툭한 팔다리를 눈으로 확인."},
+      {"page": 10, "name": "부라봉 사용 규칙", "confirmed": "기본 눈은 정원(작거나 크게 X), 세로눈 불가, 반짝이는 눈은 평소보다 살짝 큼, 완전히 감은 눈은 뜬 눈보다 가로로 조금 김, 비어있는 눈은 평소 사이즈와 동일. 윗입술은 뒤집힌 갈매기(3자) 형태 유지·가운데 뾰족 금지. 눈과 입 상하 간격 벌어짐 주의. 1.5등신, 앞모습이 옆모습보다 넓적, 옆모습 꼭지는 중심에서 살짝 뒤로 기욺, 이파리 위치 좌우 모두 허용."},
+      {"page": 11, "name": "고르방 소개", "confirmed": "표기 'GO LEBANG'. 딱딱한 외형과 달리 마음은 말랑, 인자한 웃음이 매력. ENFJ-A 선도자. 좋아하는 것에 부라봉·한라봉·유채꽃·친구들과 수다떨기. 단점은 말이 너무 많음·아재개그·꼰대임. 특기는 요리하기. 모자 옆에 노란 유채꽃 장식."},
+      {"page": 12, "name": "고르방 턴어라운드", "confirmed": "정면·측면·후면 형태와 키비례 눈금(1~14), 둥근 챙 모자, 뭉툭한 회색 돌 몸체, 귀 위치를 눈으로 확인."},
+      {"page": 13, "name": "고르방 사용 규칙", "confirmed": "표기 'GO LE BANG'. 옆에서 보면 모자 기울기가 뒤쪽으로 기욺(수평 X). 귀는 중심에서 약간 뒤쪽. 코에 볼륨감이 조금 있음. 손끝·발끝은 뭉툭하며 뾰족해지면 안 됨. 눈썹 끝은 둥글게(각지지 않게). 일할 때는 안경을 낌."}
+    ],
+    "workflow_guide_read": "shared/references/WORKFLOW_GUIDE.md",
+    "structured_guides_read": [
+      "shared/guides/character-guide.md",
+      "shared/guides/character-guide.json",
+      ".claude/skills/higgsfield-prompt-builder/references/image-generation-contract.json"
+    ],
+    "categories": ["캐릭터", "세계관·관계", "브랜드·디자인", "콘텐츠 제한", "기술"],
+    "targets": ["기획안", "시나리오", "스토리보드", "영상"],
+    "absolute_rules_injected": [
+      "부라봉의 기억상실 이전 과거를 확정하지 않는다",
+      "무대는 고르방의 집이며 구애구가 지키는 할머니의 귤밭과 구분한다",
+      "공식 6인 외 캐릭터를 생성하지 않는다 (이번 편은 부라봉·고르방 2인)",
+      "부라봉 어미는 ~다봉 / ~라봉 / ~냐봉 / ~다봉봉 만 사용한다",
+      "고르방에게 고정 어미를 부여하지 않는다. 긴 수다·아재개그 화법만 쓴다",
+      "2인 컷의 키 순서는 고르방 > 부라봉을 유지한다 (page-07)",
+      "고르방 → 부라봉, 부라봉 → 고르방의 긍정 극성을 바꾸지 않는다",
+      "이미지 안에 글자·자막·말풍선·로고·워터마크를 굽지 않는다",
+      "공식 컬러 HEX 를 만들어 넣지 않고 서술형 색상만 쓴다"
+    ],
+    "needs_human_confirmation": [
+      "공식 컬러 팔레트 HEX (미확보 — 서술형 색상만 사용)",
+      "로고 사용 규정 (미확보 — 로고 미사용)",
+      "공식 배경·소품 목록 (미확보 — 냉장고·귤 더미는 신규 소품이므로 담당자 확인 필요)",
+      "부라봉 '명품' 스티커 상시 요소 여부 (미확정 — 이번 편 미사용)",
+      "고르방 영문 표기 (원본 내 불일치: p11 GO LEBANG / p13 GO LE BANG — 확정하지 않고 계약 표기 GO LEBANG 사용)"
+    ]
+  },
+  "reviews": {
+    "planning": {
+      "status": "failed",
+      "path": "review/planning-review.md",
+      "reviewed_at": "2026-08-12T13:36:17+09:00",
+      "failure_reason": "자동 실패 트리거 9번 — 스토리보드 장면 이미지 12장 전부 누락. 원인은 콘텐츠 결함이 아니라 higgsfield CLI 실행 불가와 제작·비용 승인 부재다.",
+      "text_checks": "캐릭터·스토리·브랜드 안전성·기술(문서) 항목 전부 통과. C안 장면 수 3개는 조건부 통과.",
+      "preflight_gate": "생성 중단 (스토리보드 미선택, 예상 크레딧 미조회, 비용 승인 없음)"
+    },
+    "video": {"status": "not_started", "path": "review/video-review.md", "reviewed_at": null}
+  },
+  "approvals": {
+    "production": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": null,
+      "selected_storyboard": null,
+      "estimated_credits": null,
+      "clip_count": null,
+      "regeneration_limit": null,
+      "cost_usage_approved": false
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": null
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "담당자가 배포를 요청하지 않았다.",
+      "platforms": [],
+      "content_sha256": null,
+      "targets": []
+    }
+  },
+  "timings": {},
+  "costs": {
+    "ai_tool_usage": "Higgsfield",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0
+  },
+  "metrics": {},
+  "model_versions": {
+    "planned_image_model": "nano_banana_flash (표시명 Nano Banana 2)",
+    "planned_image_resolution": "2k",
+    "planned_aspect_ratio": "9:16",
+    "planned_video_model": "미정 — 제작·비용 승인 시 확정",
+    "prompt_builder": "unsorted/scripts/build-pongdang-prompt.mjs",
+    "prompt_contract_version": "1.1"
+  },
+  "image_generation": {
+    "preflight_gate": {
+      "reference_pages_verified": true,
+      "reference_paths_exist": true,
+      "lock_en_verbatim": true,
+      "forbidden_in_negative": true,
+      "group_shot_height_order": "2인 컷 4건(a3·a4·b5·c3)에 'GO LEBANG > BOO RABONG' 자동 삽입 + page-03·05·07 첨부 확인",
+      "unavailable_values_not_invented": true,
+      "storyboard_selected": false,
+      "estimated_credits_recorded": false,
+      "paid_call_approval_recorded": false,
+      "result": "프롬프트 조립 게이트 12/12 통과. 스토리보드 미선택·크레딧 미조회·비용 승인 부재로 생성 중단"
+    },
+    "scenes": [
+      {"id": "a1", "variant": "A", "scene": 1, "characters": ["boo-rabong"], "camera": "front-facing medium shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "a2", "variant": "A", "scene": 2, "characters": ["boo-rabong"], "camera": "front-facing full shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "a3", "variant": "A", "scene": 3, "characters": ["boo-rabong", "go-lebang"], "camera": "front-facing full shot", "reference_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13], "negative_items": 19, "gate": "passed", "generated": false},
+      {"id": "a4", "variant": "A", "scene": 4, "characters": ["boo-rabong", "go-lebang"], "camera": "front-facing medium shot", "reference_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13], "negative_items": 19, "gate": "passed", "generated": false},
+      {"id": "b1", "variant": "B", "scene": 1, "characters": ["boo-rabong"], "camera": "low-angle full shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "b2", "variant": "B", "scene": 2, "characters": ["boo-rabong"], "camera": "front-facing full shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "b3", "variant": "B", "scene": 3, "characters": ["boo-rabong"], "camera": "front-facing close-up", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "b4", "variant": "B", "scene": 4, "characters": ["go-lebang"], "camera": "low-angle bust shot", "reference_pages": [11, 12, 13], "negative_items": 12, "gate": "passed", "generated": false},
+      {"id": "b5", "variant": "B", "scene": 5, "characters": ["boo-rabong", "go-lebang"], "camera": "high-angle full shot", "reference_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13], "negative_items": 19, "gate": "passed", "generated": false},
+      {"id": "c1", "variant": "C", "scene": 1, "characters": ["boo-rabong"], "camera": "establishing shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "c2", "variant": "C", "scene": 2, "characters": ["boo-rabong"], "camera": "front-facing wide shot", "reference_pages": [8, 9, 10], "negative_items": 16, "gate": "passed", "generated": false},
+      {"id": "c3", "variant": "C", "scene": 3, "characters": ["boo-rabong", "go-lebang"], "camera": "high-angle wide shot", "reference_pages": [3, 5, 7, 8, 9, 10, 11, 12, 13], "negative_items": 19, "gate": "passed", "generated": false, "rebuilt": true}
+    ],
+    "gate_rejections": [
+      {
+        "scene_id": "c3",
+        "rejected_input": "--scene \"... sit side by side among scattered tangerines ...\"",
+        "reason": "[분할 레이아웃] --scene 안의 \"side by side\" — 조립기가 시트·격자·나열 구성으로 판정",
+        "resolution": "우회하지 않고 --scene 을 \"GO LEBANG sits beside BOO RABONG among scattered tangerines ...\" 로 다시 써서 재실행, 통과"
+      }
+    ],
+    "postcheck": "미수행 — 생성된 이미지가 없다"
+  },
+  "artifact_versions": {
+    "character_guide": "2.3",
+    "production_log_schema": "1.0",
+    "plan": "1.0",
+    "scenario": "1.0",
+    "storyboard": "1.0"
+  },
+  "publications": [],
+  "errors": [
+    {
+      "stage": "storyboard-generator / higgsfield-prompt-builder 4단계",
+      "code": "cli_execution_not_permitted",
+      "occurred_at": "2026-08-12T13:36:17+09:00",
+      "message": "higgsfield CLI 호출이 이 세션의 권한 검사에서 승인 대기로 거부되어 실행되지 않았다. 비대화형 세션이라 승인 프롬프트에 응답할 수 없다. CLI 바이너리 자체는 /opt/homebrew/bin/higgsfield 에 존재한다.",
+      "attempted": ["higgsfield model list --json"],
+      "impact": "A/B/C 3안 12개 장면 이미지가 모두 미생성 상태이고, 예상 크레딧도 조회하지 못했다. 문서·프롬프트·조립 게이트는 완료됐다.",
+      "next_action": "대화형 세션에서 Bash(higgsfield *) 실행을 허용한 뒤 예상 크레딧을 조회하고, 제작·비용 승인 기록 이후 storyboard/prompts/*.txt 안의 명령을 장면당 한 번씩 실행한다. placeholder 이미지는 넣지 않았다.",
+      "cost_incurred_krw": 0
+    },
+    {
+      "stage": "pongdang-pipeline 6~7단계",
+      "code": "production_approval_missing",
+      "occurred_at": "2026-08-12T13:36:17+09:00",
+      "message": "제작·비용 승인이 기록되지 않아 유료 호출을 수행하지 않고 승인 대기 상태로 정지했다. 담당자 지시에 따른 정상 정지다.",
+      "impact": "영상 생성(파이프라인 8단계) 미착수.",
+      "next_action": "담당자가 스토리보드 1안을 선택하고 비용 사용을 명시적으로 승인하면 approval-logger 로 기록한 뒤 진행한다.",
+      "cost_incurred_krw": 0
+    }
+  ]
+}

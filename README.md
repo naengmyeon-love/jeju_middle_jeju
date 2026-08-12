@@ -1,5 +1,11 @@
 # 애퐁당패밀리
 
+## 공개 제작 현황 보드
+
+GitHub Pages 배포용 정적 웹앱은 [`web/`](web/)에 있다. 실제 `production-log.json`과 공개 가능한
+산출물만 빌드 시점에 수집하며, 유료 생성·승인·외부 게시 기능은 포함하지 않는다. 최초 Pages 설정,
+비밀값 처리, 모델 실행 이력 기록 방법은 [GitHub Pages 배포 절차](docs/github-pages-deployment.md)를 따른다.
+
 퐁당패밀리 공식 IP 숏폼 제작 파이프라인. 프로젝트 루트가 곧 하네스(harness) 구조다.
 
 ```

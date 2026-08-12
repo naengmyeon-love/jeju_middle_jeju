@@ -145,6 +145,8 @@ single still image, no text anywhere in the image
 - 외형 서술을 SCENE 블록에 다시 쓰지 않는다. 중복 서술은 모델이 원본에서 이탈하는 주된 원인이다.
 - 색상은 서술형만 쓴다. 공식 HEX가 미확보이므로 **HEX 값을 만들어 넣지 않는다**.
 - `allowed_variation`에 없는 표정·자세·의상이 필요하면 생성 전에 담당자에게 확인한다.
+- 영상 컷에서 배경·조명 문장은 **직전 컷과 동일한 문자열**을 쓴다. 같은 장소인데 문장을 다시 쓰면 컷마다 톤이 흔들린다. 배경이 실제로 바뀌는 컷에서만 새 문장을 쓰고 그때부터 다시 고정한다.
+- 영상 컷 프롬프트의 SCENE 블록 마지막에 **끝 포즈 지시**를 한 문장 넣는다. 스토리보드 `끝 포즈` 칸을 그대로 옮긴다. 예: `The cut ends with BOO RABONG standing still, facing front, eyes open.` 이 프레임이 다음 컷의 시작 이미지가 되므로 중간 동작으로 끝내지 않는다.
 
 ### 예시 — 부라봉과 호꼬 2인 컷
 
@@ -211,6 +213,36 @@ higgsfield generate create nano_banana_2 \
 - `higgsfield` CLI가 없거나 인증이 만료되면 호출하지 말고 연결 필요 상태로 기록한다.
 - 유료 호출은 `approval-logger`의 제작·비용 승인 이후에만 한다.
 
+### 영상 컷 호출 (video-generator 전용)
+
+영상은 컷마다 **start image를 반드시 붙인다.** 텍스트만으로 컷을 시작하지 않는다.
+
+| 컷 | start image |
+|---|---|
+| 컷 1 | 승인된 공식 레퍼런스 기반 고정 시작 이미지 |
+| 컷 N (N≥2) | 직전 컷의 실제 마지막 프레임 `project-output/video/frames/scene-{NN}-last.png` |
+
+start frame을 받는 모델만 쓴다.
+
+| 모델 | 지원 |
+|---|---|
+| `kling3_0` | `start_image` + `end_image` (양쪽 고정이 필요한 컷) |
+| `seedance_2_0` | `start_image` — 모션이 큰 컷 |
+| `grok_video_v15` | `start_image` 하나만, 2~15초 |
+
+```bash
+npm run higgsfield:video -- kling3_0 \
+  --prompt "$(cat prompt.txt)" \
+  --start-image project-output/video/frames/scene-01-last.png \
+  --aspect_ratio 9:16
+```
+
+마지막 프레임 추출은 손으로 하지 않는다. `node unsorted/scripts/extract-last-frame.mjs --clip ...`를 쓴다.
+프레임 파일이 없거나 열리지 않으면 그 컷을 생성하지 않는다.
+
+Extender로 앞 클립을 이어 늘리는 것은 기본 경로가 아니다. 스토리보드 `연결` 칸에
+사유와 함께 `extender`로 표시된 컷에만 쓴다.
+
 ## 5단계: 사전 게이트
 
 `image_generation.preflight_gate`를 그대로 체크리스트로 쓴다. 하나라도 미충족이면 호출하지 않는다.
@@ -222,6 +254,9 @@ higgsfield generate create nano_banana_2 \
 - [ ] 단체 컷이면 키 순서와 `page-07`을 첨부했는가
 - [ ] 미확보 항목(HEX·로고·배경 목록)을 임의로 채우지 않았는가
 - [ ] 유료 호출이면 제작·비용 승인이 기록되어 있는가
+- [ ] 영상 컷 N≥2이면 직전 컷의 마지막 프레임 파일이 실제로 존재하고, `view_image`로 열어 모션 블러·눈 감김·중간 동작이 없음을 확인했는가
+- [ ] 영상 컷의 배경·조명 문장이 직전 컷과 동일한 문자열인가 (배경이 바뀌는 컷은 예외)
+- [ ] 영상 컷 프롬프트에 끝 포즈 지시가 들어갔는가
 
 ## 6단계: 생성 후 대조 검수
 
@@ -262,3 +297,4 @@ higgsfield generate create nano_banana_2 \
 - `allowed_variation` 밖의 표정·자세·의상 요구
 - 공식 HEX·로고·배경 목록을 지정하라는 요구 (미확보 항목)
 - 제작·비용 승인 없이 유료 호출 요구
+- 영상 컷 N≥2인데 직전 컷의 마지막 프레임이 없거나 열리지 않음 (공식 레퍼런스로 대체해 이어붙이지 않는다)
