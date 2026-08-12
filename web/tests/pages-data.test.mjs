@@ -38,7 +38,7 @@ test("public snapshot reflects files on disk and preserves approval gates", asyn
     const finalVideo = project.artifacts.find((artifact) => artifact.key === "finalVideo");
     if (finalVideo?.public) {
       assert.equal(project.approvals.final.status, "approved");
-      assert.equal(project.approvals.distribution.status, "approved");
+      assert.equal(project.approvals.final.explicit, true);
     }
   }
 });

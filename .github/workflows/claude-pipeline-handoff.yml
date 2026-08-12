@@ -3,6 +3,12 @@ name: Claude pipeline handoff
 on:
   issues:
     types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Pipeline issue whose Timely PR should be continued
+        required: true
+        type: number
 
 permissions:
   contents: write
@@ -11,12 +17,34 @@ permissions:
 
 jobs:
   continue-with-claude:
-    if: github.event.label.name == 'timely-complete' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+    if: github.event_name == 'workflow_dispatch' || (github.event.label.name == 'timely-complete' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association))
     runs-on: ubuntu-latest
+    concurrency:
+      group: claude-handoff-${{ github.event.issue.number || inputs.issue_number }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: Check out the Timely pull request branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]] || { echo "Invalid issue number." >&2; exit 2; }
+          match="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,body,headRefName \
+            --jq "map(select((.body // \"\") | contains(\"이슈 #${ISSUE_NUMBER}\"))) | first | select(. != null) | [.number, .headRefName] | @tsv")"
+          test -n "$match" || { echo "No open Timely PR linked to issue #$ISSUE_NUMBER." >&2; exit 1; }
+          IFS=$'\t' read -r timely_pr timely_branch <<< "$match"
+          git fetch origin "$timely_branch"
+          git checkout -B "$timely_branch" "origin/$timely_branch"
+          {
+            echo "PIPELINE_ISSUE_NUMBER=$ISSUE_NUMBER"
+            echo "TIMELY_PR_NUMBER=$timely_pr"
+            echo "TIMELY_BRANCH=$timely_branch"
+          } >> "$GITHUB_ENV"
       - name: Check required configuration
         env:
           CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
@@ -32,10 +60,11 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            Continue authenticated pipeline issue #${{ github.event.issue.number }} after Timely Agent completed its text-only drafts.
-            Find the Timely PR linked from the issue and work on that branch.
+            Continue authenticated pipeline issue #${{ github.event.issue.number || inputs.issue_number }} after Timely Agent completed its text-only drafts.
+            The Timely PR branch is already checked out. Work only on that branch.
             Read AGENTS.md, shared/references/WORKFLOW_GUIDE.md, the relevant official character introduction/turnaround/rule PNG pages, and the installed skills before changing character content.
             Claude Code owns harness management, character-guide application, Higgsfield prompt assembly, scene review, copy, and approval flow.
+            Import the Timely root-level planning/, storyboard/, and metadata/ drafts into one canonical unsorted/outputs/projects/<project-id>/ directory. Preserve the original drafts and update every output path in production-log.json to be project-relative.
             Review and revise Timely drafts against the official guide, mark only adopted files as adopted, build prompts with higgsfield-prompt-builder, run free checks, and update production-log execution_history with exact model '${{ vars.CLAUDE_MODEL }}', actual timestamps, unique run IDs, result files, and adoption state.
             Do not call Higgsfield, do not create images or video, do not approve on the user's behalf, and do not publish externally.
             Stop at explicit production/cost approval and comment the required storyboard choice, references, estimated credits, clip count, and regeneration cap on the issue.
@@ -43,7 +72,22 @@ jobs:
             --model ${{ vars.CLAUDE_MODEL }}
             --max-turns 30
             --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Read,Write,Edit,Glob,Grep"
+      - name: Commit Claude handoff results to the Timely branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Claude produced no repository changes." >&2
+            exit 1
+          fi
+          git commit -m "feat: continue pipeline issue #$PIPELINE_ISSUE_NUMBER with Claude"
+          git push origin "HEAD:$TIMELY_BRANCH"
       - name: Mark Claude handoff complete
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue edit "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --add-label claude-complete
+        run: |
+          gh issue edit "$PIPELINE_ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --add-label claude-complete
+          gh issue comment "$PIPELINE_ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Claude Code 가이드 적용·무료 검수 결과가 PR #$TIMELY_PR_NUMBER 브랜치에 저장되었습니다. 유료 Higgsfield 생성은 아직 실행되지 않았습니다."
