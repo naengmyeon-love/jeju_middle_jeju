@@ -30,11 +30,11 @@
 3. **Settings → Secrets and variables → Actions**에 `CLAUDE_CODE_OAUTH_TOKEN`과
    `HIGGSFIELD_API_KEY`를 저장한다. `CLAUDE_MODEL`은 Repository variable로 정확한 모델명을
    저장한다. Pages workflow에는 이 값을 전달하지 않는다.
-4. **Settings → Environments**에서 `higgsfield-production`, `final-video-approval`,
-   `external-distribution` 환경을 만들고 Required reviewers를 설정한다.
-5. 승인된 변경을 기본 브랜치에 push한다. push만으로 Pages 배포가 시작되지는 않는다.
-6. 별도의 **Pages 외부 배포 승인**을 받은 뒤 Actions 탭에서
-   `Deploy public production status`의 **Run workflow**를 명시적으로 실행한다.
+4. **Settings → Environments**에서 `higgsfield-production`, `final-video-approval` 환경을 만들고
+   Required reviewers를 설정한다. `external-distribution`은 외부 플랫폼 게시를 연결할 때 별도로 설정한다.
+5. 승인된 변경을 기본 브랜치에 push한다. 일반 제작 이력 변경은 push만으로 Pages 배포가 시작되지 않는다.
+6. `Approved final video`가 성공하면 `Deploy public production status`가 자동으로 실행되어
+   명시적으로 최종 승인된 `final.mp4`를 Pages에 공개한다. 필요하면 Actions 탭에서 수동 재배포할 수 있다.
 7. 완료된 작업의 `github-pages` 환경 URL이 제출용 공개 링크다.
    일반적으로 `https://<owner>.github.io/<repository>/` 형태다.
 
@@ -54,8 +54,8 @@ npm run pages:web
 
 `verify`는 타입 검사, 모델 역할 정책 테스트, 실제 제작 이력 스냅샷 생성, 정적 빌드, 공개
 산출물의 비밀값 패턴 검사를 수행한다. 산출물이 바뀌면 이력을 commit한 후 승인받아 기본 브랜치에
-push한다. 공개 스냅샷 갱신은 push 승인과 별개의 외부 배포 승인을 받은 후 GitHub Actions의
-**Run workflow**로 실행한다.
+push한다. 최종 영상 승인 워크플로가 성공하면 공개 스냅샷도 자동 갱신된다. 영상 이외의 이력만
+갱신할 때는 GitHub Actions의 **Run workflow**로 수동 배포한다.
 
 `npm run pages:web`은 `http://127.0.0.1:4173`에서 공개 상태 보드를 연다. 기존 운영용
 제작실 UI는 별도이며, 저장소 루트에서 `npm run web`으로 실행한다.
@@ -98,8 +98,9 @@ node scripts/record-model-run.mjs \
 사용하며 키를 저장소로 복사하지 않는다. 값은 코드, 이력 파일, 정적 산출물, 로그에 기록하지 않는다.
 
 유료 Higgsfield 생성은 `approvals.production`의 명시적 비용 승인을 통과하기 전에는 실행하지 않는다.
-외부 게시은 최종 영상 승인과 별개인 `approvals.distribution` 승인 및 publish gate를 통과한 뒤에만
-실행한다. Pages의 링크는 GitHub의 인증·승인 화면으로 이동할 뿐 비밀키나 직접 실행 권한을 갖지 않는다.
+명시적으로 최종 승인된 영상은 읽기 전용 Pages 플레이어에 공개할 수 있다. YouTube·Instagram·TikTok
+등 외부 플랫폼 게시은 이와 별개로 `approvals.distribution` 승인 및 publish gate를 통과한 뒤에만
+실행한다. Pages의 실행 링크는 GitHub의 인증·승인 화면으로 이동할 뿐 비밀키나 직접 실행 권한을 갖지 않는다.
 
 현재 저장소에는 실제 플랫폼 게시 커넥터가 없으므로 `external-distribution`은 연결 필요 상태에서
 멈춘다. YouTube/Instagram/TikTok 게시를 활성화하려면 플랫폼별 `PUBLISH_*` secret과 publisher

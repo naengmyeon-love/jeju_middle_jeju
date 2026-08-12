@@ -89,6 +89,16 @@ function runRows(runs: ExecutionRun[], recorded: boolean): string {
 
 function projectView(project: Project): string {
   const artifacts = project.artifacts.map((artifact) => `<li class="artifact ${artifact.exists ? "exists" : ""}">${artifactLink(artifact)}${artifact.sourcePath ? `<small>${escapeHtml(artifact.sourcePath)}</small>` : ""}</li>`).join("");
+  const finalVideo = project.artifacts.find((artifact) => artifact.key === "finalVideo" && artifact.public && artifact.href);
+  const videoPlayer = finalVideo?.href
+    ? `<section class="panel full video-panel" aria-labelledby="final-video-title">
+        <div class="panel-heading"><div><p class="eyebrow">최종 승인본</p><h3 id="final-video-title">영상 재생</h3></div>${badge("approved")}</div>
+        <video class="final-video" controls playsinline preload="metadata">
+          <source src="${encodeURI(finalVideo.href)}" type="video/mp4" />
+          이 브라우저는 MP4 영상 재생을 지원하지 않습니다.
+        </video>
+      </section>`
+    : "";
   const errors = project.errors.length
     ? `<ul class="errors">${project.errors.slice(0, 3).map((error) => `<li><strong>${escapeHtml(error.stage ?? "기록된 오류")}</strong><span>${escapeHtml(error.message ?? error.impact ?? "상세 없음")}</span></li>`).join("")}</ul>`
     : '<p class="empty">오류가 기록되지 않았습니다.</p>';
@@ -113,6 +123,7 @@ function projectView(project: Project): string {
     <section class="panel"><div class="panel-heading"><div><p class="eyebrow">승인 게이트</p><h3>유료 생성·외부 배포</h3></div></div>${approvalRows(project.approvals)}<p class="gate-note">공개 페이지는 읽기 전용입니다. 이 화면에서 유료 Higgsfield 생성이나 외부 게시를 실행할 수 없습니다.</p></section>
   </div>
   <section class="panel full" id="history"><div class="panel-heading"><div><p class="eyebrow">실행 이력</p><h3>모델별 추적</h3></div><span class="muted">모델명 · 시각 · 실행 ID · 결과 파일 · 채택 여부</span></div>${runRows(project.executionHistory, project.executionHistoryRecorded)}</section>
+  ${videoPlayer}
   <div class="content-grid detail-grid" id="results">
     <section class="panel"><div class="panel-heading"><div><p class="eyebrow">결과물</p><h3>공개 가능한 산출물</h3></div></div><ul class="artifact-list">${artifacts}</ul></section>
     <section class="panel"><div class="panel-heading"><div><p class="eyebrow">검수·예외</p><h3>실제 기록</h3></div></div><div class="review-grid"><div><span>기획 검수</span>${badge(project.reviews.planning)}</div><div><span>영상 검수</span>${badge(project.reviews.video)}</div></div>${errors}</section>

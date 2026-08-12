@@ -42,10 +42,35 @@ jobs:
   generate:
     environment: higgsfield-production
     runs-on: ubuntu-latest
+    concurrency:
+      group: higgsfield-${{ inputs.project_id }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: Check paid credentials
+        env:
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          HIGGSFIELD_API_KEY: ${{ secrets.HIGGSFIELD_API_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$CLAUDE_MODEL" || { echo "Repository variable CLAUDE_MODEL is required." >&2; exit 1; }
+          test -n "$CLAUDE_CODE_OAUTH_TOKEN" || { echo "Secret CLAUDE_CODE_OAUTH_TOKEN is required." >&2; exit 1; }
+          test -n "$HIGGSFIELD_API_KEY" || { echo "Secret HIGGSFIELD_API_KEY is required." >&2; exit 1; }
+      - name: Check project and video dependencies
+        env:
+          PROJECT_ID: ${{ inputs.project_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT_ID" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "Invalid project slug." >&2; exit 2; }
+          test -f "unsorted/outputs/projects/$PROJECT_ID/metadata/production-log.json" || { echo "Merge the reviewed Timely/Claude project before paid generation." >&2; exit 1; }
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
       - name: Record explicit production and cost approval
         env:
           PROJECT_ID: ${{ inputs.project_id }}
@@ -76,16 +101,6 @@ jobs:
           git add "unsorted/outputs/projects/$PROJECT_ID/metadata/production-log.json" "unsorted/outputs/projects/$PROJECT_ID/review/approval-log.md"
           git commit -m "chore: record production approval for $PROJECT_ID"
           git push
-      - name: Check paid credentials
-        env:
-          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          HIGGSFIELD_API_KEY: ${{ secrets.HIGGSFIELD_API_KEY }}
-        run: |
-          set -euo pipefail
-          test -n "$CLAUDE_MODEL"
-          test -n "$CLAUDE_CODE_OAUTH_TOKEN"
-          test -n "$HIGGSFIELD_API_KEY"
       - run: npm install --global @higgsfield/cli
       - name: Generate only the approved project
         uses: anthropics/claude-code-action@v1
@@ -100,9 +115,49 @@ jobs:
             Re-read the official character pages and use only prompts assembled by higgsfield-prompt-builder with official reference PNGs.
             Generate only the selected storyboard within the recorded credit and regeneration limits, review each scene, create draft.mp4, and stop for separate final-video approval.
             After the approved scene images pass review, run check-production-gate.mjs --stage video before any video call.
+            Use extract-last-frame.mjs between clips, inspect the extracted frames, combine the approved clips with ffmpeg, and write a playable H.264/AAC MP4 smaller than 50 MiB to unsorted/outputs/projects/${{ inputs.project_id }}/video/draft.mp4.
             Never publish externally and never record final or distribution approval yourself.
             Record exact model '${{ vars.CLAUDE_MODEL }}', actual timestamps, run IDs, output files, adoption state, credits, and errors.
           claude_args: |
             --model ${{ vars.CLAUDE_MODEL }}
             --max-turns 40
-            --allowedTools "Bash(node unsorted/scripts/check-production-gate.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Bash(node unsorted/scripts/fetch-generated.mjs *),Bash(higgsfield *),Read,Write,Edit,Glob,Grep"
+            --allowedTools "Bash(npm run higgsfield:video -- *),Bash(node unsorted/scripts/check-production-gate.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Bash(node unsorted/scripts/fetch-generated.mjs *),Bash(node unsorted/scripts/extract-last-frame.mjs *),Bash(ffmpeg *),Bash(ffprobe *),Bash(higgsfield *),Read,Write,Edit,Glob,Grep"
+      - name: Validate generated draft
+        env:
+          PROJECT_ID: ${{ inputs.project_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          draft="unsorted/outputs/projects/$PROJECT_ID/video/draft.mp4"
+          log="unsorted/outputs/projects/$PROJECT_ID/metadata/production-log.json"
+          test -s "$draft" || { echo "The approved generation did not create video/draft.mp4." >&2; exit 1; }
+          read -r width height < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=' ' "$draft")
+          [[ "$width" =~ ^[0-9]+$ && "$height" =~ ^[0-9]+$ && $((width * 16)) -eq $((height * 9)) ]] || { echo "draft.mp4 must use a 9:16 video stream." >&2; exit 1; }
+          duration="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$draft")"
+          awk -v seconds="$duration" 'BEGIN { exit !(seconds > 0 && seconds < 60) }' || { echo "draft.mp4 must be shorter than 60 seconds." >&2; exit 1; }
+          bytes="$(stat -c %s "$draft")"
+          (( bytes <= 50 * 1024 * 1024 )) || { echo "draft.mp4 exceeds the 50 MiB Pages limit." >&2; exit 1; }
+          node unsorted/scripts/check-production-gate.mjs "$log" --stage final
+      - name: Commit generated draft and audit log
+        env:
+          PROJECT_ID: ${{ inputs.project_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "unsorted/outputs/projects/$PROJECT_ID"
+          git diff --cached --quiet && { echo "No generated project changes to save." >&2; exit 1; }
+          git commit -m "feat: generate reviewed draft video for $PROJECT_ID"
+          git push
+      - name: Upload draft recovery artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.project_id }}-draft-video
+          path: unsorted/outputs/projects/${{ inputs.project_id }}/video/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Comment draft result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ inputs.issue_number }}" --repo "$GITHUB_REPOSITORY" --body "승인 범위 안에서 Higgsfield 영상 초안이 생성·검수되어 저장되었습니다. 다음 단계는 별도의 최종 영상 승인입니다."

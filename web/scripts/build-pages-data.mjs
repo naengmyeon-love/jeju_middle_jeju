@@ -121,7 +121,7 @@ async function buildProject(projectId, log) {
     ["planningReview", "기획 검수", log.reviews?.planning?.path, `review/planning-review.md`],
     ["videoReview", "영상 검수", log.reviews?.video?.path, `review/video-review.md`],
     ["draftVideo", "영상 초안", outputValue(log, "video_draft"), undefined, false],
-    ["finalVideo", "최종 영상", outputValue(log, "video_final"), undefined, log.approvals?.final?.status === "approved" && log.approvals?.distribution?.status === "approved"],
+    ["finalVideo", "최종 영상", outputValue(log, "video_final"), undefined, log.approvals?.final?.status === "approved" && log.approvals?.final?.explicit === true],
     ["publicationManifest", "배포 매니페스트", outputValue(log, "publication_manifest"), undefined, log.approvals?.distribution?.status === "approved"],
   ];
   const artifacts = await Promise.all(rawArtifacts.map(([key, label, path, fallback, canPublish]) => publishArtifact(projectId, key, label, path, fallback ? [fallback] : [], canPublish ?? true)));
