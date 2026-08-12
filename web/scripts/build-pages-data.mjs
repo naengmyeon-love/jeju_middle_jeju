@@ -14,6 +14,7 @@ const PUBLIC_REPOSITORY = process.env.GITHUB_REPOSITORY ?? "naengmyeon-love/jeju
 const SAFE_EXTENSIONS = new Set([".md", ".json", ".txt", ".png", ".jpg", ".jpeg", ".webp", ".mp4"]);
 const MAX_ASSET_BYTES = 50 * 1024 * 1024;
 const SECRET_VALUE = /(?:api[_ -]?key|secret|token|password)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i;
+const copyPromises = new Map();
 
 function pathInside(parent, child) {
   const rel = relative(parent, child);
@@ -80,8 +81,16 @@ async function publishArtifact(projectId, key, label, sourcePath, fallbacks = []
   const sourceProjectRoot = resolve(PROJECTS_DIR, projectId);
   const projectRelative = relative(sourceProjectRoot, absolute).split(sep).join("/");
   const destination = resolve(ARTIFACTS_DIR, projectId, projectRelative);
-  await mkdir(resolve(destination, ".."), { recursive: true });
-  await cp(absolute, destination);
+  if (!copyPromises.has(destination)) {
+    copyPromises.set(
+      destination,
+      (async () => {
+        await mkdir(resolve(destination, ".."), { recursive: true });
+        await cp(absolute, destination);
+      })(),
+    );
+  }
+  await copyPromises.get(destination);
   return { ...actualBase, public: true, href: `./artifacts/${projectId}/${projectRelative}` };
 }
 
