@@ -77,6 +77,28 @@ try {
 const blockers = [];
 const warnings = [];
 
+// ── 제작·비용 승인 ───────────────────────────────────────────────────────
+// 장면 컷이 완벽해도 비용 승인이 없으면 유료 영상 호출은 허용되지 않는다.
+const production = log.approvals?.production;
+if (production?.status !== "approved" || production?.explicit !== true) {
+  blockers.push("제작·비용 승인이 명시적으로 기록되지 않았습니다.");
+}
+if (production?.cost_usage_approved !== true) {
+  blockers.push("비용 사용 승인이 없습니다 (cost_usage_approved=true 필요).");
+}
+if (!["A", "B", "C"].includes(production?.selected_storyboard)) {
+  blockers.push("승인된 스토리보드 A/B/C 중 하나가 기록되지 않았습니다.");
+}
+if (!(Number.isFinite(production?.estimated_credits) && production.estimated_credits > 0)) {
+  blockers.push("예상 Higgsfield 크레딧이 양수로 기록되지 않았습니다.");
+}
+if (!(Number.isInteger(production?.clip_count) && production.clip_count > 0)) {
+  blockers.push("승인된 생성 클립 수가 양의 정수로 기록되지 않았습니다.");
+}
+if (!(Number.isInteger(production?.regeneration_limit) && production.regeneration_limit >= 0)) {
+  blockers.push("재생성 상한이 0 이상의 정수로 기록되지 않았습니다.");
+}
+
 // ── 앵커 ──────────────────────────────────────────────────────────────────
 // 앵커가 없으면 컷 간 일관성을 잡을 근거 자체가 없다.
 const anchors = log.anchors ?? {};

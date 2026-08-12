@@ -5,6 +5,9 @@
 GitHub Pages 배포용 정적 웹앱은 [`web/`](web/)에 있다. 실제 `production-log.json`과 공개 가능한
 산출물만 빌드 시점에 수집하며, 유료 생성·승인·외부 게시 기능은 포함하지 않는다. 최초 Pages 설정,
 비밀값 처리, 모델 실행 이력 기록 방법은 [GitHub Pages 배포 절차](docs/github-pages-deployment.md)를 따른다.
+Pages 배포 workflow는 외부 배포 승인을 분리하기 위해 수동 실행만 허용한다.
+웹의 **새 제작 실행**은 인증된 GitHub Issue 큐로 연결되며, Timely(Solar Pro 4) 문안 생성 →
+Claude Code 가이드·검수 → 보호 환경의 유료 생성·최종 승인 순서로 구동된다.
 
 퐁당패밀리 공식 IP 숏폼 제작 파이프라인. 프로젝트 루트가 곧 하네스(harness) 구조다.
 

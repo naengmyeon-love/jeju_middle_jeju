@@ -42,6 +42,7 @@ export type Project = {
     scenario: boolean;
     storyboard: { completed: number; expected: number };
     imageCount: number;
+    referencedImageCount: number;
     draftVideo: boolean;
     finalVideo: boolean;
     complete: boolean;
@@ -58,6 +59,12 @@ export type Project = {
 
 export type DashboardData = {
   generatedAt: string;
+  control: {
+    repository: string;
+    requestUrl: string;
+    queueUrl: string;
+    actionsUrl: string;
+  };
   policy: {
     agents: { agent: string; model: string; allowedStages: string[] }[];
     stages: Record<string, string>;

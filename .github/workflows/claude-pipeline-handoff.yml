@@ -1,0 +1,49 @@
+name: Claude pipeline handoff
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  continue-with-claude:
+    if: github.event.label.name == 'timely-complete' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Check required configuration
+        env:
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLAUDE_MODEL" || { echo "Repository variable CLAUDE_MODEL is required." >&2; exit 1; }
+          test -n "$CLAUDE_CODE_OAUTH_TOKEN" || { echo "Secret CLAUDE_CODE_OAUTH_TOKEN is required." >&2; exit 1; }
+      - run: ./install.sh --check
+      - name: Apply guide, review, and stop at production approval
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Continue authenticated pipeline issue #${{ github.event.issue.number }} after Timely Agent completed its text-only drafts.
+            Find the Timely PR linked from the issue and work on that branch.
+            Read AGENTS.md, shared/references/WORKFLOW_GUIDE.md, the relevant official character introduction/turnaround/rule PNG pages, and the installed skills before changing character content.
+            Claude Code owns harness management, character-guide application, Higgsfield prompt assembly, scene review, copy, and approval flow.
+            Review and revise Timely drafts against the official guide, mark only adopted files as adopted, build prompts with higgsfield-prompt-builder, run free checks, and update production-log execution_history with exact model '${{ vars.CLAUDE_MODEL }}', actual timestamps, unique run IDs, result files, and adoption state.
+            Do not call Higgsfield, do not create images or video, do not approve on the user's behalf, and do not publish externally.
+            Stop at explicit production/cost approval and comment the required storyboard choice, references, estimated credits, clip count, and regeneration cap on the issue.
+          claude_args: |
+            --model ${{ vars.CLAUDE_MODEL }}
+            --max-turns 30
+            --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Read,Write,Edit,Glob,Grep"
+      - name: Mark Claude handoff complete
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue edit "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --add-label claude-complete

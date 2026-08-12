@@ -61,7 +61,9 @@ function pipeline(project: Project): string {
     ["기획안 3종", `${project.completion.planVariants.completed}/${project.completion.planVariants.expected}`, project.completion.planVariants.completed === project.completion.planVariants.expected],
     ["시나리오", project.completion.scenario ? "완료" : "대기", project.completion.scenario],
     ["스토리보드 문안", `${project.completion.storyboard.completed}/${project.completion.storyboard.expected}`, project.completion.storyboard.completed === project.completion.storyboard.expected],
-    ["장면 이미지", `${project.completion.imageCount}개`, project.completion.imageCount > 0],
+    ["장면 이미지", project.completion.referencedImageCount > project.completion.imageCount
+      ? `실제 ${project.completion.imageCount}개 / 로그 ${project.completion.referencedImageCount}개`
+      : `실제 ${project.completion.imageCount}개`, project.completion.imageCount > 0],
     ["영상 초안", project.completion.draftVideo ? "존재" : "없음", project.completion.draftVideo],
     ["최종 영상", project.completion.finalVideo ? "존재" : "없음", project.completion.finalVideo],
   ] as const;
@@ -107,7 +109,7 @@ function projectView(project: Project): string {
     </div>
   </section>
   <div class="content-grid">
-    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">실행 상태</p><h3>완주 체크</h3></div>${badge(project.status)}</div><ol class="pipeline">${pipeline(project)}</ol></section>
+    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">실행 상태</p><h3>완주 체크</h3></div>${badge(project.completion.phase)}</div><ol class="pipeline">${pipeline(project)}</ol><p class="empty">원본 상태 코드 · <code>${escapeHtml(project.status)}</code></p></section>
     <section class="panel"><div class="panel-heading"><div><p class="eyebrow">승인 게이트</p><h3>유료 생성·외부 배포</h3></div></div>${approvalRows(project.approvals)}<p class="gate-note">공개 페이지는 읽기 전용입니다. 이 화면에서 유료 Higgsfield 생성이나 외부 게시를 실행할 수 없습니다.</p></section>
   </div>
   <section class="panel full" id="history"><div class="panel-heading"><div><p class="eyebrow">실행 이력</p><h3>모델별 추적</h3></div><span class="muted">모델명 · 시각 · 실행 ID · 결과 파일 · 채택 여부</span></div>${runRows(project.executionHistory, project.executionHistoryRecorded)}</section>
@@ -117,6 +119,37 @@ function projectView(project: Project): string {
   </div>
   <section class="panel full"><div class="panel-heading"><div><p class="eyebrow">배포 결과</p><h3>외부 공개 이력</h3></div></div><ul class="publication-list">${publications}</ul></section>
   <details class="panel model-note"><summary>기존 모델 설정 메모 보기</summary><pre>${escapeHtml(JSON.stringify(project.modelVersions, null, 2))}</pre></details>`;
+}
+
+type GitHubIssue = {
+  html_url?: string;
+  number?: number;
+  title?: string;
+  created_at?: string;
+  pull_request?: unknown;
+  labels?: ({ name?: string } | string)[];
+};
+
+function issueStatus(issue: GitHubIssue): string {
+  const labels = new Set((issue.labels ?? []).map((label) => typeof label === "string" ? label : label.name ?? ""));
+  if (labels.has("pipeline-rejected")) return "요청 거부";
+  if (labels.has("claude-complete")) return "Claude 완료";
+  if (labels.has("timely-complete")) return "Claude 인계";
+  if (labels.has("timely-processing")) return "Timely 실행 중";
+  return "대기 중";
+}
+
+async function loadQueue(data: DashboardData): Promise<void> {
+  const target = document.querySelector<HTMLElement>("#live-queue");
+  if (!target) return;
+  try {
+    const response = await fetch(`https://api.github.com/repos/${data.control.repository}/issues?state=all&labels=pipeline-request&per_page=10`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`GitHub ${response.status}`);
+    const issues = (await response.json() as GitHubIssue[]).filter((issue) => !issue.pull_request);
+    target.innerHTML = issues.length ? issues.map((issue) => `<a class="queue-item" href="${escapeHtml(issue.html_url)}" target="_blank" rel="noopener"><span><strong>#${escapeHtml(issue.number)} ${escapeHtml(issue.title)}</strong><small>${formatDate(issue.created_at)}</small></span>${badge(issueStatus(issue))}</a>`).join("") : '<p class="empty">등록된 실행 요청이 없습니다.</p>';
+  } catch {
+    target.innerHTML = `<p class="empty">GitHub 실시간 큐를 불러오지 못했습니다. <a class="file-link" href="${escapeHtml(data.control.queueUrl)}" target="_blank" rel="noopener">GitHub에서 확인 ↗</a></p>`;
+  }
 }
 
 function render(data: DashboardData, selectedId: string): void {
@@ -140,6 +173,7 @@ function render(data: DashboardData, selectedId: string): void {
     <main class="workspace" id="overview">
       <section class="page-heading"><div><p class="eyebrow">공개 제작 현황</p><h1>실제 프로젝트 상태를<br />있는 그대로 보여드립니다.</h1><p>GitHub Actions 빌드 시점의 제작 이력과 공개 가능한 결과물만 표시합니다.</p></div><div class="snapshot"><span>완주</span><strong>${data.summary.complete} / ${data.summary.projects}건</strong><small>실행 이력 ${data.summary.executionRuns}건</small></div></section>
       <section class="dashboard-grid"><div class="panel feature-panel"><div class="section-head"><div><span class="section-kicker">현재 현황</span><h2>${escapeHtml(selected.topic)}</h2></div>${completionBadge(selected)}</div><p>${escapeHtml(selected.completion.summary)}</p><div class="metric-grid"><div><span>진행·대기</span><strong>${data.summary.active}건</strong></div><div><span>차단·실패</span><strong>${data.summary.blocked}건</strong></div><div><span>완주</span><strong>${data.summary.complete}건</strong></div><div><span>실행 기록</span><strong>${data.summary.executionRuns}건</strong></div></div></div><section class="panel policy"><div class="section-head"><div><span class="section-kicker">역할 경계</span><h2>모델 사용 정책</h2></div><span class="status-badge info">정책 v1</span></div><ul>${policy}</ul></section></section>
+      <section class="panel launch-panel"><div><p class="eyebrow">인증된 실행</p><h2>새 제작을 GitHub에서 시작합니다.</h2><p>GitHub 로그인 후 요청서를 제출하면 Timely Agent가 무료 문안을 만들고 Claude Code가 가이드 적용·검수·승인 대기까지 이어갑니다.</p></div><div class="launch-actions"><a class="launch-primary" href="${escapeHtml(data.control.requestUrl)}" target="_blank" rel="noopener">새 제작 실행 ↗</a><a class="launch-secondary" href="${escapeHtml(data.control.actionsUrl)}" target="_blank" rel="noopener">Actions 보기</a></div><div class="queue"><div class="panel-heading"><div><p class="eyebrow">실시간 요청 큐</p><h3>GitHub Issues</h3></div><a class="file-link" href="${escapeHtml(data.control.queueUrl)}" target="_blank" rel="noopener">전체 보기 ↗</a></div><div id="live-queue"><p class="empty">GitHub 실행 큐를 불러오는 중입니다.</p></div></div></section>
       <section class="public-workspace"><aside><p class="eyebrow">실제 프로젝트</p><div class="project-list">${projectButtons}</div></aside><div class="project-content">${projectView(selected)}</div></section>
     </main>
     <footer class="public-footer">공개 배포본은 실행·승인·게시 기능을 제공하지 않습니다. 유료 Higgsfield 호출과 외부 배포는 로컬 파이프라인의 명시적 승인 게이트에서만 가능합니다.</footer>
@@ -151,6 +185,7 @@ function render(data: DashboardData, selectedId: string): void {
   app.querySelectorAll<HTMLButtonElement>("[data-scroll]").forEach((button) => {
     button.addEventListener("click", () => document.getElementById(button.dataset.scroll ?? "overview")?.scrollIntoView({ behavior: "smooth", block: "start" }));
   });
+  void loadQueue(data);
 }
 
 async function init(): Promise<void> {
