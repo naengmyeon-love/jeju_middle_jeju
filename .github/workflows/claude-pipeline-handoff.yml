@@ -75,6 +75,8 @@ jobs:
             --allowedTools "Bash(./install.sh --check),Bash(./verify.sh),Bash(npm run verify --prefix web),Bash(node scripts/record-model-run.mjs *),Bash(node unsorted/scripts/build-pongdang-prompt.mjs *),Read,Write,Edit,Glob,Grep"
       - name: Commit Claude handoff results to the Timely branch
         if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -86,7 +88,12 @@ jobs:
             exit 0
           fi
           git commit -m "feat: continue pipeline issue #$PIPELINE_ISSUE_NUMBER with Claude"
-          git push origin "HEAD:$TIMELY_BRANCH"
+          # claude-code-action revokes the GitHub App installation token it uses
+          # internally as part of its own step cleanup, which can leave the git
+          # credential helper set up by actions/checkout pointing at a dead
+          # token. Re-authenticate this push explicitly with the job's own
+          # github.token instead of relying on ambient credential state.
+          git -c http.extraheader="AUTHORIZATION: Bearer $GH_TOKEN" push origin "HEAD:$TIMELY_BRANCH"
       - name: Comment on partial progress
         if: failure()
         env:
