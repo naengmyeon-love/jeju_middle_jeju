@@ -1,0 +1,64 @@
+name: 퐁당패밀리 새 제작 실행
+description: Timely Agent와 Claude Code 파이프라인에 새 무료 기획 작업을 등록합니다.
+title: "[Pipeline] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        요청 스키마: `pongdang-pipeline-request:v1`
+        이 요청은 먼저 무료 문안 단계만 실행합니다. Higgsfield 유료 생성과 외부 배포는 별도 승인 없이는 실행되지 않습니다.
+  - type: input
+    id: topic
+    attributes:
+      label: 콘텐츠 주제
+      placeholder: 부라봉이 제주 숲에서 길을 찾는 이야기
+    validations:
+      required: true
+  - type: textarea
+    id: situation
+    attributes:
+      label: 핵심 상황
+      description: 시작부터 결말까지 필요한 핵심 사건을 300자 이내로 적어 주세요.
+    validations:
+      required: true
+  - type: checkboxes
+    id: characters
+    attributes:
+      label: 등장 캐릭터
+      options:
+        - label: 부라봉
+        - label: 고르방
+        - label: 양퐁당
+        - label: 냥냥이
+        - label: 호꼬
+        - label: 구애구
+    validations:
+      required: true
+  - type: dropdown
+    id: duration
+    attributes:
+      label: 길이
+      options:
+        - 15초
+        - 30초
+        - 45초
+    validations:
+      required: true
+  - type: dropdown
+    id: emotion
+    attributes:
+      label: 감정
+      options:
+        - 즐거움 · 코믹
+        - 놀람 · 반전
+        - 실망 · 허탈
+        - 따뜻함 · 잔잔함
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: 실행 범위 확인
+      options:
+        - label: 무료 기획 문안까지만 자동 실행되며 유료 생성·외부 배포는 별도 승인임을 확인했습니다.
+          required: true

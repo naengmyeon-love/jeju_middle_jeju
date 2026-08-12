@@ -10,6 +10,7 @@ const PUBLIC_ROOT = resolve(WEB_ROOT, "public");
 const DATA_DIR = resolve(PUBLIC_ROOT, "data");
 const ARTIFACTS_DIR = resolve(PUBLIC_ROOT, "artifacts");
 const POLICY = JSON.parse(await readFile(resolve(ROOT, "config/model-policy.json"), "utf8"));
+const PUBLIC_REPOSITORY = process.env.GITHUB_REPOSITORY ?? "naengmyeon-love/jeju_middle_jeju";
 const SAFE_EXTENSIONS = new Set([".md", ".json", ".txt", ".png", ".jpg", ".jpeg", ".webp", ".mp4"]);
 const MAX_ASSET_BYTES = 50 * 1024 * 1024;
 const SECRET_VALUE = /(?:api[_ -]?key|secret|token|password)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i;
@@ -29,11 +30,28 @@ function isOutputPath(value) {
 
 function normalizeRelative(projectId, sourcePath) {
   if (!isOutputPath(sourcePath)) return null;
-  const candidates = [resolve(ROOT, sourcePath), resolve(PROJECTS_DIR, projectId, sourcePath)];
+  const legacyPrefix = `project-output/projects/${projectId}/`;
+  const legacyRelative = sourcePath.startsWith(legacyPrefix) ? sourcePath.slice(legacyPrefix.length) : null;
+  const candidates = [
+    resolve(ROOT, sourcePath),
+    resolve(PROJECTS_DIR, projectId, sourcePath),
+    legacyRelative ? resolve(PROJECTS_DIR, projectId, legacyRelative) : null,
+  ].filter(Boolean);
   const expectedPrefix = resolve(PROJECTS_DIR, projectId);
   const absolute = candidates.find((candidate) => pathInside(expectedPrefix, candidate));
   if (!absolute || !pathInside(expectedPrefix, absolute)) return null;
   return absolute;
+}
+
+async function existingProjectFiles(projectId, paths) {
+  const existing = [];
+  for (const sourcePath of paths) {
+    const absolute = normalizeRelative(projectId, sourcePath);
+    if (!absolute) continue;
+    const info = await stat(absolute).catch(() => null);
+    if (info?.isFile()) existing.push(absolute);
+  }
+  return [...new Set(existing)];
 }
 
 async function publishArtifact(projectId, key, label, sourcePath, fallbacks = [], canPublish = true) {
@@ -93,6 +111,9 @@ async function buildProject(projectId, log) {
   const rawArtifacts = [
     ["request", "제작 요청", outputValue(log, "request"), `input/request.json`],
     ["plan", "기획안", outputValue(log, "plan"), `planning/plan.md`],
+    ["planA", "기획안 A", outputValue(log, "plan_a")],
+    ["planB", "기획안 B", outputValue(log, "plan_b")],
+    ["planC", "기획안 C", outputValue(log, "plan_c")],
     ["scenario", "시나리오", outputValue(log, "scenario"), `planning/scenario.md`],
     ["storyboardA", "스토리보드 A", outputValue(log, "storyboard_a"), `storyboard/storyboard-a.md`],
     ["storyboardB", "스토리보드 B", outputValue(log, "storyboard_b"), `storyboard/storyboard-b.md`],
@@ -105,10 +126,12 @@ async function buildProject(projectId, log) {
   ];
   const artifacts = await Promise.all(rawArtifacts.map(([key, label, path, fallback, canPublish]) => publishArtifact(projectId, key, label, path, fallback ? [fallback] : [], canPublish ?? true)));
   const byKey = new Map(artifacts.map((artifact) => [artifact.key, artifact]));
-  const planVariants = [outputValue(log, "plan_a"), outputValue(log, "plan_b"), outputValue(log, "plan_c")].filter(isOutputPath).length || (byKey.get("plan")?.exists ? 1 : 0);
+  const planVariants = ["planA", "planB", "planC"].filter((key) => byKey.get(key)?.exists).length || (byKey.get("plan")?.exists ? 1 : 0);
   const storyboard = ["storyboardA", "storyboardB", "storyboardC"].filter((key) => byKey.get(key)?.exists).length;
   const imagePaths = ["storyboard_images_a", "storyboard_images_b", "storyboard_images_c", "storyboard_images"].flatMap((key) => arrayPaths(outputValue(log, key)));
-  const sceneImages = Array.isArray(log.scene_images) ? log.scene_images.filter((item) => item?.path).length : 0;
+  const sceneImagePaths = Array.isArray(log.scene_images) ? log.scene_images.map((item) => item?.path).filter(isOutputPath) : [];
+  const referencedImagePaths = [...imagePaths, ...sceneImagePaths];
+  const existingImagePaths = await existingProjectFiles(projectId, referencedImagePaths);
   const history = Array.isArray(log.execution_history) ? log.execution_history : [];
   for (const run of history) {
     const issues = validateModelRun({
@@ -143,7 +166,7 @@ async function buildProject(projectId, log) {
     createdAt: log.created_at ?? null,
     updatedAt: log.updated_at ?? log.created_at ?? null,
     status: log.status ?? "status_not_recorded",
-    completion: { phase, summary: complete ? "필수 문서·최종 영상·최종 승인이 모두 기록되었습니다." : "현재 저장된 이력 기준으로 아직 완주 조건이 충족되지 않았습니다.", planVariants: { completed: planVariants, expected: 3 }, scenario: Boolean(byKey.get("scenario")?.exists), storyboard: { completed: storyboard, expected: 3 }, imageCount: Math.max(imagePaths.length, sceneImages), draftVideo: Boolean(byKey.get("draftVideo")?.exists), finalVideo, complete },
+    completion: { phase, summary: complete ? "필수 문서·최종 영상·최종 승인이 모두 기록되었습니다." : "현재 저장된 이력 기준으로 아직 완주 조건이 충족되지 않았습니다.", planVariants: { completed: planVariants, expected: 3 }, scenario: Boolean(byKey.get("scenario")?.exists), storyboard: { completed: storyboard, expected: 3 }, imageCount: existingImagePaths.length, referencedImageCount: new Set(referencedImagePaths).size, draftVideo: Boolean(byKey.get("draftVideo")?.exists), finalVideo, complete },
     artifacts,
     reviews: { planning: statusOr(log.reviews?.planning?.status), video: statusOr(log.reviews?.video?.status) },
     approvals: approvals(log),
@@ -173,7 +196,8 @@ async function main() {
     }
   }
   projects.sort((a, b) => String(b.updatedAt ?? "").localeCompare(String(a.updatedAt ?? "")) || a.id.localeCompare(b.id));
-  const data = { generatedAt: new Date().toISOString(), policy: { agents: POLICY.agents.map((agent) => ({ agent: agent.agent, model: agent.model, allowedStages: agent.allowed_stages })), stages: POLICY.stages }, summary: { projects: projects.length, complete: projects.filter((project) => project.completion.complete).length, active: projects.filter((project) => !project.completion.complete && !/blocked|failed|hold/i.test(project.status)).length, blocked: projects.filter((project) => /blocked|failed|hold/i.test(project.status)).length, executionRuns: projects.reduce((count, project) => count + project.executionHistory.length, 0) }, projects };
+  const repositoryUrl = `https://github.com/${PUBLIC_REPOSITORY}`;
+  const data = { generatedAt: new Date().toISOString(), control: { repository: PUBLIC_REPOSITORY, requestUrl: `${repositoryUrl}/issues/new?template=pipeline-request.yml`, queueUrl: `${repositoryUrl}/issues?q=is%3Aissue+label%3Apipeline-request`, actionsUrl: `${repositoryUrl}/actions` }, policy: { agents: POLICY.agents.map((agent) => ({ agent: agent.agent, model: agent.model, allowedStages: agent.allowed_stages })), stages: POLICY.stages }, summary: { projects: projects.length, complete: projects.filter((project) => project.completion.complete).length, active: projects.filter((project) => !project.completion.complete && !/blocked|failed|hold/i.test(project.status)).length, blocked: projects.filter((project) => /blocked|failed|hold/i.test(project.status)).length, executionRuns: projects.reduce((count, project) => count + project.executionHistory.length, 0) }, projects };
   await writeFile(resolve(DATA_DIR, "pipeline-data.json"), `${JSON.stringify(data, null, 2)}\n`, "utf8");
   console.log(`공개 스냅샷 생성: 프로젝트 ${projects.length}건`);
 }

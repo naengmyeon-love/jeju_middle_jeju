@@ -1,0 +1,58 @@
+name: Approved final video
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: Project slug with a reviewed video/draft.mp4
+        required: true
+        type: string
+      issue_number:
+        description: Pipeline issue used for audit comments
+        required: true
+        type: number
+      approval_phrase:
+        description: Type exactly APPROVE FINAL VIDEO
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  finalize:
+    environment: final-video-approval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Validate final gate
+        env:
+          PROJECT_ID: ${{ inputs.project_id }}
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT_ID" =~ ^[a-z0-9][a-z0-9-]*$ ]] || exit 2
+          node unsorted/scripts/check-production-gate.mjs "unsorted/outputs/projects/$PROJECT_ID/metadata/production-log.json" --stage final
+      - name: Record explicit final approval
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node scripts/finalize-video.mjs \
+            --project "${{ inputs.project_id }}" \
+            --reviewer "${{ github.actor }}" \
+            --phrase "${{ inputs.approval_phrase }}" \
+            --run-url "$RUN_URL"
+      - name: Commit final approval and video
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "unsorted/outputs/projects/${{ inputs.project_id }}/metadata/production-log.json" "unsorted/outputs/projects/${{ inputs.project_id }}/review/approval-log.md" "unsorted/outputs/projects/${{ inputs.project_id }}/video/final.mp4"
+          git commit -m "chore: approve final video for ${{ inputs.project_id }}"
+          git push
+      - name: Comment audit result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ inputs.issue_number }}" --repo "$GITHUB_REPOSITORY" --body "최종 영상 승인이 별도로 기록되었고 final.mp4가 확정되었습니다. 외부 배포는 아직 승인되지 않았습니다."

@@ -1,0 +1,47 @@
+name: Queue pipeline request
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  authorize-and-queue:
+    if: startsWith(github.event.issue.title, '[Pipeline]')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      AUTHOR_ASSOCIATION: ${{ github.event.issue.author_association }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+    steps:
+      - name: Validate authenticated request
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$AUTHOR_ASSOCIATION" in
+            OWNER|MEMBER|COLLABORATOR) ;;
+            *)
+              gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "이 실행 요청은 저장소 쓰기 권한이 있는 사용자만 시작할 수 있습니다."
+              gh issue close "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --reason not_planned
+              exit 1
+              ;;
+          esac
+          if [[ "$ISSUE_BODY" != *"pongdang-pipeline-request:v1"* ]]; then
+            echo "Issue form marker is missing." >&2
+            exit 1
+          fi
+      - name: Create queue labels
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh label create pipeline-request --repo "$GITHUB_REPOSITORY" --color 1d76db --description "Authenticated Pongdang pipeline request" --force
+          gh label create timely-processing --repo "$GITHUB_REPOSITORY" --color fbca04 --description "Timely Agent is generating planning copy" --force
+          gh label create timely-complete --repo "$GITHUB_REPOSITORY" --color 0e8a16 --description "Timely outputs are ready for Claude Code" --force
+          gh label create claude-complete --repo "$GITHUB_REPOSITORY" --color 5319e7 --description "Claude Code handoff completed" --force
+          gh label create pipeline-rejected --repo "$GITHUB_REPOSITORY" --color b60205 --description "Pipeline request rejected" --force
+          gh issue edit "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --add-label pipeline-request
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "실행 요청이 인증되었습니다. Timely Agent(Solar Pro 4)가 매시 정각 기획 문안 큐에서 가져갑니다. 유료 생성은 포함되지 않습니다."

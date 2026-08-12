@@ -8,4 +8,5 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(resolve(dist, "assets"), { recursive: true });
 await cp(resolve(web, "index.html"), resolve(dist, "index.html"));
 await cp(resolve(web, "styles.css"), resolve(dist, "styles.css"));
+await cp(resolve(web, "launch.css"), resolve(dist, "launch.css"));
 await cp(resolve(web, "public"), dist, { recursive: true });
