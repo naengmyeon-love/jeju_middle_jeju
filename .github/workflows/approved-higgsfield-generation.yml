@@ -53,12 +53,19 @@ jobs:
         env:
           CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          HIGGSFIELD_API_KEY: ${{ secrets.HIGGSFIELD_API_KEY }}
+          HIGGSFIELD_CREDENTIALS_JSON: ${{ secrets.HIGGSFIELD_CREDENTIALS_JSON }}
+          HIGGSFIELD_WORKSPACE_ID: ${{ vars.HIGGSFIELD_WORKSPACE_ID }}
         run: |
           set -euo pipefail
           test -n "$CLAUDE_MODEL" || { echo "Repository variable CLAUDE_MODEL is required." >&2; exit 1; }
           test -n "$CLAUDE_CODE_OAUTH_TOKEN" || { echo "Secret CLAUDE_CODE_OAUTH_TOKEN is required." >&2; exit 1; }
-          test -n "$HIGGSFIELD_API_KEY" || { echo "Secret HIGGSFIELD_API_KEY is required." >&2; exit 1; }
+          test -n "$HIGGSFIELD_CREDENTIALS_JSON" || { echo "Environment secret HIGGSFIELD_CREDENTIALS_JSON is required." >&2; exit 1; }
+          [[ "$HIGGSFIELD_WORKSPACE_ID" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "Environment variable HIGGSFIELD_WORKSPACE_ID is required." >&2; exit 1; }
+          mkdir -p "$HOME/.config/higgsfield"
+          printf '%s' "$HIGGSFIELD_CREDENTIALS_JSON" > "$HOME/.config/higgsfield/credentials.json"
+          printf '{"workspace_id":"%s"}\n' "$HIGGSFIELD_WORKSPACE_ID" > "$HOME/.config/higgsfield/config.json"
+          chmod 600 "$HOME/.config/higgsfield/credentials.json" "$HOME/.config/higgsfield/config.json"
+          node -e 'const fs=require("fs"); const value=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); for (const key of ["access_token","refresh_token","expires_at"]) if (!value[key]) throw new Error(`Missing Higgsfield credential field: ${key}`)' "$HOME/.config/higgsfield/credentials.json"
       - name: Check project and video dependencies
         env:
           PROJECT_ID: ${{ inputs.project_id }}
@@ -105,7 +112,7 @@ jobs:
       - name: Generate only the approved project
         uses: anthropics/claude-code-action@v1
         env:
-          HIGGSFIELD_API_KEY: ${{ secrets.HIGGSFIELD_API_KEY }}
+          HIGGSFIELD_WORKSPACE_ID: ${{ vars.HIGGSFIELD_WORKSPACE_ID }}
           PONGDANG_ALLOW_PAID: "1"
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

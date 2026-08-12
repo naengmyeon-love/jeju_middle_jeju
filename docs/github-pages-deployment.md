@@ -27,9 +27,10 @@
 1. 이 저장소를 GitHub에 올린다. 이 저장소의 기본·배포 브랜치는 `master`다.
 2. GitHub 저장소의 **Settings → Pages → Build and deployment**에서 **GitHub Actions**를
    publishing source로 선택한다.
-3. **Settings → Secrets and variables → Actions**에 `CLAUDE_CODE_OAUTH_TOKEN`과
-   `HIGGSFIELD_API_KEY`를 저장한다. `CLAUDE_MODEL`은 Repository variable로 정확한 모델명을
-   저장한다. Pages workflow에는 이 값을 전달하지 않는다.
+3. **Settings → Secrets and variables → Actions**에 `CLAUDE_CODE_OAUTH_TOKEN`을 저장하고,
+   `CLAUDE_MODEL`은 Repository variable로 모델명을 저장한다. `higgsfield-production` 환경에는
+   로컬 CLI의 전체 자격 증명 JSON을 `HIGGSFIELD_CREDENTIALS_JSON` secret으로, 선택된 billing
+   workspace ID를 `HIGGSFIELD_WORKSPACE_ID` variable로 저장한다. Pages workflow에는 이 값을 전달하지 않는다.
 4. **Settings → Environments**에서 `higgsfield-production`, `final-video-approval` 환경을 만들고
    Required reviewers를 설정한다. `external-distribution`은 외부 플랫폼 게시를 연결할 때 별도로 설정한다.
 5. 승인된 변경을 기본 브랜치에 push한다. 일반 제작 이력 변경은 push만으로 Pages 배포가 시작되지 않는다.
@@ -93,7 +94,7 @@ node scripts/record-model-run.mjs \
 ## 비밀값과 승인 경계
 
 공개 Pages workflow와 정적 산출물에는 API 키를 전달하지 않는다. Claude Code에는
-`CLAUDE_CODE_OAUTH_TOKEN`, 유료 생성 job에는 보호 환경의 `HIGGSFIELD_API_KEY`, 외부 플랫폼에는
+`CLAUDE_CODE_OAUTH_TOKEN`, 유료 생성 job에는 보호 환경의 `HIGGSFIELD_CREDENTIALS_JSON`, 외부 플랫폼에는
 보호 환경의 `PUBLISH_*`만 환경변수로 주입한다. Timely는 기존 워크스페이스의 GitHub 커넥터를
 사용하며 키를 저장소로 복사하지 않는다. 값은 코드, 이력 파일, 정적 산출물, 로그에 기록하지 않는다.
 
