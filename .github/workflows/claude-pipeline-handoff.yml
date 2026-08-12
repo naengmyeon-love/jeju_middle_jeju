@@ -89,11 +89,14 @@ jobs:
           fi
           git commit -m "feat: continue pipeline issue #$PIPELINE_ISSUE_NUMBER with Claude"
           # claude-code-action revokes the GitHub App installation token it uses
-          # internally as part of its own step cleanup, which can leave the git
-          # credential helper set up by actions/checkout pointing at a dead
-          # token. Re-authenticate this push explicitly with the job's own
-          # github.token instead of relying on ambient credential state.
-          git -c http.extraheader="AUTHORIZATION: Bearer $GH_TOKEN" push origin "HEAD:$TIMELY_BRANCH"
+          # internally as part of its own step cleanup. That leaves a stale
+          # http.extraheader from actions/checkout's credential helper, and
+          # layering another -c http.extraheader on top just sends two
+          # Authorization headers, which GitHub also rejects as invalid
+          # credentials. Drop the stale header entirely and authenticate this
+          # push with a clean URL using the job's own (unrevoked) github.token.
+          git config --unset-all http.https://github.com/.extraheader || true
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:$TIMELY_BRANCH"
       - name: Comment on partial progress
         if: failure()
         env:
