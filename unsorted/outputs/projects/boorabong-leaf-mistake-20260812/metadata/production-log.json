@@ -545,7 +545,7 @@
       "id": "claude-approval-request-001",
       "agent": "Claude Code",
       "model": "claude-sonnet-5",
-      "stage": "production_approval_request",
+      "stage": "production_approval",
       "started_at": "2026-08-13T00:10:00Z",
       "finished_at": "2026-08-13T00:10:21Z",
       "status": "succeeded",
