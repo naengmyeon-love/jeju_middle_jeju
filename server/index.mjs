@@ -311,6 +311,11 @@ const routes = [
   //
   // 로컬 경로는 Claude Code 단독으로 전 단계를 돌린다. 이쪽은 GitHub 워크플로를
   // 태워 Timely Agent(Solar Pro 4)가 문안을 맡는 선언대로 실행한다.
+  //
+  // gh·git 실패에 502 를 쓰지 않는다. 502 는 게이트웨이가 자기 것으로 간주하는
+  // 코드다. 시연용 공개 링크인 cloudflared 터널은 오리진이 502 를 내면 본문을
+  // 자기 HTML 오류 페이지로 갈아치우고, 그러면 화면은 진짜 원인 대신 JSON 파싱
+  // 실패만 보게 된다. 요청은 도달했고 실행이 거절된 것이므로 409 로 답한다.
   {
     method: "POST",
     pattern: /^\/api\/github\/pipeline$/,
@@ -328,7 +333,7 @@ const routes = [
         duration: validated.duration,
         emotion: EMOTIONS[validated.emotionId] ?? validated.emotionId,
       });
-      if (created.error) return json(res, 502, created);
+      if (created.error) return json(res, 409, created);
       json(res, 202, created);
     },
   },
@@ -337,7 +342,7 @@ const routes = [
     pattern: /^\/api\/github\/pipeline\/(\d+)$/,
     handler: async (_req, res, [number]) => {
       const status = await readPipelineStatus(Number(number));
-      if (status.error) return json(res, 502, status);
+      if (status.error) return json(res, 409, status);
       json(res, 200, status);
     },
   },
@@ -346,7 +351,7 @@ const routes = [
     pattern: /^\/api\/github\/pipeline\/(\d+)\/pull$/,
     handler: async (_req, res, [number]) => {
       const pulled = await pullPipelineOutputs(Number(number));
-      if (pulled.error) return json(res, 502, pulled);
+      if (pulled.error) return json(res, 409, pulled);
       json(res, 200, pulled);
     },
   },
