@@ -11,7 +11,21 @@
 
 import { createServer } from "node:http";
 
+import {
+  listAssetProjects,
+  readAssetManifest,
+  resolveAsset,
+  resolveThumbnail,
+  sendAsset,
+} from "./assets.mjs";
+import { readDocument, readDocumentManifest } from "./documents.mjs";
 import { checkGate, STAGES } from "./gate.mjs";
+import {
+  GITHUB_REPOSITORY,
+  createPipelineIssue,
+  pullPipelineOutputs,
+  readPipelineStatus,
+} from "./github.mjs";
 import { LIMITS, sanitizeFreeText } from "./freetext.mjs";
 import { listProjects, logPathForSlug } from "./projects.mjs";
 import { CONTENT_LIMITS, readStoryboard, saveStoryboard } from "./storyboard.mjs";
@@ -290,6 +304,102 @@ const routes = [
         clearInterval(keepAlive);
         unsubscribe();
       });
+    },
+  },
+
+  // ── GitHub 경로 (Timely Agent 포함) ─────────────────────────────────
+  //
+  // 로컬 경로는 Claude Code 단독으로 전 단계를 돌린다. 이쪽은 GitHub 워크플로를
+  // 태워 Timely Agent(Solar Pro 4)가 문안을 맡는 선언대로 실행한다.
+  {
+    method: "POST",
+    pattern: /^\/api\/github\/pipeline$/,
+    handler: async (req, res) => {
+      const body = await readJsonBody(req);
+      // 로컬 실행과 똑같은 검증을 통과시킨다. 경로가 둘이라고 검증이 둘이면,
+      // 느슨한 쪽이 곧 그 시스템의 실제 기준이 된다.
+      const validated = await validateRequest(body);
+      if (validated.error) return json(res, 400, { error: validated.error });
+
+      const created = await createPipelineIssue({
+        topic: validated.theme,
+        situation: validated.situation,
+        characters: validated.cast,
+        duration: validated.duration,
+        emotion: EMOTIONS[validated.emotionId] ?? validated.emotionId,
+      });
+      if (created.error) return json(res, 502, created);
+      json(res, 202, created);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/api\/github\/pipeline\/(\d+)$/,
+    handler: async (_req, res, [number]) => {
+      const status = await readPipelineStatus(Number(number));
+      if (status.error) return json(res, 502, status);
+      json(res, 200, status);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/api\/github\/pipeline\/(\d+)\/pull$/,
+    handler: async (_req, res, [number]) => {
+      const pulled = await pullPipelineOutputs(Number(number));
+      if (pulled.error) return json(res, 502, pulled);
+      json(res, 200, pulled);
+    },
+  },
+
+  // ── 문안(기획안·시나리오·스토리보드·프롬프트) ───────────────────────
+  {
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/documents$/,
+    handler: async (_req, res, [slug]) => {
+      const manifest = await readDocumentManifest(slug);
+      if (!manifest) return json(res, 400, { error: "projectSlug 형식이 올바르지 않습니다." });
+      json(res, 200, manifest);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/documents\/(.+)$/,
+    handler: async (_req, res, [slug, encoded]) => {
+      const doc = await readDocument(slug, decodeURIComponent(encoded));
+      if (!doc) return json(res, 404, { error: "문안을 찾을 수 없습니다." });
+      json(res, doc.error ? 409 : 200, doc);
+    },
+  },
+
+  // ── 산출물(이미지·영상) ─────────────────────────────────────────────
+  {
+    method: "GET",
+    pattern: /^\/api\/assets$/,
+    handler: async (_req, res) => json(res, 200, { projects: await listAssetProjects() }),
+  },
+  {
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/assets$/,
+    handler: async (_req, res, [slug]) => {
+      const manifest = await readAssetManifest(slug);
+      if (!manifest) return json(res, 400, { error: "projectSlug 형식이 올바르지 않습니다." });
+      json(res, 200, manifest);
+    },
+  },
+  {
+    // 파일 전송. 매니페스트에 없는 경로는 resolveAsset 이 거절하므로 여기서
+    // 경로를 따로 검사하지 않는다. 검사가 두 곳에 흩어지면 한쪽만 고치게 된다.
+    method: "GET",
+    pattern: /^\/api\/projects\/([a-z0-9][a-z0-9-]*)\/assets\/(.+)$/,
+    handler: async (req, res, [slug, encoded]) => {
+      const { searchParams } = new URL(req.url, `http://${req.headers.host ?? "localhost"}`);
+      const asset = await resolveAsset(slug, decodeURIComponent(encoded));
+      if (!asset) return json(res, 404, { error: "산출물을 찾을 수 없습니다." });
+
+      // 축소본을 만들지 못하면 원본을 보낸다. 느린 것과 안 나오는 것은 다르다.
+      const width = Number(searchParams.get("w"));
+      const thumbnail = width ? await resolveThumbnail(asset, width) : null;
+      sendAsset(req, res, thumbnail ?? asset);
     },
   },
 
