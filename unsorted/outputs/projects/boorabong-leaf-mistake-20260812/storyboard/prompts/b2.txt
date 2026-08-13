@@ -1,0 +1,77 @@
+[STYLE]
+flat 2D Korean kawaii mascot illustration, thick uniform dark-brown outline, flat fill colours with no gradient shading, simple rounded shapes, plain background, official character-sheet style
+
+[CAST]
+BOO RABONG: orange Hallabong citrus character, round citrus head fused with the body, one green leaf sprig on top of the head, two large round orange blush cheeks, base eyes are perfect circles, upper lip is an upside-down seagull curve (three-stroke shape), small pale-yellow tongue, white diaper-like lower garment, short stubby limbs, about 1.5 head-to-body proportion, front view wider than side view, small gap between eyes and mouth
+
+[SCENE]
+A different leaf drifts far away in the wind while BOO RABONG sits quietly in the distance.
+Background is the yard of GO LEBANG's house in daytime, a breeze carrying a leaf.
+
+[COMPOSITION]
+wide shot, vertical 9:16 framing, the single character inside the safe area, plain uncluttered background
+one single uninterrupted frame filling the whole canvas, one camera angle, one moment in time
+
+[NEGATIVE]
+no text, no letters, no captions, no speech bubbles, no watermark, no logo
+no additional or invented characters outside the official six
+no realistic rendering, no 3D render, no photographic style
+no anatomy or proportion changes, no restyling, no redesign
+no mirrored/flipped character markings
+no price, sale or promotional copy
+no third-party IP or trademarks
+exactly one instance of each requested character, never duplicated or repeated in the same image
+no comic panels, no split frames, no multi-panel layout, no borders or gutters
+no vertical or slit eyes on BOO RABONG
+BOO RABONG's base eyes must stay perfect circles, not smaller or larger
+BOO RABONG's blank eyes must not be larger than the normal size
+no pointed centre on BOO RABONG's upper lip
+no wide vertical gap between BOO RABONG's eyes and mouth
+no change to BOO RABONG's 1.5 head-to-body proportion
+no white sclera or separate pupils on BOO RABONG's eyes; eyes stay solid filled shapes
+
+[OUTPUT]
+single still image, one frame only, no text anywhere in the image
+
+# ---- 실행 명령 (제작·비용 승인 이후에만) ----
+higgsfield generate create nano_banana_flash \
+  --prompt '[STYLE]
+flat 2D Korean kawaii mascot illustration, thick uniform dark-brown outline, flat fill colours with no gradient shading, simple rounded shapes, plain background, official character-sheet style
+
+[CAST]
+BOO RABONG: orange Hallabong citrus character, round citrus head fused with the body, one green leaf sprig on top of the head, two large round orange blush cheeks, base eyes are perfect circles, upper lip is an upside-down seagull curve (three-stroke shape), small pale-yellow tongue, white diaper-like lower garment, short stubby limbs, about 1.5 head-to-body proportion, front view wider than side view, small gap between eyes and mouth
+
+[SCENE]
+A different leaf drifts far away in the wind while BOO RABONG sits quietly in the distance.
+Background is the yard of GO LEBANG'\''s house in daytime, a breeze carrying a leaf.
+
+[COMPOSITION]
+wide shot, vertical 9:16 framing, the single character inside the safe area, plain uncluttered background
+one single uninterrupted frame filling the whole canvas, one camera angle, one moment in time
+
+[NEGATIVE]
+no text, no letters, no captions, no speech bubbles, no watermark, no logo
+no additional or invented characters outside the official six
+no realistic rendering, no 3D render, no photographic style
+no anatomy or proportion changes, no restyling, no redesign
+no mirrored/flipped character markings
+no price, sale or promotional copy
+no third-party IP or trademarks
+exactly one instance of each requested character, never duplicated or repeated in the same image
+no comic panels, no split frames, no multi-panel layout, no borders or gutters
+no vertical or slit eyes on BOO RABONG
+BOO RABONG'\''s base eyes must stay perfect circles, not smaller or larger
+BOO RABONG'\''s blank eyes must not be larger than the normal size
+no pointed centre on BOO RABONG'\''s upper lip
+no wide vertical gap between BOO RABONG'\''s eyes and mouth
+no change to BOO RABONG'\''s 1.5 head-to-body proportion
+no white sclera or separate pupils on BOO RABONG'\''s eyes; eyes stay solid filled shapes
+
+[OUTPUT]
+single still image, one frame only, no text anywhere in the image' \
+  --image 'shared/references/pages/page-08.png' \
+  --image 'shared/references/pages/page-09.png' \
+  --image 'shared/references/pages/page-10.png' \
+  --aspect_ratio 9:16 \
+  --resolution 2k \
+  --wait
