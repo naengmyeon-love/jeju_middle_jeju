@@ -11,8 +11,11 @@
 1. Pages의 **새 제작 실행**을 눌러 GitHub Issue Form을 제출한다.
 2. `queue-pipeline-request.yml`이 요청자의 저장소 쓰기 권한과 폼 표식을 검사하고
    `pipeline-request` 라벨을 붙인다.
-3. Timely의 `pongdang-pipeline-agent` 자동화가 매시 정각 큐를 확인한다. Solar Pro 4로
+3. Timely의 `pongdang-pipeline-agent` 자동화가 큐를 가져간다. Solar Pro 4로
    기획안 A/B/C, 시나리오, 스토리보드 A/B/C 문안만 만들고 PR과 실행 이력을 남긴다.
+   이 단계는 이 저장소가 제어하지 않는다. 처리 주기는 Timely 쪽 설정이고 보장되지
+   않으므로, 진행 여부는 `timely-processing`·`timely-complete` 라벨로 판단한다.
+   관측된 반응 시간은 요청 후 7~12분이었으나 그보다 오래 멈춰 있던 적도 있다.
 4. Timely가 `timely-complete` 라벨을 붙이면 `claude-pipeline-handoff.yml`이 Claude Code를
    실행한다. Claude는 공식 가이드 적용, 프롬프트 조립, 검수, 카피와 승인 준비를 담당하며
    Higgsfield를 호출하지 않고 제작·비용 승인 지점에서 멈춘다.

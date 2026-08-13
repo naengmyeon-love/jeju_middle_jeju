@@ -48,4 +48,7 @@ jobs:
           gh label create claude-complete --repo "$GITHUB_REPOSITORY" --color 5319e7 --description "Claude Code handoff completed" --force
           gh label create pipeline-rejected --repo "$GITHUB_REPOSITORY" --color b60205 --description "Pipeline request rejected" --force
           gh issue edit "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --add-label pipeline-request
-          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "실행 요청이 인증되었습니다. Timely Agent(Solar Pro 4)가 매시 정각 기획 문안 큐에서 가져갑니다. 유료 생성은 포함되지 않습니다."
+          # 처리 시각을 약속하지 않는다. Timely 는 이 저장소가 제어하지 않는 외부
+          # 자동화라서 여기서 시각을 적으면 지켜지지 않을 때 "기다리면 된다"는
+          # 오해만 남는다. 대신 라벨이라는 관측 가능한 신호를 알려 준다.
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "실행 요청이 인증되었습니다. Timely Agent(Solar Pro 4)가 기획 문안 큐에서 순서대로 가져갑니다. 처리가 시작되면 \`timely-processing\`, 문안이 준비되면 \`timely-complete\` 라벨이 붙습니다. 라벨이 오래 그대로면 Timely 쪽이 큐를 돌지 않고 있는 것입니다. 유료 생성은 포함되지 않습니다."
