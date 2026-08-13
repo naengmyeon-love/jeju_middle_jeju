@@ -1,0 +1,33 @@
+{
+  "project_id": "boorabong-bijarim-forest-walk-20260813-web",
+  "created_at": "2026-08-13",
+  "required": {
+    "topic": "비자림 숲길 산책",
+    "characters": [
+      "부라봉"
+    ],
+    "core_situation": "더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다",
+    "emotion": "즐거움 · 코믹",
+    "duration_seconds": 15,
+    "aspect_ratio": "9:16",
+    "tools": [
+      "Higgsfield"
+    ]
+  },
+  "optional": {
+    "location": "제주 비자림 숲길",
+    "dialogue_hints": null,
+    "reference_content": null,
+    "excluded_expressions": null,
+    "direction_style": null,
+    "scene_count": null,
+    "bgm_mood": null,
+    "platforms": null
+  },
+  "notes": [
+    "선택 입력은 사용자가 제공하지 않아 비워 둔다. 임의로 채우지 않는다.",
+    "배경 장소는 필수 입력의 주제에서 직접 도출한 값이며 새로 지어낸 설정이 아니다."
+  ],
+  "output_dir": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/",
+  "source": "워크플로우 웹앱 인페이지 실행 (사이드카가 claude -p 를 직접 기동). 동일 주제로 GitHub Issue #6 경유 실행분이 boorabong-bijarim-forest-walk-20260813 에 별도로 있으며, 폴더 이름이 겹쳐 이쪽에 -web 접미사를 붙였다."
+}

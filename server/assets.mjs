@@ -13,6 +13,7 @@ import { createReadStream } from "node:fs";
 import { mkdir, readdir, stat } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 
+import { readDocumentManifest } from "./documents.mjs";
 import { PROJECT_ROOT } from "./gate.mjs";
 import { SLUG_PATTERN } from "./projects.mjs";
 
@@ -155,7 +156,17 @@ export async function listAssetProjects() {
     // 이미지가 0장이어도 목록에서 빼지 않는다. 문안까지만 끝난 프로젝트는 미완성이
     // 아니라 유료 이미지 생성 승인을 기다리는 상태이고, 기획안·시나리오·문안은
     // 이미 존재한다. 목록에서 빼면 그 프로젝트는 화면에서 사라져 없는 것이 된다.
-    projects.push({ slug: entry.name, counts, total, video: manifest.video });
+    // 문서 개수를 같이 실어 보낸다. 화면이 기본으로 열 프로젝트를 고르려면
+    // "그림이 몇 장인가"가 아니라 "읽을 것이 있는가"를 알아야 하는데, 자산
+    // 목록만으로는 그 둘을 구분할 수 없다.
+    const documents = await readDocumentManifest(entry.name);
+    projects.push({
+      slug: entry.name,
+      counts,
+      total,
+      documents: documents?.total ?? 0,
+      video: manifest.video,
+    });
   }
 
   projects.sort((a, b) => b.slug.localeCompare(a.slug));

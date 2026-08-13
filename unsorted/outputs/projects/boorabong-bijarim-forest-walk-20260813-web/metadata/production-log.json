@@ -1,0 +1,112 @@
+{
+  "project_id": "boorabong-bijarim-forest-walk-20260813",
+  "created_at": "2026-08-13T00:00:00+09:00",
+  "updated_at": "2026-08-13T00:00:00+09:00",
+  "input": {
+    "topic": "비자림 숲길 산책",
+    "characters": ["부라봉"],
+    "core_situation": "더위를 피해 숲길을 걷다 수백 년 된 비자나무 앞에서 걸음을 멈춘다",
+    "emotion": "즐거움 · 코믹",
+    "duration_seconds": 15,
+    "aspect_ratio": "9:16",
+    "tools": ["Higgsfield"]
+  },
+  "outputs": {
+    "request": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/input/request.json",
+    "plan": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/planning/plan.md",
+    "guide_injection": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/planning/guide-injection.md",
+    "scenario": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/planning/scenario.md",
+    "storyboard_a": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/storyboard/storyboard-a.md",
+    "storyboard_b": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/storyboard/storyboard-b.md",
+    "storyboard_c": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/storyboard/storyboard-c.md",
+    "storyboard_images_a": [],
+    "storyboard_images_b": [],
+    "storyboard_images_c": [],
+    "video_draft": null,
+    "video_final": null,
+    "publication_manifest": null
+  },
+  "guide_applied": {
+    "version": "character-guide.md v2.3 (2026-08-03) + character-guide SKILL.md v2.2",
+    "applied_at": "2026-08-13T00:00:00+09:00",
+    "source_pdf": "shared/references/제주애퐁당 캐릭터 사용 매뉴얼.pdf",
+    "verified_pages": [3, 8, 9, 10],
+    "categories": ["캐릭터", "브랜드", "콘텐츠 제한", "기술"],
+    "targets": ["기획안", "시나리오", "스토리보드", "영상"]
+  },
+  "reviews": {
+    "planning": {
+      "status": "failed",
+      "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/review/planning-review.md",
+      "reviewed_at": "2026-08-13T00:00:00+09:00"
+    },
+    "video": {
+      "status": "not_started",
+      "path": "unsorted/outputs/projects/boorabong-bijarim-forest-walk-20260813/review/video-review.md",
+      "reviewed_at": null
+    }
+  },
+  "approvals": {
+    "production": {
+      "status": "pending",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "승인 요청서 review/approval-request.md 작성 완료. 스토리보드 미선택, 예상 크레딧 산정 불가(저장소에 Higgsfield 단가표 없음), 장면 이미지 미생성으로 유료 호출을 실행하지 않고 승인 대기 상태로 정지했다.",
+      "selected_storyboard": null,
+      "estimated_credits": null,
+      "clip_count": 4,
+      "regeneration_limit": null,
+      "cost_usage_approved": false
+    },
+    "final": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": null
+    },
+    "distribution": {
+      "status": "not_requested",
+      "explicit": false,
+      "reviewer": null,
+      "approved_at": null,
+      "notes": "사용자가 배포를 요청하지 않았다."
+    }
+  },
+  "costs": {
+    "ai_tool_usage": "Higgsfield",
+    "estimated_cost_krw": 0,
+    "actual_cost_krw": 0
+  },
+  "scene_images": [],
+  "video_clips": [],
+  "model_versions": {
+    "character_image": "nano_banana_pro (character-guide.json image_generation.mandatory.model_routing.character_image)",
+    "video": "미정 — 제작·비용 승인 이후 확정"
+  },
+  "artifact_versions": {
+    "request": "v1",
+    "plan": "v1",
+    "guide_injection": "v1",
+    "scenario": "v1",
+    "storyboard_a": "v1",
+    "storyboard_b": "v1",
+    "storyboard_c": "v1"
+  },
+  "errors": [
+    {
+      "stage": "storyboard-generator / 장면 이미지 생성",
+      "code": "TOOL_EXECUTION_NOT_PERMITTED",
+      "detail": "이 세션에서 higgsfield CLI 실행이 승인되지 않았다. `higgsfield --help`, `higgsfield generate create ...` 모두 승인 필요로 거부되었다. 프롬프트 조립(build-pongdang-prompt.mjs)은 12건 전부 게이트를 통과했고 실행 명령까지 생성되어 있다.",
+      "affected": [
+        "storyboard/images/a/scene-01..04.png",
+        "storyboard/images/b/scene-01..04.png",
+        "storyboard/images/c/scene-01..04.png"
+      ],
+      "retryable": true,
+      "next_action": "higgsfield CLI 실행 권한을 허용한 세션에서 storyboard/prompts/*.txt 하단의 실행 명령을 그대로 실행한다. 프롬프트 재작성은 필요 없다.",
+      "recorded_at": "2026-08-13T00:00:00+09:00"
+    }
+  ]
+}

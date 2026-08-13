@@ -38,3 +38,6 @@ unsorted/workflow-web/
 
 # 사이드카 실행 로그
 /tmp/sidecar.log
+
+# ffmpeg 썸네일 캐시. 원본에서 언제든 다시 만들 수 있는 파생물이다.
+unsorted/outputs/.thumbnails/
