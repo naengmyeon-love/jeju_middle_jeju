@@ -1,7 +1,7 @@
 {
   "project_id": "boorabong-leaf-mistake-20260812",
   "created_at": "2026-08-13T01:11:00+09:00",
-  "updated_at": "2026-08-12T23:40:30.038Z",
+  "updated_at": "2026-08-13T00:10:21Z",
   "input": {
     "topic": "부라봉이 바람에 날아간 잎사귀를 자기 잎사귀로 착각하는 소동",
     "characters": [
@@ -131,11 +131,13 @@
   },
   "approvals": {
     "production": {
-      "status": "pending",
+      "status": "requested",
       "explicit": false,
       "reviewer": null,
       "approved_at": null,
-      "notes": "이슈 #2 코멘트로 스토리보드 선택·레퍼런스·예상 크레딧·클립 수·재생성 상한을 요청함. Claude Code는 담당자를 대신해 승인하지 않는다.",
+      "requested_at": "2026-08-13T00:10:21Z",
+      "request_comment_url": "https://github.com/naengmyeon-love/jeju_middle_jeju/issues/2#issuecomment-5274263299",
+      "notes": "이슈 #2 코멘트로 스토리보드 선택·레퍼런스·예상 크레딧·클립 수·재생성 상한을 요청함(위 request_comment_url). Claude Code는 담당자를 대신해 승인하지 않는다. 담당자의 명시적 응답 전까지 status는 requested로 유지하며 Higgsfield는 호출하지 않는다.",
       "selected_storyboard": null,
       "estimated_credits": null,
       "clip_count": null,
@@ -538,6 +540,21 @@
       ],
       "adopted": true,
       "recorded_at": "2026-08-12T23:40:30.038Z"
+    },
+    {
+      "id": "claude-approval-request-001",
+      "agent": "Claude Code",
+      "model": "claude-sonnet-5",
+      "stage": "production_approval_request",
+      "started_at": "2026-08-13T00:10:00Z",
+      "finished_at": "2026-08-13T00:10:21Z",
+      "status": "succeeded",
+      "output_files": [
+        "metadata/production-log.json"
+      ],
+      "adopted": true,
+      "result_ref": "https://github.com/naengmyeon-love/jeju_middle_jeju/issues/2#issuecomment-5274263299",
+      "recorded_at": "2026-08-13T00:10:21Z"
     }
   ]
 }
