@@ -1,0 +1,42 @@
+{
+  "execution_id": "pongdang-pipeline-agent-schedule",
+  "model": "Solar Pro 4",
+  "executed_at": "2026-08-13T14:06:00+09:00",
+  "issue_number": 6,
+  "issue_title": "[Pipeline] 비자림 숲길 산책",
+  "repo": "naengmyeon-love/jeju_middle_jeju",
+  "character": "boo-rabong",
+  "contents": {
+    "plan_a": "planning/plan-a.md",
+    "plan_b": "planning/plan-b.md",
+    "plan_c": "planning/plan-c.md",
+    "scenario": "planning/scenario.md",
+    "storyboard_a": "storyboard/storyboard-a.md",
+    "storyboard_b": "storyboard/storyboard-b.md",
+    "storyboard_c": "storyboard/storyboard-c.md"
+  },
+  "adoption": {
+    "status": false,
+    "reason": "기획 문안 단계 Smoke Test — Claude Code가 공식 가이드와 원본 페이지를 확인해 수정·채택하기 전까지는 제작용 결과가 아님",
+    "note": "캐릭터 가이드 적용 및 준수 판정은 이 에이전트의 권한 밖. Claude Code에서 최종 확인 필요."
+  },
+  "restrictions_applied": {
+    "image_generation": false,
+    "video_generation": false,
+    "claude_code_handoff": false,
+    "external_distribution": false,
+    "character_guide_application": false,
+    "approval_record": false,
+    "final_file_confirmation": false
+  },
+  "files_produced": [
+    "planning/plan-a.md",
+    "planning/plan-b.md",
+    "planning/plan-c.md",
+    "planning/scenario.md",
+    "storyboard/storyboard-a.md",
+    "storyboard/storyboard-b.md",
+    "storyboard/storyboard-c.md",
+    "metadata/production-log.json"
+  ]
+}
